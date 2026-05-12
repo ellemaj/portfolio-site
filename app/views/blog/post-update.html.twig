@@ -1,0 +1,29 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block title %}Blog - Update{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/css/blogposts.css">
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="../js/app.js"></script> <!--voor confetti-->
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section>
+            <h2>Nieuwe update!</h2>
+            <h3>9 oktober 2025</h3>
+            <p>De website heeft een nieuwe update gekregen! <br>
+                Door de feedback die ik heb verzameld tijdens de posterpresentaties, ziet de website (en de code) er nu
+                nóg toffer uit! <br>
+                Vooral de styling van de website heeft een flinke upgrade gehad. De complete versiegeschiedenis kan je
+                vinden via deze <a href="https://github.com/ellemaj/ellemaj.github.io" target="_blank">Github
+                    pagina</a>.
+            </p>
+            <h4><a href="/blog" class="terug-knop">← Terug naar blog</a></h4>
+        </section>
+    </main>
+{% endblock %}

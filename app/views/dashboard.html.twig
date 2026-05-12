@@ -1,0 +1,166 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/css/dashboard.css">
+{% endblock %}
+
+{% block scripts %}
+<script src="/js/dashboard.js"></script>
+{% endblock %}
+
+{% block content %}
+<aside class="side_menu">
+    <h3>Handige links</h3>
+    <ul>
+        <li><a href="https://oer.hz.nl/9b1081fb-c060-4091-bb2b-ae39ccf8456a" target="_blank">HBO-ICT CER</a></li>
+        <li><a href="https://oer.hz.nl/93eee6aa-2bc1-454c-a56a-f8b56c62ba9f" target="_blank">HBO-ICT IR</a></li>
+        <li><a href="https://learn.hz.nl/course/view.php?id=23602#section-0" target="_blank">Learn - PCO</a></li>
+        <li><a href="https://hz.osiris-student.nl/voortgang" target="_blank">Study Progress (Osiris)</a></li>
+        <li><a href="https://github.com/HZ-HBO-ICT" target="_blank">GitHub-omgeving HBO-ICT</a></li>
+    </ul>
+</aside>
+
+<section class="dashboard-layout">
+    <section class="dashboard_section">
+        <h1>Dashboard</h1>
+
+        <a href="https://hz.nl" target="_blank">
+            <img src="/images/hzlogo_groot.png" width="300" alt="HZ logo">
+        </a>
+
+        <h2>Overzicht van jaar 1:</h2>
+
+        <table>
+            <tr>
+                <th>Blok</th>
+                <th>Vakken</th>
+                <th>EC</th>
+                <th>Examen</th>
+                <th>Cijfer</th>
+            </tr>
+
+            <!-- Blok 1 -->
+            <tr>
+                <td rowspan="3">1</td>
+                <td>Program- & Career Orientation</td>
+                <td class="ec">2.5</td>
+                <td>Presentatie</td>
+                <td class="grade">7.8</td>
+            </tr>
+            <tr>
+                <td>Computer Science Basics</td>
+                <td class="ec">5</td>
+                <td>Schriftelijke Kennistoets</td>
+                <td class="grade">6.5</td>
+            </tr>
+            <tr>
+                <td>Programming Basics</td>
+                <td class="ec">5</td>
+                <td>Casustoets</td>
+                <td class="grade">8.3</td>
+            </tr>
+
+            <!-- Blok 2 -->
+            <tr>
+                <td rowspan="2">2</td>
+                <td rowspan="2">Object-Oriented Programming</td>
+                <td class="ec">5</td>
+                <td>Presentatie</td>
+                <td class="grade">7.7</td>
+            </tr>
+            <tr>
+                <td class="ec">5</td>
+                <td>Schriftelijke Kennistoets</td>
+                <td class="grade">9.8</td>
+            </tr>
+
+            <!-- Blok 3 -->
+            <tr>
+                <td rowspan="4">3</td>
+                <td rowspan="3">Framework Project 1</td>
+                <td class="ec">5</td>
+                <td>On-site Casustoets</td>
+                <td class="grade">5.6</td>
+            </tr>
+            <tr>
+                <td class="ec">2.5</td>
+                <td>Groepspresentatie project resultaat</td>
+                <td class="grade">8.1</td>
+            </tr>
+            <tr class="bezig">
+                <td class="ec">2.5</td>
+                <td>Groepsportfolio op requirements</td>
+                <td class="grade">-</td>
+            </tr>
+            <tr class="bezig">
+                <td>Business Understanding Basics</td>
+                <td class="ec">2.5</td>
+                <td>Video</td>
+                <td class="grade">-</td>
+            </tr>
+
+            <!-- Blok 4 -->
+            <tr class="bezig">
+                <td rowspan="3">4</td>
+                <td rowspan="3">Framework Project 2</td>
+                <td class="ec">5</td>
+                <td>IT-ontwikkelingsportfolio</td>
+                <td class="grade">-</td>
+            </tr>
+            <tr class="bezig">
+                <td class="ec">2.5</td>
+                <td>Final Delivery</td>
+                <td class="grade">-</td>
+            </tr>
+            <tr class="bezig">
+                <td class="ec">2.5</td>
+                <td>Individueel Project Assessment</td>
+                <td class="grade">-</td>
+            </tr>
+
+            <!-- Door het jaar heen -->
+            <tr>
+                <td rowspan="5">Gedurende het jaar</td>
+                <td>IT Personality 1</td>
+                <td class="ec">1.25</td>
+                <td>Portfolio</td>
+                <td class="grade">-</td>
+            </tr>
+            <tr>
+                <td>IT Personality 2</td>
+                <td class="ec">1.25</td>
+                <td>Portfolio</td>
+                <td class="grade">-</td>
+            </tr>
+            <tr>
+                <td>IT Personality International Week</td>
+                <td class="ec">1.25</td>
+                <td>Portfolio</td>
+                <td class="grade">-</td>
+            </tr>
+            <tr>
+                <td>IT Personality Projectweek 1</td>
+                <td class="ec">1.25</td>
+                <td>Portfolio</td>
+                <td class="grade">-</td>
+            </tr>
+            <tr>
+                <td>Personal Professional Development Exploration</td>
+                <td class="ec">12.5</td>
+                <td>Criterium Focused Interview</td>
+                <td class="grade">-</td>
+            </tr>
+        </table>
+
+        <h2>Voortgang studiepunten:</h2>
+        <div class="progress-bar">
+            <div class="progress"></div>
+            <div class="nbsa-marker"></div>
+        </div>
+
+        <p>0 / 60 EC behaald</p>
+    </section>
+</section>
+{% endblock %}

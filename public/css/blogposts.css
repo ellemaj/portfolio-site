@@ -1,0 +1,99 @@
+/*---------------- Blog pagina ----------------*/
+.feed {
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* sets the article blocks to the right position */
+@media (min-width: 800px) {
+    .feed {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.post-card-link {
+    text-decoration: none;
+    color: inherit;
+    /* getting text color from .post-card */
+    display: block;
+}
+
+.post-card {
+    background: #969696;
+    padding: 1.2rem;
+    border-radius: 10px;
+    border: 1px solid #1F1F1F;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.2s ease;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-card h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.3rem;
+}
+
+.post-card time {
+    display: block;
+    font-size: 0.9rem;
+    color: #3B3B3B;
+    margin-bottom: 0.6rem;
+}
+
+.post-card p {
+    margin: 0;
+    color: white;
+}
+
+.post-card h2,
+.post-card h2 a,
+.post-card time,
+.post-card p {
+    transition: color 0.5s ease, font-weight 0.3s ease;
+}
+
+.post-card-link:hover .post-card {
+    background-color: #5a5a5a;
+    transition: background-color 0.3s ease;
+}
+
+.post-card-link:hover .post-card h2 {
+    color: #2581be;
+}
+
+.post-card-link:hover .post-card time {
+    color: #969696;
+}
+
+.post-card-link:hover .post-card p {
+    font-weight: normal;
+}
+
+/*---------------- post pagina ----------------*/
+.terug-knop {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.6rem 1rem;
+    background-color: #1F1F1F;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.terug-knop:hover {
+    background-color: #C4C4C4;
+    color: #1F1F1F;
+    font-weight: 500;
+}
+
+section h3 {
+    color: rgb(37, 150, 190);
+}
+
+section a {
+    text-decoration: none;
+}

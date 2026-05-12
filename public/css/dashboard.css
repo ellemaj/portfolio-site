@@ -1,0 +1,145 @@
+/*----------------- dashboard -----------------*/
+main.dashboard-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.dashboard_section {
+    order: 1;
+    flex: 1;
+    margin-bottom: 20px;
+    background-color: transparent;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0);
+    color: white;
+
+    table,
+    th,
+    td {
+        border: 1px solid #969696;
+        text-align: center;
+        padding: 10px;
+        border-collapse: collapse;
+    }
+
+    table {
+        width: 80%;
+    }
+}
+
+/* Zorgt ervoor dat de vakken waar ik mee bezig ben een andere kleur in de tabel krijgen */
+.bezig {
+    background-color: #333;
+}
+
+@media (max-width: 768px) {
+    main.dashboard-layout {
+        flex-direction: column;
+        /* zet alles onder elkaar */
+    }
+
+    .dashboard_section {
+        order: 1;
+        /* hoofdinhoud eerst */
+        width: 100%;
+        /* volle breedte */
+    }
+
+    .side_menu {
+        order: 2;
+        /* side menu eronder */
+        width: 100%;
+        /* ook volle breedte */
+        margin-left: 0;
+    }
+
+    .dashboard_section table {
+        display: block;
+        /* tabel kan scrollen */
+        overflow-x: auto;
+    }
+}
+
+/*--Progress bar--*/
+.progress-bar {
+    position: relative;
+    width: 100%;
+    background-color: #C4C4C4;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 25px;
+    margin-bottom: 10px;
+}
+
+.progress {
+    height: 100%;
+    background-color: #2596be;
+    transition: width 0.5s ease;
+}
+
+/* NBSA-marker in progressbar */
+.nbsa-marker {
+    position: absolute;
+    left: 75%;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background-color: red;
+}
+
+/* Kleur voor behaald/onvoldoende vakken in tabel */
+td.behaald {
+    background-color: #2e7d32;
+    color: white;
+}
+
+td.onvoldoende {
+    background-color: #8b0000;
+    color: white;
+}
+
+/*Kleur van de tekst onder de progressbar*/
+p {
+    color: #2596be;
+}
+
+/*-----Side menu-----*/
+.side_menu {
+    order: 2;
+    flex: 0 0 220px;
+    margin-left: auto;
+    width: 17.1%;
+    float: right;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #1F1F1F;
+    color: white;
+    text-align: center;
+}
+
+.side_menu a {
+    color: #969696;
+    text-decoration: none;
+    padding: 5px;
+    text-align: left;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-weight: bold;
+    background-color: #3B3B3B;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.side_menu a:hover {
+    color: #2596be;
+    background-color: #525252;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.side_menu ul {
+    list-style-type: none;
+    padding-left: 1px;
+    margin-bottom: 1px;
+}

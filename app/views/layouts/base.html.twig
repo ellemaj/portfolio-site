@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Elmar van Loenhout">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+
+    {% block styles %}{% endblock %}
+    {% block scripts %}{% endblock %}
+
+    <title> {% block title %}{% endblock %}</title>
+</head>
+
+<body>
+
+    <header>
+        <a href="/"><img src="/images/logo.png" width="10%" alt="Logo"></a>
+    </header>
+
+    <nav class="menu">
+        <ul>
+            <li><a href="/" class="{% if active == 'home' %}active{% endif %}">Home</a></li>
+            <li><a href="/profile" class="{% if active == 'profile' %}active{% endif %}">Profile</a></li>
+            <li><a href="/dashboard" class="{% if active == 'dashboard' %}active{% endif %}">Dashboard</a></li>
+            <li><a href="/faq" class="{% if active == 'faq' %}active{% endif %}">FAQ</a></li>
+            <li><a href="/blog" class="{% if active == 'blog' %}active{% endif %}">Blog</a></li>
+        </ul>
+    </nav>
+
+    <!-- Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <a href="/">© {{ "now"|date("Y") }} ellemaj</a> |
+        <a href="mailto:loen0029@hz.nl">Contact</a> |
+        <a href="sitemap" class="{% if active == 'sitemap' %}active{% endif %}">Sitemap</a> |
+        <a href="commandmaker" class="{% if active == 'commandmaker' %}active{% endif %}">Commandmaker</a>
+    </footer>
+</body>
+</html>
