@@ -1,5 +1,5 @@
-## PHP-Framework Maestro
+## IT Development Portfolio
 
-PCO website using Maestro
+This is my IT Development Portfolio (ITDP).
 
 ### Author: ellemaj
