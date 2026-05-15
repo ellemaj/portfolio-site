@@ -6,6 +6,7 @@ use Exception;
 use Framework\Response;
 use Framework\ResponseFactory;
 use Framework\Database;
+use App\Middleware\AuthMiddleware;
 
 class UserController
 {
@@ -113,11 +114,7 @@ class UserController
      */
     public function overview(): Response
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-
-        }
+        AuthMiddleware::handle();
 
         return $this->responseFactory->view('user/overview.html.twig',
         [
