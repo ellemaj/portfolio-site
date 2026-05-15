@@ -1,0 +1,21 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/css/blogposts.css">
+{% endblock %}
+
+{% block content %}
+
+    <section>
+        <small>{{ post.created_at }}</small>
+
+        <div>
+            {{ post.content|raw }}
+        </div>
+
+        <h4><a href="/blog" class="terug-knop">← Terug naar blog</a></h4>
+    </section>
+
+{% endblock %}

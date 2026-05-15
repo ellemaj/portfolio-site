@@ -7,59 +7,17 @@
 {% endblock %}
 
 {% block content %}
-    <main>
-        <section class="feed">
 
-            <a href="blog/post-update" class="post-card-link">
+    <section class="feed">
+        {% for post in posts %}
+            <a href="/blog/{{ post.slug }}" class="post-card-link">
                 <article class="post-card">
-                    <h2>Nieuwe update!</h2>
-                    <time datetime="2025-10-09">9 oktober 2025</time>
-                    <p>De website heeft weer een nieuwe update gehad!</p>
+                    <h2>{{ post.title }}</h2>
+                    <time>{{ post.created_at }}</time>
+                    <p>{{ post.preview }}</p>
                 </article>
             </a>
+        {% endfor %}
+    </section>
 
-            <a href="blog/post-swot_analysis" class="post-card-link">
-                <article class="post-card">
-                    <h2>Persoonlijke SWOT analyse</h2>
-                    <time datetime="2025-09-11">11 september 2025</time>
-                    <p>Mijn persoonlijke SWOT analyse; wat zijn mijn sterke en zwakke punten tijdens de opleiding?</p>
-                </article>
-            </a>
-
-            <a href="blog/post-ict" class="post-card-link">
-                <article class="post-card">
-                    <h2>ICT-werkveld</h2>
-                    <time datetime="2025-09-10">10 september 2025</time>
-                    <p>Hoe ziet het ICT-werkveld er uit? Waar kom ik in terecht als ik deze opleiding afrond?</p>
-                </article>
-            </a>
-
-            <a href="blog/post-feedback" class="post-card-link">
-                <article class="post-card">
-                    <h2>Feedback</h2>
-                    <time datetime="2025-09-10">10 september 2025</time>
-                    <p>Welke feedback...?</p>
-                </article>
-            </a>
-
-            <a href="blog/post-programming_experience" class="post-card-link">
-                <article class="post-card">
-                    <h2>Mijn programmeerervaring</h2>
-                    <time datetime="2025-09-09">9 september 2025</time>
-                    <p>Zoals ik op de home- en profilepage al heb verteld, heb ik al enige codeer en
-                        programmeerervaring.</p>
-                </article>
-            </a>
-
-            <a href="blog/post-studiekeuze" class="post-card-link">
-                <article class="post-card">
-                    <h2>Studiekeuze & motivatie</h2>
-                    <time datetime="2024-11-20">20 november 2024</time>
-                    <p>De studie waarvoor ik heb gekozen, en waarom ik hiervoor heb gekozen.</p>
-                </article>
-            </a>
-
-        </section>
-
-    </main>
 {% endblock %}
