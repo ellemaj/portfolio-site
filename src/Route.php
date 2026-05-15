@@ -27,7 +27,13 @@ class Route
             return false;
         }
 
-        if (preg_match(';^' . $this->path . '$;', $path, $matches)) {
+        $routePattern = preg_replace(
+            '/\{([a-zA-Z0-9_]+)\}/',
+            '(?P<$1>[^/]+)',
+            $this->path
+        );
+
+        if (preg_match(';^' . $routePattern . '$;', $path, $matches)) {
             $this->routeParameters = $matches;
             return true;
         }

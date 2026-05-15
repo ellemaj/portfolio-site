@@ -25,8 +25,13 @@ class Router
         foreach ($this->routes as $route) {
             if ($route->matches($request->method, $request->path)) {
                 $callback = $route->callback;
-                $request->routeParameters = $route->routeParameters;
-                $response = $callback($request);
+                $params = array_filter(
+                    $route->routeParameters,
+                    'is_string',
+                    ARRAY_FILTER_USE_KEY
+                );
+                $response = $callback(...array_values($params));
+
                 return $response;
             }
         }
