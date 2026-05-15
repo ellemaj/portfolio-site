@@ -11,30 +11,28 @@
 {% endblock %}
 
 {% block content %}
-    <main>
-        <section class="generator-card">
-            <h1>Optoma commandmaker</h1>
-            <div class="generator-row">
-                <label>Protocol</label>
-                <select id="protocol">
-                    <option value="tcp">TCP</option>
-                    <option value="udp">UDP</option>
-                </select>
-                <label>IP</label>
-                <input id="ip" type="text" placeholder="bv. 192.168.1.110">
-                <label>Poort</label>
-                <input id="port" type="number" placeholder="bv. 23" min="1" max="65535" style="width:80px">
-            </div>
-            <div class="generator-row">
-                <label>Hex input</label>
-                <textarea id="hex" placeholder="bv. 7E 30 30 30 30 20 31 0d"></textarea>
-            </div>
-            <div class="generator-buttons">
-                <button id="generate">Genereer</button>
-                <button id="copy">Kopieer naar klembord</button>
-            </div>
-            <div class="generator-output" id="output"></div>
-        </section>
+    <section class="generator-card">
+        <h1>Optoma commandmaker</h1>
+        <div class="generator-row">
+            <label>Protocol</label>
+            <select id="protocol">
+                <option value="tcp">TCP</option>
+                <option value="udp">UDP</option>
+            </select>
+            <label>IP</label>
+            <input id="ip" type="text" placeholder="bv. 192.168.1.110">
+            <label>Poort</label>
+            <input id="port" type="number" placeholder="bv. 23" min="1" max="65535" style="width:80px">
+        </div>
+        <div class="generator-row">
+            <label>Hex input</label>
+            <textarea id="hex" placeholder="bv. 7E 30 30 30 30 20 31 0d"></textarea>
+        </div>
+        <div class="generator-buttons">
+            <button id="generate">Genereer</button>
+            <button id="copy">Kopieer naar klembord</button>
+        </div>
+        <div class="generator-output" id="output"></div>
+    </section>
 
-    </main>
 {% endblock %}
