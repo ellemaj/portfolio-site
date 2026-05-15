@@ -1,52 +1,74 @@
-{% extends "layouts/error.html.twig" %}
+{% extends "layouts/base.html.twig" %}
 
 {% block title %}Register{% endblock %}
 
 {% block content %}
 
-<h1>Register</h1>
+<section style="max-width: 500px; margin: 40px auto; text-align: center;">
 
-<form method="POST" action="/register">
+    <h1>Register</h1>
 
-    <input
-        type="text"
-        name="username"
-        placeholder="Username"
-        required
-    >
+    <p>
+        Maak een account aan om toegang te krijgen tot extra functies.
+    </p>
 
-    <br><br>
+    <form method="POST" action="/register">
 
-    <input
-        type="text"
-        name="name"
-        placeholder="Name"
-    >
+        <p>
+            <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                required
+                style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
+            >
+        </p>
 
-    <br><br>
+        <p>
+            <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
+            >
+        </p>
 
-    <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        required
-    >
+        <p>
+            <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required
+                style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
+            >
+        </p>
 
-    <br><br>
+        <p>
+            <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+                style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
+            >
+        </p>
 
-    <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        required
-    >
+        <p>
+            <button
+                type="submit"
+                style="padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer;"
+            >
+                Register
+            </button>
+        </p>
 
-    <br><br>
+    </form>
 
-    <button type="submit">
-        Register
-    </button>
+    <p>
+        Heb je al een account?
+        <a href="/login">Login hier</a>
+    </p>
 
-</form>
+</section>
 
 {% endblock %}

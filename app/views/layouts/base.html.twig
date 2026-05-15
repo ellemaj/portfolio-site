@@ -43,14 +43,9 @@
                 </li>
             {% else %}
                 <li>
-                    <a href="/login">
+                    <a href="/login"
+                    class="{% if active == 'overview' %}active{% endif %}">
                         Login
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/register">
-                        Register
                     </a>
                 </li>
             {% endif %}

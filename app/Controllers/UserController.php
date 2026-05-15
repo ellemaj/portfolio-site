@@ -32,7 +32,9 @@ class UserController
      */
     public function showLogin(): Response
     {
-        return $this->responseFactory->view('user/login.html.twig');
+        return $this->responseFactory->view('user/login.html.twig', [
+            'active' => 'login'
+        ]);
     }
 
     public function register(): void

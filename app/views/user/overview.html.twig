@@ -1,4 +1,4 @@
-{% extends "layouts/error.html.twig" %}
+{% extends "layouts/base.html.twig" %}
 
 {% block title %}
 Overview
@@ -6,18 +6,60 @@ Overview
 
 {% block content %}
 
-<h1>User Overview</h1>
+<section style="max-width: 700px; margin: 40px auto;">
 
-<p>You are logged in.</p>
+    <h1 style="text-align: center;">
+        User Overview
+    </h1>
 
-<ul>
-    <li>Statistics</li>
-    <li>Projects</li>
-    <li>Recent activity</li>
-</ul>
+    <p style="text-align: center;">
+        Je bent succesvol ingelogd.
+    </p>
 
-<a href="/logout">
-    Logout
-</a>
+    <section style="margin-top: 30px;">
+
+        <h2>Statistics</h2>
+
+        <ul>
+            <li>Aantal blogposts</li>
+            <li>Project voortgang</li>
+            <li>Laatste login</li>
+        </ul>
+
+    </section>
+
+    <section style="margin-top: 20px;">
+
+        <h2>Projects</h2>
+
+        <ul>
+            <li>Portfolio website</li>
+            <li>Dashboard systeem</li>
+            <li>Blog CMS</li>
+        </ul>
+
+    </section>
+
+    <section style="margin-top: 20px;">
+
+        <h2>Recent activity</h2>
+
+        <ul>
+            <li>Nieuwe blogpost toegevoegd</li>
+            <li>Database migratie uitgevoerd</li>
+            <li>User login systeem gemaakt</li>
+        </ul>
+
+    </section>
+
+    <p style="text-align: center; margin-top: 30px;">
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </p>
+
+</section>
 
 {% endblock %}

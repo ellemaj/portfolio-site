@@ -1,35 +1,54 @@
-{% extends "layouts/error.html.twig" %}
+{% extends "layouts/base.html.twig" %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
+<section style="max-width: 500px; margin: 40px auto; text-align: center;">
 
-<h1>Login</h1>
+    <h1>Login</h1>
 
-<form method="POST" action="/login">
+    <p>
+        Log in om toegang te krijgen tot je account.
+    </p>
 
-    <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        required
-    >
+    <form method="POST" action="/login">
 
-    <br><br>
+        <p>
+            <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required
+                style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
+            >
+        </p>
 
-    <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        required
-    >
+        <p>
+            <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+                style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
+            >
+        </p>
 
-    <br><br>
+        <p>
+            <button
+                type="submit"
+                style="padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer;"
+            >
+                Login
+            </button>
+        </p>
 
-    <button type="submit">
-        Login
-    </button>
+    </form>
 
-</form>
+    <p>
+        Nog geen account?
+        <a href="/register">Registreer hier</a>
+    </p>
+
+</section>
 
 {% endblock %}
