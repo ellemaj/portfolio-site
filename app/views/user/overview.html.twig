@@ -1,0 +1,23 @@
+{% extends "layouts/error.html.twig" %}
+
+{% block title %}
+Overview
+{% endblock %}
+
+{% block content %}
+
+<h1>User Overview</h1>
+
+<p>You are logged in.</p>
+
+<ul>
+    <li>Statistics</li>
+    <li>Projects</li>
+    <li>Recent activity</li>
+</ul>
+
+<a href="/logout">
+    Logout
+</a>
+
+{% endblock %}

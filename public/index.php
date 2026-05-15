@@ -3,6 +3,8 @@
 // Autoload dependencies and classes
 require __DIR__ . '/../vendor/autoload.php';
 
+session_start();
+
 use App\RouteProvider;
 use App\ServiceProvider;
 use Framework\Kernel;
