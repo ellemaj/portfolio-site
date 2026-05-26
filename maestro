@@ -5,7 +5,7 @@ require __DIR__ . '/vendor/autoload.php';
 use Framework\Kernel;
 
 if ($argv[1] === 'serve') {
-    exec('php -S 0.0.0.0:8888 -t public');
+    exec('php -S 0.0.0.0:8080 -t public');
 }
 
 if ($argv[1] === 'phpstan') {

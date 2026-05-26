@@ -2,15 +2,19 @@
 
 namespace App\Middleware;
 
+use Framework\Response;
+use Framework\ResponseFactory;
+
 class AdminMiddleware
 {
-    public static function handle(): void
+    public function __construct(private ResponseFactory $responseFactory) {}
+
+    public function handle(): ?Response
     {
         if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-
-            http_response_code(403);
-            exit('Forbidden');
-
+            return $this->responseFactory->forbidden();
         }
+
+        return null;
     }
 }
