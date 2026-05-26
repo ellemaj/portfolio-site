@@ -1,0 +1,38 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block title %}Post bewerken{% endblock %}
+
+{% block content %}
+    <section>
+        <h1>Post bewerken</h1>
+
+        <form action="/blog/{{ post.id }}/update" method="POST">
+            <label>Titel
+                <input type="text" name="title" value="{{ post.title }}" required>
+            </label>
+
+            <label>Slug
+                <input type="text" name="slug" value="{{ post.slug }}" required>
+            </label>
+
+            <label>Preview
+                <textarea name="preview" required>{{ post.preview }}</textarea>
+            </label>
+
+            <label>Content
+                <textarea name="content" required>{{ post.content }}</textarea>
+            </label>
+
+            <label>Status
+                <select name="status">
+                    <option value="draft" {% if post.status == 'draft' %}selected{% endif %}>Draft</option>
+                    <option value="published" {% if post.status == 'published' %}selected{% endif %}>Gepubliceerd</option>
+                </select>
+            </label>
+
+            <button type="submit">Opslaan</button>
+        </form>
+
+        <a href="/blog/manage">← Terug</a>
+    </section>
+{% endblock %}

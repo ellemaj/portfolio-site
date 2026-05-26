@@ -28,18 +28,24 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('GET', '/commandmaker', [$homeController, "commandmaker"]);
 
         $blogController = $container->get(BlogController::class);
-        $router->addRoute('GET', '/blog', [$blogController, "index"]);
-        $router->addRoute('GET', '/blog/{slug}', [$blogController, 'show']);
+        $router->addRoute('GET',  '/blog', [$blogController, "index"]);
+        $router->addRoute('GET',  '/blog/manage', [$blogController, "manage"]);
+        $router->addRoute('GET',  '/blog/create', [$blogController, "showCreate"]);
+        $router->addRoute('POST', '/blog/create', [$blogController, "create"]);
+        $router->addRoute('GET',  '/blog/{id}/edit', [$blogController, "showEdit"]);
+        $router->addRoute('POST', '/blog/{id}/update', [$blogController, "update"]);
+        $router->addRoute('POST', '/blog/{id}/delete', [$blogController, "delete"]);
+        $router->addRoute('GET',  '/blog/{slug}', [$blogController, "show"]);
 
         $userController = $container->get(UserController::class);
-        $router->addRoute('GET', '/register', [$userController, 'showRegister']);
-        $router->addRoute('POST', '/register', [$userController, 'register']);
+        $router->addRoute('GET', '/register', [$userController, "showRegister"]);
+        $router->addRoute('POST', '/register', [$userController, "register"]);
 
-        $router->addRoute('GET', '/login', [$userController, 'showLogin']);
-        $router->addRoute('POST', '/login', [$userController, 'login']);
+        $router->addRoute('GET', '/login', [$userController, "showLogin"]);
+        $router->addRoute('POST', '/login', [$userController, "login"]);
 
-        $router->addRoute('GET', '/logout', [$userController, 'logout']);
+        $router->addRoute('GET', '/logout', [$userController, "logout"]);
 
-        $router->addRoute('GET', '/overview', [$userController, 'overview']);
+        $router->addRoute('GET', '/overview', [$userController, "overview"]);
     }
 }
