@@ -29,15 +29,15 @@ class UserController
 
     public function register(): void
     {
-        $username = $_POST['username'] ?? '';
-        $name     = $_POST['name'] ?? '';
+        $firstName = $_POST['firstName'] ?? '';
+        $lastName     = $_POST['lastName'] ?? '';
         $email    = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         try {
-            $this->users->create($username, $name, $email, $hashedPassword);
+            $this->users->create($firstName, $lastName, $email, $hashedPassword);
         } catch (\PDOException $e) {
             exit('Email already exists');
         }
@@ -57,6 +57,8 @@ class UserController
             session_regenerate_id(true);
             $_SESSION['user_id'] = $user->id;
             $_SESSION['role']    = $user->role;
+            $_SESSION['firstName'] = $user->firstName;
+            $_SESSION['lastName'] = $user->lastName;
 
             header('Location: /overview');
             exit;

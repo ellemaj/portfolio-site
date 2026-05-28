@@ -28,26 +28,19 @@
             <li><a href="/dashboard" class="{% if active == 'dashboard' %}active{% endif %}">Dashboard</a></li>
             <li><a href="/faq" class="{% if active == 'faq' %}active{% endif %}">FAQ</a></li>
             <li><a href="/blog" class="{% if active == 'blog' %}active{% endif %}">Blog</a></li>
+
             {% if session.user_id %}
-                <li>
-                    <a href="/overview"
-                    class="{% if active == 'overview' %}active{% endif %}">
-                        Overview
-                    </a>
-                </li>
+                <li><a href="/overview" class="{% if active == 'overview' %}active{% endif %}">Overview</a></li>
+
+                {% if session.role == 'admin' %}
+                    <li><a href="/blog/manage" class="{% if active == 'manage' %}active{% endif %}">Blog beheren</a></li>
+                {% endif %}
 
                 <li>
-                    <a href="/logout">
-                        Logout
-                    </a>
+                    <a href="/logout">Logout ({{ session.username }})</a>
                 </li>
             {% else %}
-                <li>
-                    <a href="/login"
-                    class="{% if active == 'overview' %}active{% endif %}">
-                        Login
-                    </a>
-                </li>
+                <li><a href="/login" class="{% if active == 'login' %}active{% endif %}">Login</a></li>
             {% endif %}
         </ul>
     </nav>

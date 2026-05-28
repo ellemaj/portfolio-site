@@ -19,8 +19,8 @@ class UserRepository implements UserRepositoryInterface
 
         $user = new User();
         $user->id = $data->id;
-        $user->username = $data->username;
-        $user->name = $data->name;
+        $user->firstName = $data->firstName;
+        $user->lastName = $data->lastName;
         $user->email = $data->email;
         $user->password = $data->password;
         $user->role = $data->role;
@@ -28,12 +28,12 @@ class UserRepository implements UserRepositoryInterface
         return $user;
     }
 
-    public function create(string $username, string $name, string $email, string $password): void
+    public function create(string $firstName, string $lastName, string $email, string $password): void
     {
         $stmt = $this->db->prepare("
-            INSERT INTO users (username, name, email, password)
+            INSERT INTO users (firstName, lastName, email, password)
             VALUES (?, ?, ?, ?)
         ");
-        $stmt->execute([$username, $name, $email, $password]);
+        $stmt->execute([$firstName, $lastName, $email, $password]);
     }
 }
