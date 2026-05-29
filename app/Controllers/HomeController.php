@@ -31,13 +31,6 @@ class HomeController
         ]);
     }
 
-    public function sitemap(Request $request): Response
-    {
-        return $this->responseFactory->view('sitemap.html.twig', [
-            'active' => 'sitemap'
-        ]);
-    }
-
     public function commandmaker(Request $request): Response
     {
         return $this->responseFactory->view('commandmaker.html.twig', [
