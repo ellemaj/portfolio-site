@@ -3,13 +3,17 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="/css/blogposts.css">
+<link rel="stylesheet" href="/assets/css/blogposts.css">
 {% endblock %}
 
 {% block content %}
     <section>
-        <small>{{ post.created_at }}</small>
-
+        <div>
+            <h2>{{ post.title }}<h2>
+        </div>
+        <div>
+            <h3><time>{{ post.publication_date|nldate }}</time><h3>
+        </div>
         <div>
             {{ post.content|raw }}
         </div>
