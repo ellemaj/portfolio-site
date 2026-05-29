@@ -10,7 +10,7 @@ CREATE TABLE posts (
     deleted_at INTEGER
 );
 
-INSERT INTO posts (title, slug, preview, content, status, created_at)
+INSERT INTO posts (title, slug, preview, content, status, publication_date)
 VALUES
 (
     'Nieuwe update!',
@@ -24,7 +24,7 @@ VALUES
     Vooral de styling van de website heeft een flinke upgrade gehad. De complete versiegeschiedenis kan je vinden via deze
     <a href="https://github.com/ellemaj/ellemaj.github.io" target="_blank">Github pagina</a>.</p>',
     'published',
-    '9 oktober 2025'
+    '1728428400'
 ),
 (
     'Persoonlijke SWOT Analyse',
@@ -60,7 +60,7 @@ VALUES
         <li>Te laat aan iets beginnen, en daardoor op het einde in tijdsnood komen</li>
     </ul>',
     'published',
-    '11 september 2025'
+    '1728428400'
 ),
 (
     'ICT-werkveld',
@@ -76,7 +76,7 @@ VALUES
     Wanneer ik over 4 jaar mijn HBO-ict studie heb afgerond, denk ik dat er nog steeds genoeg keuze is qua werk. De vraag naar ICT'ers is, en blijft denk ik erg groot.
     Hoewel er in de komende 4 jaar nog veel kan veranderen, ook binnen ICT met de opkomst van bijvoorbeeld AI, denk ik toch dat met de juiste basis ik ver kan komen.</p>",
     'published',
-    '10 september 2025'
+    '1728428400'
 ),
 (
     'Feedback',
@@ -89,7 +89,7 @@ VALUES
     Maar, ik heb eerlijk gezegd geen idee over welke opdracht dit gaat, en heb ook geen enkele feedback
     daarover gehoord :(</p>',
     'published',
-    '10 september 2025'
+    '1728428400'
 ),
 (
     'Mijn programmeerervaring',
@@ -110,7 +110,7 @@ VALUES
     Toen ik in de eindexamenperiode zat heb ik zelfs een programma met python gemaakt wat uitrekende wat voor cijfer ik moest halen om te slagen.<br>
     Kortom: ik heb de afgelopen jaren al een beetje ervaring opgedaan met coderen en programmeren, en heb het tot nu toe altijd leuk gevonden. Ik ben dus benieuwd wat we hier op de opleiding allemaal gaan doen!</p>',
     'published',
-    '9 september 2025'
+    '1728428400'
 ),
 (
     'Studiekeuze & motivatie',
@@ -133,5 +133,5 @@ VALUES
 
     <p>Na deze 4 jaar hoop ik met een HBO-ICT diploma uit de school te lopen, om dan een baan te kunnen zoeken in het ICT werkveld.</p>",
     'published',
-    '20 november 2024'
+    '1728428400'
 );

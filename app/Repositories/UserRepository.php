@@ -11,29 +11,58 @@ class UserRepository implements UserRepositoryInterface
 
     public function findByEmail(string $email): ?User
     {
-        $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        $data = $stmt->fetch();
+        $data = $this->db->run(
+            "SELECT * FROM users WHERE email = :email",
+            ["email" => $email]
+        )->fetch();
 
         if (!$data) return null;
 
-        $user = new User();
-        $user->id = $data->id;
-        $user->firstName = $data->firstName;
-        $user->lastName = $data->lastName;
-        $user->email = $data->email;
-        $user->password = $data->password;
-        $user->role = $data->role;
+        return $this->mapToUser($data);
+    }
 
+    public function findById(int $id): ?User
+    {
+        $data = $this->db->run(
+            "SELECT * FROM users WHERE id = :id",
+            ["id" => $id]
+        )->fetch();
+
+        if (!$data) return null;
+
+        return $this->mapToUser($data);
+    }
+
+    public function create(User $user): ?User
+    {
+        $this->db->run("
+            INSERT INTO users (firstName, lastName, email, password, role, created_at, deleted_at)
+            VALUES (:firstName, :lastName, :email, :password, :role, :created_at, :deleted_at)
+        ", [
+            "firstName"  => $user->firstName,
+            "lastName"   => $user->lastName,
+            "email"      => $user->email,
+            "password"   => $user->password,
+            "role"       => $user->role,
+            "created_at" => $user->created_at,
+            "deleted_at" => $user->deleted_at
+        ]);
+
+        $user->id = $this->db->getLastID();
         return $user;
     }
 
-    public function create(string $firstName, string $lastName, string $email, string $password): void
+    private function mapToUser(object $data): User
     {
-        $stmt = $this->db->prepare("
-            INSERT INTO users (firstName, lastName, email, password)
-            VALUES (?, ?, ?, ?)
-        ");
-        $stmt->execute([$firstName, $lastName, $email, $password]);
+        $user = new User();
+        $user->id         = $data->id;
+        $user->firstName  = $data->firstName;
+        $user->lastName   = $data->lastName;
+        $user->email      = $data->email;
+        $user->password   = $data->password;
+        $user->role       = $data->role;
+        $user->created_at = $data->created_at ?? 0;
+        $user->deleted_at = $data->deleted_at ?? null;
+        return $user;
     }
 }

@@ -17,6 +17,8 @@ interface PostRepositoryInterface
     public function create(Post $post): ?Post;
 
     public function update(int $id, Post $post): ?Post;
-    
+
     public function delete(int $id): bool;
+
+    public function undoDelete(int $id): bool;
 }

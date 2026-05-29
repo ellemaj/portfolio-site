@@ -31,7 +31,9 @@ class Router
                     ARRAY_FILTER_USE_KEY
                 );
 
-                $response = $callback($request, ...array_values($params));
+                $request->routeParameters = $params;
+
+                $response = $callback($request);
 
                 return $response;
             }

@@ -30,9 +30,49 @@
                 </select>
             </label>
 
+            <div>
+                <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">
+                    Datum van publiceren
+                </label>
+                <input type="text" id="publication-date" name="date" required
+                        class="w-full border border-gray-300 px-3 py-3">
+            </div>
+
             <button type="submit">Opslaan</button>
         </form>
 
         <a href="/blog/manage">← Terug</a>
     </section>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            flatpickr.localize(flatpickr.l10ns.nl);
+
+            // Datum picker
+            const datePicker = flatpickr("#publication-date", {
+                dateFormat: "d-m-Y",
+                minDate: "today",
+                disableMobile: true,
+                onChange: function(selectedDates) {
+                    const selected = selectedDates[0];
+                    const today = new Date();
+                    const isToday = selected.toDateString() === today.toDateString();
+
+                    // Only set mintime if its today
+                    if (isToday) {
+                        const currentTime = today.toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" });
+                        startPicker.set("minTime", currentTime);
+                    } else {
+                        startPicker.set("minTime", "00:00");
+                    }
+                }
+            });
+        });
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/nl.js"></script>
+
 {% endblock %}

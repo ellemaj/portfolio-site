@@ -25,9 +25,16 @@
                         <td>
                             <a href="/blog/{{ post.id }}/edit">Bewerken</a>
 
-                            <form action="/blog/{{ post.id }}/delete" method="POST">
-                                <button type="submit">Verwijderen</button>
-                            </form>
+                            {% if post.deleted_at is not null and post.deleted_at > date().timestamp %}
+                            
+                                <form action="/blog/{{ post.id }}/restore" method="POST">
+                                    <button type="submit">Ongedaan maken</button>
+                                </form>
+                            {% else %}
+                                <form action="/blog/{{ post.id }}/delete" method="POST">
+                                    <button type="submit">Verwijderen</button>
+                                </form>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

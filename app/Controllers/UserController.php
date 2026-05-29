@@ -2,11 +2,12 @@
 
 namespace App\Controllers;
 
-use Exception;
+use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
 use App\Repositories\UserRepositoryInterface;
 use App\Middleware\AuthMiddleware;
+use App\Models\User;
 
 class UserController
 {
@@ -15,59 +16,72 @@ class UserController
         private UserRepositoryInterface $users
     ) {}
 
-    public function showRegister(): Response
+    public function showRegister(Request $request): Response
     {
         return $this->responseFactory->view('user/register.html.twig');
     }
 
-    public function showLogin(): Response
+    public function showLogin(Request $request): Response
     {
         return $this->responseFactory->view('user/login.html.twig', [
             'active' => 'login'
         ]);
     }
 
-    public function register(): void
+    public function register(Request $request): Response
     {
-        $firstName = $_POST['firstName'] ?? '';
-        $lastName     = $_POST['lastName'] ?? '';
-        $email    = $_POST['email'] ?? '';
-        $password = $_POST['password'] ?? '';
+        $firstName = $request->get('firstName') ?? '';
+        $lastName  = $request->get('lastName') ?? '';
+        $email     = $request->get('email') ?? '';
+        $password  = $request->get('password') ?? '';
 
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        try {
-            $this->users->create($firstName, $lastName, $email, $hashedPassword);
-        } catch (\PDOException $e) {
-            exit('Email already exists');
+        if (!$firstName || !$lastName || !$email || !$password) {
+            return $this->responseFactory->internalError();
         }
 
-        header('Location: /login');
-        exit;
+        if ($this->users->findByEmail($email)) {
+            return $this->responseFactory->internalError();
+        }
+
+        $user             = new User();
+        $user->firstName  = $firstName;
+        $user->lastName   = $lastName;
+        $user->email      = $email;
+        $user->password   = password_hash($password, PASSWORD_DEFAULT);
+        $user->role       = 'user';
+        $user->created_at = time();
+        $user->deleted_at = null;
+
+        $createdUser = $this->users->create($user);
+
+        if (!$createdUser) {
+            return $this->responseFactory->internalError();
+        }
+
+        return $this->responseFactory->redirect('/login');
     }
 
-    public function login(): void
+    public function login(Request $request): Response
     {
-        $email    = $_POST['email'] ?? '';
-        $password = $_POST['password'] ?? '';
+        $email    = $request->get('email') ?? '';
+        $password = $request->get('password') ?? '';
 
         $user = $this->users->findByEmail($email);
 
         if ($user && password_verify($password, $user->password)) {
             session_regenerate_id(true);
-            $_SESSION['user_id'] = $user->id;
-            $_SESSION['role']    = $user->role;
+            $_SESSION['user_id']   = $user->id;
+            $_SESSION['role']      = $user->role;
             $_SESSION['firstName'] = $user->firstName;
-            $_SESSION['lastName'] = $user->lastName;
+            $_SESSION['lastName']  = $user->lastName;
 
-            header('Location: /overview');
-            exit;
+            return $this->responseFactory->redirect('/overview');
         }
 
-        exit('Invalid credentials');
+        return $this->responseFactory->internalError();
     }
 
-    public function overview(): Response
+    public function overview(Request $request): Response
     {
         AuthMiddleware::handle();
 
@@ -76,10 +90,9 @@ class UserController
         ]);
     }
 
-    public function logout(): void
+    public function logout(Request $request): Response
     {
         session_destroy();
-        header('Location: /login');
-        exit;
+        return $this->responseFactory->redirect('/login');
     }
 }

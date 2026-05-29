@@ -11,7 +11,7 @@ class PostRepository implements PostRepositoryInterface
 
     public function findAllPublished(): array
     {
-        $stmt = $this->db->prepare("SELECT * FROM posts WHERE status = 'published'");
+        $stmt = $this->db->prepare("SELECT * FROM posts WHERE status = 'published' ORDER BY publication_date DESC");
         $stmt->execute();
         return $stmt->fetchAll();
     }
@@ -63,7 +63,7 @@ class PostRepository implements PostRepositoryInterface
             "deleted_at" => $post->deleted_at
         ]);
 
-        $post->id = $this->db->getLastId();
+        $post->id = $this->db->getLastID();
         return $post;
     }
 
@@ -128,6 +128,9 @@ class PostRepository implements PostRepositoryInterface
         $post->preview = $data->preview;
         $post->content = $data->content;
         $post->status = $data->status;
+        $post->publication_date = $data->publication_date ?? 0;
+        $post->created_at       = $data->created_at ?? 0;
+        $post->deleted_at       = $data->deleted_at ?? null;
         return $post;
     }
 }

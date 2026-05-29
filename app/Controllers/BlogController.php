@@ -27,9 +27,9 @@ class BlogController
         ]);
     }
 
-    public function show(Request $request, string $slug): Response
+    public function show(Request $request): Response
     {
-        $post = $this->postRepository->findBySlug($slug);
+        $post = $this->postRepository->findBySlug($request->get('slug'));
 
         if (!$post) {
             return $this->responseFactory->view('404.html.twig');
@@ -49,7 +49,7 @@ class BlogController
 
         return $this->responseFactory->view('blog/manage.html.twig', [
             'posts' => $posts,
-            'active' => 'blog'
+            'active' => 'manage'
         ]);
     }
 
@@ -100,11 +100,11 @@ class BlogController
         return $this->responseFactory->redirect('/blog/manage');
     }
 
-    public function showEdit(Request $request, string $id): Response
+    public function showEdit(Request $request): Response
     {
         if ($response = $this->adminMiddleware->handle()) return $response;
 
-        $post = $this->postRepository->findById((int) $id);
+        $post = $this->postRepository->findById((int) $request->get('id'));
 
         if (!$post) {
             return $this->responseFactory->view('404.html.twig');
@@ -116,11 +116,11 @@ class BlogController
         ]);
     }
 
-    public function update(Request $request, string $id): Response
+    public function update(Request $request): Response
     {
         if ($response = $this->adminMiddleware->handle()) return $response;
 
-        $post = $this->postRepository->findById((int) $id);
+        $post = $this->postRepository->findById((int) $request->get('id'));
 
         if (!$post) {
             return $this->responseFactory->view('404.html.twig');
@@ -135,16 +135,35 @@ class BlogController
             ? strtotime($request->get('publication_date'))
             : $post->publication_date;
 
-        $this->postRepository->update((int) $id, $post);
+        $this->postRepository->update((int) $request->get('id'), $post);
 
         return $this->responseFactory->redirect('/blog/manage');
     }
 
-    public function delete(Request $request, string $id): Response
+    public function delete(Request $request): Response
     {
         if ($response = $this->adminMiddleware->handle()) return $response;
 
-        $this->postRepository->delete((int) $id);
+        $post = $this->postRepository->findById((int) $request->get('id'));
+
+        if (!$post) {
+            return $this->responseFactory->internalError();
+        }
+
+        if (!$this->postRepository->delete($post->id)) {
+            return $this->responseFactory->internalError();
+        }
+
+        return $this->responseFactory->redirect('/blog/manage');
+    }
+
+    public function undoDelete(Request $request): Response
+    {
+        if ($response = $this->adminMiddleware->handle()) return $response;
+
+        if (!$this->postRepository->undoDelete((int) $request->get('id'))) {
+            return $this->responseFactory->internalError();
+        }
 
         return $this->responseFactory->redirect('/blog/manage');
     }

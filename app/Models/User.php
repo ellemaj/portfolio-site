@@ -14,11 +14,9 @@ class User
 
     public string $password;
 
-    public string $role;
+    public string $role = 'user';
 
     public int $created_at;
-
-    public int $last_login;
-
-    public int | null $deleted_at;
+    
+    public int|null $deleted_at = null;
 }

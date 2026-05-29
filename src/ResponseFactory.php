@@ -5,6 +5,7 @@ namespace Framework;
 use Exception;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use Twig\TwigFilter;
 
 class ResponseFactory
 {
@@ -16,22 +17,34 @@ class ResponseFactory
         $twig = new Environment($loader, [
             'debug' => $debugMode,
         ]);
+
         if ($debugMode) {
             $twig->addExtension(new \Twig\Extension\DebugExtension());
         }
+
         $twig->addGlobal('session', $_SESSION);
+
+        $twig->addFilter(new TwigFilter('nldate', function (int $timestamp): string {
+            $maanden = [
+                1 => 'januari', 'februari', 'maart', 'april', 'mei', 'juni',
+                'juli', 'augustus', 'september', 'oktober', 'november', 'december'
+            ];
+            $d = (int) date('j', $timestamp);
+            $m = (int) date('n', $timestamp);
+            $y = (int) date('Y', $timestamp);
+            return $d . ' ' . $maanden[$m] . ' ' . $y;
+        }));
+
         $this->twig = $twig;
     }
 
     /**
      * @param string $view
      * @param array<mixed> $context
-     * @return Response
      */
     public function view(string $view, array $context = []): Response
     {
         $response = new Response();
-
         try {
             $response->responseCode = 200;
             $response->body = $this->twig->render($view, $context);
@@ -48,10 +61,6 @@ class ResponseFactory
         return new Response($txt, 200);
     }
 
-    /**
-     * @return Response
-     * @throws Exception
-     */
     public function notFound(): Response
     {
         $response = new Response();
