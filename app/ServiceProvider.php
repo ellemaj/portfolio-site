@@ -5,6 +5,7 @@ namespace App;
 use App\Controllers\HomeController;
 use App\Controllers\BlogController;
 use App\Controllers\UserController;
+use App\Controllers\DashboardController;
 
 use App\Middleware\AdminMiddleware;
 
@@ -12,6 +13,8 @@ use App\Repositories\PostRepository;
 use App\Repositories\PostRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\Repositories\UserRepositoryInterface;
+use App\Repositories\CourseRepository;
+use App\Repositories\CourseRepositoryInterface;
 
 use Exception;
 use Framework\Database;
@@ -39,6 +42,9 @@ class ServiceProvider implements ServiceProviderInterface
         $userRepository = new UserRepository($database);
         $container->set(UserRepositoryInterface::class, $userRepository);
 
+        $courseRepository = new CourseRepository($database);
+        $container->set(CourseRepositoryInterface::class, $courseRepository);
+
         // Controllers
         $homeController = new HomeController($responseFactory);
         $container->set(HomeController::class, $homeController);
@@ -48,5 +54,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         $userController = new UserController($responseFactory, $container->get(UserRepositoryInterface::class));
         $container->set(UserController::class, $userController);
+
+        $dashboardController = new DashboardController($responseFactory, $container->get(CourseRepositoryInterface::class), $adminMiddleware);
+        $container->set(DashboardController::class, $dashboardController);
     }
 }

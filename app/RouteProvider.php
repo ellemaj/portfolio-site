@@ -5,6 +5,7 @@ namespace App;
 use App\Controllers\HomeController;
 use App\Controllers\BlogController;
 use App\Controllers\UserController;
+use App\Controllers\DashboardController;
 
 use Framework\Router;
 use Framework\RouteProviderInterface;
@@ -21,9 +22,7 @@ class RouteProvider implements RouteProviderInterface
         $homeController = $container->get(HomeController::class);
         $router->addRoute('GET', '/', [$homeController, "index"]);
         $router->addRoute('GET', '/profile', [$homeController, "profile"]);
-        $router->addRoute('GET', '/dashboard', [$homeController, "dashboard"]);
         $router->addRoute('GET', '/faq', [$homeController, "faq"]);
-        
         $router->addRoute('GET', '/sitemap', [$homeController, "sitemap"]);
         $router->addRoute('GET', '/commandmaker', [$homeController, "commandmaker"]);
 
@@ -41,12 +40,13 @@ class RouteProvider implements RouteProviderInterface
         $userController = $container->get(UserController::class);
         $router->addRoute('GET', '/register', [$userController, "showRegister"]);
         $router->addRoute('POST', '/register', [$userController, "register"]);
-
         $router->addRoute('GET', '/login', [$userController, "showLogin"]);
         $router->addRoute('POST', '/login', [$userController, "login"]);
-
         $router->addRoute('GET', '/logout', [$userController, "logout"]);
-
         $router->addRoute('GET', '/overview', [$userController, "overview"]);
+
+        $dashboardController = $container->get(DashboardController::class);
+        $router->addRoute('GET',  '/dashboard', [$dashboardController, 'index']);
+        $router->addRoute('POST', '/dashboard/grade/update', [$dashboardController, 'updateGrade']);
     }
 }

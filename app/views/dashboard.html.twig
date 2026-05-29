@@ -39,129 +39,43 @@
                 <th>EC</th>
                 <th>Examen</th>
                 <th>Cijfer</th>
+                {% if session.role == 'admin' %}
+                    <th>Aanpassen</th>
+                {% endif %}
             </tr>
 
-            <!-- Blok 1 -->
-            <tr>
-                <td rowspan="3">1</td>
-                <td>Program- & Career Orientation</td>
-                <td class="ec">2.5</td>
-                <td>Presentatie</td>
-                <td class="grade">7.8</td>
-            </tr>
-            <tr>
-                <td>Computer Science Basics</td>
-                <td class="ec">5</td>
-                <td>Schriftelijke Kennistoets</td>
-                <td class="grade">6.5</td>
-            </tr>
-            <tr>
-                <td>Programming Basics</td>
-                <td class="ec">5</td>
-                <td>Casustoets</td>
-                <td class="grade">8.3</td>
-            </tr>
-
-            <!-- Blok 2 -->
-            <tr>
-                <td rowspan="2">2</td>
-                <td rowspan="2">Object-Oriented Programming</td>
-                <td class="ec">5</td>
-                <td>Presentatie</td>
-                <td class="grade">7.7</td>
-            </tr>
-            <tr>
-                <td class="ec">5</td>
-                <td>Schriftelijke Kennistoets</td>
-                <td class="grade">9.8</td>
-            </tr>
-
-            <!-- Blok 3 -->
-            <tr>
-                <td rowspan="4">3</td>
-                <td rowspan="3">Framework Project 1</td>
-                <td class="ec">5</td>
-                <td>On-site Casustoets</td>
-                <td class="grade">5.6</td>
-            </tr>
-            <tr>
-                <td class="ec">2.5</td>
-                <td>Groepspresentatie project resultaat</td>
-                <td class="grade">8.1</td>
-            </tr>
-            <tr class="bezig">
-                <td class="ec">2.5</td>
-                <td>Groepsportfolio op requirements</td>
-                <td class="grade">-</td>
-            </tr>
-            <tr class="bezig">
-                <td>Business Understanding Basics</td>
-                <td class="ec">2.5</td>
-                <td>Video</td>
-                <td class="grade">-</td>
-            </tr>
-
-            <!-- Blok 4 -->
-            <tr class="bezig">
-                <td rowspan="3">4</td>
-                <td rowspan="3">Framework Project 2</td>
-                <td class="ec">5</td>
-                <td>IT-ontwikkelingsportfolio</td>
-                <td class="grade">-</td>
-            </tr>
-            <tr class="bezig">
-                <td class="ec">2.5</td>
-                <td>Final Delivery</td>
-                <td class="grade">-</td>
-            </tr>
-            <tr class="bezig">
-                <td class="ec">2.5</td>
-                <td>Individueel Project Assessment</td>
-                <td class="grade">-</td>
-            </tr>
-
-            <!-- Door het jaar heen -->
-            <tr>
-                <td rowspan="5">Gedurende het jaar</td>
-                <td>IT Personality 1</td>
-                <td class="ec">1.25</td>
-                <td>Portfolio</td>
-                <td class="grade">-</td>
-            </tr>
-            <tr>
-                <td>IT Personality 2</td>
-                <td class="ec">1.25</td>
-                <td>Portfolio</td>
-                <td class="grade">-</td>
-            </tr>
-            <tr>
-                <td>IT Personality International Week</td>
-                <td class="ec">1.25</td>
-                <td>Portfolio</td>
-                <td class="grade">-</td>
-            </tr>
-            <tr>
-                <td>IT Personality Projectweek 1</td>
-                <td class="ec">1.25</td>
-                <td>Portfolio</td>
-                <td class="grade">-</td>
-            </tr>
-            <tr>
-                <td>Personal Professional Development Exploration</td>
-                <td class="ec">12.5</td>
-                <td>Criterium Focused Interview</td>
-                <td class="grade">-</td>
-            </tr>
+            {% for course in courses %}
+                <tr class="{% if course.grade is null %}bezig{% endif %}">
+                    <td>{{ course.blok }}</td>
+                    <td>{{ course.name }}</td>
+                    <td class="ec">{{ course.ec }}</td>
+                    <td>{{ course.exam_type }}</td>
+                    <td class="grade">
+                        {% if course.grade is not null %}
+                            {{ course.grade }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    {% if session.role == 'admin' %}
+                        <td>
+                            <form action="/dashboard/grade/update" method="POST">
+                                <input type="hidden" name="id" value="{{ course.id }}">
+                                <input type="number" name="grade" step="0.1" min="1" max="10"
+                                       value="{{ course.grade ?? '' }}" placeholder="-">
+                                <button type="submit">Opslaan</button>
+                            </form>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
         </table>
 
         <h2>Voortgang studiepunten:</h2>
         <div class="progress-bar">
-            <div class="progress"></div>
-            <div class="nbsa-marker"></div>
+            <div class="progress" style="width: {{ (earned / total * 100)|round }}%"></div>
         </div>
-
-        <p>0 / 60 EC behaald</p>
+        <p>{{ earned }} / {{ total }} EC behaald</p>
     </section>
 </section>
-
 {% endblock %}

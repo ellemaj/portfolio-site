@@ -24,13 +24,6 @@ class HomeController
         ]);
     }
 
-    public function dashboard(Request $request): Response
-    {
-        return $this->responseFactory->view('dashboard.html.twig', [
-            'active' => 'dashboard'
-        ]);
-    }
-
     public function faq(Request $request): Response
     {
         return $this->responseFactory->view('faq.html.twig', [
