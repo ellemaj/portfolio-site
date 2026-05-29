@@ -6,6 +6,7 @@ use App\Controllers\HomeController;
 use App\Controllers\BlogController;
 use App\Controllers\UserController;
 use App\Controllers\DashboardController;
+use App\Controllers\ProfileController;
 
 use Framework\Router;
 use Framework\RouteProviderInterface;
@@ -21,7 +22,6 @@ class RouteProvider implements RouteProviderInterface
     {
         $homeController = $container->get(HomeController::class);
         $router->addRoute('GET', '/', [$homeController, "index"]);
-        $router->addRoute('GET', '/profile', [$homeController, "profile"]);
         $router->addRoute('GET', '/faq', [$homeController, "faq"]);
         $router->addRoute('GET', '/commandmaker', [$homeController, "commandmaker"]);
 
@@ -47,5 +47,10 @@ class RouteProvider implements RouteProviderInterface
         $dashboardController = $container->get(DashboardController::class);
         $router->addRoute('GET',  '/dashboard', [$dashboardController, 'index']);
         $router->addRoute('POST', '/dashboard/grade/update', [$dashboardController, 'updateGrade']);
+
+        $profileController = $container->get(ProfileController::class);
+        $router->addRoute('GET',  '/profile', [$profileController, 'index']);
+        $router->addRoute('GET',  '/profile/edit', [$profileController, 'edit']);
+        $router->addRoute('POST', '/profile/update', [$profileController, 'update']);
     }
 }

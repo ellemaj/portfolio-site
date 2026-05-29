@@ -1,40 +1,124 @@
 {% extends "layouts/base.html.twig" %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}
+    Profile
+{% endblock %}
 
 {% block content %}
-    <section>
-        <h1>Profiel</h1>
-        <h3>Persoonlijke informatie</h3>
-        <p>Ik ben Elmar, ik ben 17 jaar oud, en ik kom uit Nederland. Ik woon in Biezelinge (Zeeland).<br>
-            De reden dat ik zo jong ben, is omdat ik op de basisschool groep 2 over heb geslagen, en daarna de Havo
-            in een keer heb gehaald.
-        </p>
 
-        <h3>Wat meer informatie over mezelf</h3>
-        <p>Ik werk bij de Aldi, en soms help ik mee in het bedrijf van mijn vader. Hij heeft een eigen bedrijf,
-            gespecialiseerd in licht, geluid en beeldtechniek. Zowel voor installatie als verhuur, voor bijvoorbeeld
-            evenementen.<br>
-            Mijn hobby's zijn gamen, Netflix kijken, en ik ben erg geinteresseerd in het werk in de
-            evenementensector. Ook mag je mij 's nachts wakker maken om voor de 500ste keer de serie 'Breaking Bad'
-            te kijken.
-        </p>
-        <img src="/assets/images/brba.jpeg" alt="Breaking Bad" width="500">
+<section class="max-w-6xl mx-auto p-6 space-y-12">
 
-        <h3>Mijn eigenschappen</h3>
-        <ul>
-            <li>Ik ben behulpzaam</li>
-            <li>Ik vind het leuk om complexe problemen op te lossen</li>
-            <li>Ik ben aardig</li>
-        </ul>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-        <h3>Links</h3>
-        <ul>
-            <li><a href="https://github.com/ellemaj" target="_blank">Github</a></li>
-            <li><a href="https://open.spotify.com/user/myp7uhtvaupdg3je0cq6et6q0?si=c4fa36011353421a"
-                    target="_blank">Spotify</a></li>
-            <li><a href="https://discord.com/users/689099253926068241" target="blank">Discord</a></li>
-        </ul>
-    </section>
+        <div>
+            {% if profile.image %}
+                <img
+                    src="{{ profile.image }}"
+                    alt="Profile image"
+                    class="profile-image"
+                >
+            {% endif %}
+        </div>
+
+        <div class="lg:col-span-2 space-y-8">
+
+            <div>
+                <h1 class="text-5xl font-bold text-[#3d4853] mb-4">
+                    About Me
+                </h1>
+
+                <p class="text-lg leading-relaxed text-gray-700">
+                    Ik ben Elmar van Loenhout, {{ age }} jaar oud, HBO-ICT student aan de HZ University of Applied Sciences met interesse in webontwikkeling en evenemententechnologie.
+                </p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-semibold mb-3">
+                    Biography
+                </h2>
+
+                <p class="leading-relaxed text-gray-700">
+                    {{ profile.bio }}
+                </p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-semibold mb-3">
+                    Education
+                </h2>
+
+                <p>{{ profile.education }}</p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-semibold mb-3">
+                    Experience
+                </h2>
+
+                <p>{{ profile.experience }}</p>
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-semibold mb-3">
+                    Technical Skills
+                </h2>
+
+                <div class="flex flex-wrap gap-3">
+                    {% for skill in skills %}
+                        <span class="bg-gray-100 px-4 py-2 rounded-full text-sm shadow-sm">
+                            {{ skill }},
+                        </span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-semibold mb-3">
+                    Personal Traits
+                </h2>
+
+                <ul class="list-disc list-inside space-y-1">
+                    {% for trait in traits %}
+                        <li>{{ trait }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-semibold mb-3">
+                    Links
+                </h2>
+
+                <div class="flex flex-wrap gap-4">
+                    {% if profile.github %}
+                        <a href="{{ profile.github }}" target="_blank">
+                            GitHub
+                        </a>
+                    {% endif %}
+                    <br>
+                    {% if profile.linkedin %}
+                        <a href="{{ profile.linkedin }}" target="_blank">
+                            LinkedIn
+                        </a>
+                    {% endif %}
+                    <br>
+                    {% if profile.spotify %}
+                        <a href="{{ profile.spotify }}" target="_blank">
+                            Spotify
+                        </a>
+                    {% endif %}
+                    <br>
+                    {% if profile.discord %}
+                        <a href="{{ profile.discord }}" target="_blank">
+                            Discord
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
 
 {% endblock %}

@@ -6,6 +6,7 @@ use App\Controllers\HomeController;
 use App\Controllers\BlogController;
 use App\Controllers\UserController;
 use App\Controllers\DashboardController;
+use App\Controllers\ProfileController;
 
 use App\Middleware\AdminMiddleware;
 
@@ -15,6 +16,8 @@ use App\Repositories\UserRepository;
 use App\Repositories\UserRepositoryInterface;
 use App\Repositories\CourseRepository;
 use App\Repositories\CourseRepositoryInterface;
+use App\Repositories\ProfileRepository;
+use App\Repositories\ProfileRepositoryInterface;
 
 use Exception;
 use Framework\Database;
@@ -45,6 +48,9 @@ class ServiceProvider implements ServiceProviderInterface
         $courseRepository = new CourseRepository($database);
         $container->set(CourseRepositoryInterface::class, $courseRepository);
 
+        $profileRepository = new ProfileRepository($database);
+        $container->set(ProfileRepositoryInterface::class, $profileRepository);
+
         // Controllers
         $homeController = new HomeController($responseFactory);
         $container->set(HomeController::class, $homeController);
@@ -57,5 +63,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         $dashboardController = new DashboardController($responseFactory, $container->get(CourseRepositoryInterface::class), $adminMiddleware);
         $container->set(DashboardController::class, $dashboardController);
+
+        $profileController = new ProfileController($responseFactory, $container->get(ProfileRepositoryInterface::class), $adminMiddleware);
+        $container->set(ProfileController::class, $profileController);
     }
 }

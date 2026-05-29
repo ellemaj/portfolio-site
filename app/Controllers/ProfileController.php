@@ -1,0 +1,106 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Middleware\AdminMiddleware;
+use App\Repositories\ProfileRepositoryInterface;
+use Framework\Request;
+use Framework\Response;
+use Framework\ResponseFactory;
+
+class ProfileController
+{
+    public function __construct(
+        private ResponseFactory $responseFactory,
+        private ProfileRepositoryInterface $profiles,
+        private AdminMiddleware $adminMiddleware
+    ) {}
+
+    public function index(Request $request): Response
+    {
+        $profile = $this->profiles->get();
+
+        if (!$profile) {
+            return $this->responseFactory->view('404.html.twig');
+        }
+
+        $age = null;
+
+        if ($profile->birthdate) {
+            $birthdate = new \DateTime($profile->birthdate);
+            $age = $birthdate->diff(new \DateTime())->y;
+        }
+
+        return $this->responseFactory->view('profile.html.twig', [
+            'active'  => 'profile',
+            'profile' => $profile,
+            'skills'  => explode('|', $profile->skills),
+            'traits'  => explode('|', $profile->traits),
+            'age'     => $age,
+        ]);
+    }
+
+    public function update(Request $request): Response
+    {
+        if ($response = $this->adminMiddleware->handle()) {
+            return $response;
+        }
+
+        $profile = $this->profiles->get();
+
+        if (!$profile) {
+            return $this->responseFactory->internalError();
+        }
+
+        $profile->intro      = $request->get('intro');
+        $profile->bio        = $request->get('bio');
+
+        $profile->birthdate  = $request->get('birthdate');
+
+        $profile->education  = $request->get('education');
+        $profile->experience = $request->get('experience');
+
+        $profile->github     = $request->get('github');
+        $profile->linkedin   = $request->get('linkedin');
+        $profile->spotify    = $request->get('spotify');
+        $profile->discord    = $request->get('discord');
+
+        $profile->image      = $request->get('image');
+
+        $skillsRaw = $request->get('skills') ?? '';
+
+        $profile->skills = implode('|', array_filter(
+            array_map('trim', explode("\n", $skillsRaw))
+        ));
+
+        $traitsRaw = $request->get('traits') ?? '';
+
+        $profile->traits = implode('|', array_filter(
+            array_map('trim', explode("\n", $traitsRaw))
+        ));
+
+        $this->profiles->update($profile);
+
+        return $this->responseFactory->redirect('/profile');
+    }
+
+    public function edit(Request $request): Response
+    {
+        if ($response = $this->adminMiddleware->handle()) {
+            return $response;
+        }
+
+        $profile = $this->profiles->get();
+
+        if (!$profile) {
+            return $this->responseFactory->internalError();
+        }
+
+        return $this->responseFactory->view('user/profile-edit.html.twig', [
+            'profile' => $profile,
+            'skills'  => explode('|', $profile->skills),
+            'traits'  => explode('|', $profile->traits),
+            'active' => 'editProfile',
+        ]);
+    }
+}

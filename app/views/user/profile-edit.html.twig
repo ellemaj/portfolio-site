@@ -1,0 +1,129 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block title %}
+    Edit Profile
+{% endblock %}
+
+{% block content %}
+
+<section class="profile-edit-page">
+
+    <h1>
+        Edit Profile
+    </h1>
+
+    <form
+        action="/profile/update"
+        method="POST"
+        class="profile-edit-form"
+    >
+
+        <label>
+            Intro
+        </label>
+
+        <textarea name="intro">{{ profile.intro }}</textarea>
+
+        <label>
+            Biography
+        </label>
+
+        <textarea name="bio">{{ profile.bio }}</textarea>
+
+        <label>
+            Birthdate
+        </label>
+
+        <input
+            type="date"
+            name="birthdate"
+            value="{{ profile.birthdate }}"
+        >
+
+        <label>
+            Education
+        </label>
+
+        <input
+            type="text"
+            name="education"
+            value="{{ profile.education }}"
+        >
+
+        <label>
+            Experience
+        </label>
+
+        <textarea name="experience">{{ profile.experience }}</textarea>
+
+        <label>
+            Skills (1 per line)
+        </label>
+
+        <textarea name="skills">{{ skills|join('\n') }}</textarea>
+
+        <label>
+            Traits (1 per line)
+        </label>
+
+        <textarea name="traits">{{ traits|join('\n') }}</textarea>
+
+        <label>
+            GitHub URL
+        </label>
+
+        <input
+            type="text"
+            name="github"
+            value="{{ profile.github }}"
+        >
+
+        <label>
+            LinkedIn URL
+        </label>
+
+        <input
+            type="text"
+            name="linkedin"
+            value="{{ profile.linkedin }}"
+        >
+
+        <label>
+            Spotify URL
+        </label>
+
+        <input
+            type="text"
+            name="spotify"
+            value="{{ profile.spotify }}"
+        >
+
+        <label>
+            Discord URL
+        </label>
+
+        <input
+            type="text"
+            name="discord"
+            value="{{ profile.discord }}"
+        >
+
+        <label>
+            Profile Image Path
+        </label>
+
+        <input
+            type="text"
+            name="image"
+            value="{{ profile.image }}"
+        >
+
+        <button type="submit">
+            Save Profile
+        </button>
+
+    </form>
+
+</section>
+
+{% endblock %}

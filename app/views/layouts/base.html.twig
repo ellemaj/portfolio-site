@@ -34,10 +34,11 @@
 
                 {% if session.role == 'admin' %}
                     <li><a href="/blog/manage" class="{% if active == 'manage' %}active{% endif %}">Blog beheren</a></li>
+                    <li><a href="/profile/edit" class="{% if active == 'editProfile' %}active{% endif %}">Edit profile</a></li>
                 {% endif %}
 
                 <li>
-                    <a href="/logout">Logout ({{ session.username }})</a>
+                    <a href="/logout">Logout</a>
                 </li>
             {% else %}
                 <li><a href="/login" class="{% if active == 'login' %}active{% endif %}">Login</a></li>

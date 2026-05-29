@@ -17,13 +17,6 @@ class HomeController
         ]);
     }
 
-    public function profile(Request $request): Response
-    {
-        return $this->responseFactory->view('profile.html.twig', [
-            'active' => 'profile'
-        ]);
-    }
-
     public function faq(Request $request): Response
     {
         return $this->responseFactory->view('faq.html.twig', [
