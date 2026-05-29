@@ -32,7 +32,7 @@ class BlogController
         $post = $this->postRepository->findBySlug($request->get('slug'));
 
         if (!$post) {
-            return $this->responseFactory->view('404.html.twig');
+            return $this->responseFactory->notFound();
         }
 
         return $this->responseFactory->view('blog/post.html.twig', [
@@ -107,7 +107,7 @@ class BlogController
         $post = $this->postRepository->findById((int) $request->get('id'));
 
         if (!$post) {
-            return $this->responseFactory->view('404.html.twig');
+            return $this->responseFactory->notFound();
         }
 
         return $this->responseFactory->view('blog/edit.html.twig', [
@@ -123,7 +123,7 @@ class BlogController
         $post = $this->postRepository->findById((int) $request->get('id'));
 
         if (!$post) {
-            return $this->responseFactory->view('404.html.twig');
+            return $this->responseFactory->notFound();
         }
 
         $post->title            = $request->get('title') ?? $post->title;

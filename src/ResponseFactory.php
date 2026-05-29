@@ -66,7 +66,7 @@ class ResponseFactory
         $response = new Response();
         try {
             $response->responseCode = 404;
-            $response->body = $this->twig->render('404.html.twig');
+            $response->body = $this->twig->render('errors/404.html.twig');
             return $response;
         } catch (\Exception $e) {
             $response->responseCode = 500;
@@ -80,7 +80,7 @@ class ResponseFactory
         $response = new Response();
         try {
             $response->responseCode = 500;
-            $response->body = $this->twig->render('500.html.twig');
+            $response->body = $this->twig->render('errors/500.html.twig');
             return $response;
         } catch (\Exception $e) {
             $response->responseCode = 500;
@@ -102,7 +102,7 @@ class ResponseFactory
         $response = new Response();
         try {
             $response->responseCode = 403;
-            $response->body = $this->twig->render('403.html.twig');
+            $response->body = $this->twig->render('errors/403.html.twig');
             return $response;
         } catch (\Exception $e) {
             $response->responseCode = 500;
