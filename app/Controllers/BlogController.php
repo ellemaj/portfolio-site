@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Middleware\AdminMiddleware;
 use App\Repositories\PostRepositoryInterface;
+use App\Models\Post;
+use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
 
@@ -11,13 +13,13 @@ class BlogController
 {
     public function __construct(
         private ResponseFactory $responseFactory,
-        private PostRepositoryInterface $posts,
+        private PostRepositoryInterface $postRepository,
         private AdminMiddleware $adminMiddleware
     ) {}
 
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $posts = $this->posts->findAllPublished();
+        $posts = $this->postRepository->findAllPublished();
 
         return $this->responseFactory->view('blog/index.html.twig', [
             'posts' => $posts,
@@ -25,9 +27,9 @@ class BlogController
         ]);
     }
 
-    public function show(string $slug): Response
+    public function show(Request $request, string $slug): Response
     {
-        $post = $this->posts->findBySlug($slug);
+        $post = $this->postRepository->findBySlug($slug);
 
         if (!$post) {
             return $this->responseFactory->view('404.html.twig');
@@ -39,11 +41,11 @@ class BlogController
         ]);
     }
 
-    public function manage(): Response
+    public function manage(Request $request): Response
     {
         if ($response = $this->adminMiddleware->handle()) return $response;
 
-        $posts = $this->posts->findAll();
+        $posts = $this->postRepository->findAll();
 
         return $this->responseFactory->view('blog/manage.html.twig', [
             'posts' => $posts,
@@ -51,7 +53,7 @@ class BlogController
         ]);
     }
 
-    public function showCreate(): Response
+    public function showCreate(Request $request): Response
     {
         if ($response = $this->adminMiddleware->handle()) return $response;
 
@@ -60,26 +62,49 @@ class BlogController
         ]);
     }
 
-    public function create(): Response
+    public function create(Request $request): Response
     {
         if ($response = $this->adminMiddleware->handle()) return $response;
 
-        $title   = $_POST['title'] ?? '';
-        $slug    = $_POST['slug'] ?? '';
-        $preview = $_POST['preview'] ?? '';
-        $content = $_POST['content'] ?? '';
-        $status  = $_POST['status'] ?? 'draft';
+        $title            = $request->get('title');
+        $slug             = $request->get('slug');
+        $preview          = $request->get('preview');
+        $content          = $request->get('content');
+        $status           = $request->get('status') ?? 'draft';
+        $publication_date = $request->get('publication_date');
 
-        $this->posts->create($title, $slug, $preview, $content, $status);
+        if (!$title || !$slug || !$preview || !$content || !$status) {
+            return $this->responseFactory->internalError();
+        }
+
+        if ($this->postRepository->findBySlug($slug)) {
+            return $this->responseFactory->internalError();
+        }
+
+        $post = new Post();
+        $post->title            = $title;
+        $post->slug             = $slug;
+        $post->preview          = $preview;
+        $post->content          = $content;
+        $post->status           = $status;
+        $post->publication_date = $publication_date ? strtotime($publication_date) : time();
+        $post->created_at       = time();
+        $post->deleted_at       = null;
+
+        $createdPost = $this->postRepository->create($post);
+
+        if (!$createdPost) {
+            return $this->responseFactory->internalError();
+        }
 
         return $this->responseFactory->redirect('/blog/manage');
     }
 
-    public function showEdit(string $id): Response
+    public function showEdit(Request $request, string $id): Response
     {
         if ($response = $this->adminMiddleware->handle()) return $response;
 
-        $post = $this->posts->findById((int) $id);
+        $post = $this->postRepository->findById((int) $id);
 
         if (!$post) {
             return $this->responseFactory->view('404.html.twig');
@@ -91,26 +116,35 @@ class BlogController
         ]);
     }
 
-    public function update(string $id): Response
+    public function update(Request $request, string $id): Response
     {
         if ($response = $this->adminMiddleware->handle()) return $response;
 
-        $title   = $_POST['title'] ?? '';
-        $slug    = $_POST['slug'] ?? '';
-        $preview = $_POST['preview'] ?? '';
-        $content = $_POST['content'] ?? '';
-        $status  = $_POST['status'] ?? 'draft';
+        $post = $this->postRepository->findById((int) $id);
 
-        $this->posts->update((int) $id, $title, $slug, $preview, $content, $status);
+        if (!$post) {
+            return $this->responseFactory->view('404.html.twig');
+        }
+
+        $post->title            = $request->get('title') ?? $post->title;
+        $post->slug             = $request->get('slug') ?? $post->slug;
+        $post->preview          = $request->get('preview') ?? $post->preview;
+        $post->content          = $request->get('content') ?? $post->content;
+        $post->status           = $request->get('status') ?? $post->status;
+        $post->publication_date = $request->get('publication_date')
+            ? strtotime($request->get('publication_date'))
+            : $post->publication_date;
+
+        $this->postRepository->update((int) $id, $post);
 
         return $this->responseFactory->redirect('/blog/manage');
     }
 
-    public function delete(string $id): Response
+    public function delete(Request $request, string $id): Response
     {
         if ($response = $this->adminMiddleware->handle()) return $response;
 
-        $this->posts->delete((int) $id);
+        $this->postRepository->delete((int) $id);
 
         return $this->responseFactory->redirect('/blog/manage');
     }

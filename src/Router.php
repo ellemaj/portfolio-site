@@ -30,7 +30,8 @@ class Router
                     'is_string',
                     ARRAY_FILTER_USE_KEY
                 );
-                $response = $callback(...array_values($params));
+
+                $response = $callback($request, ...array_values($params));
 
                 return $response;
             }

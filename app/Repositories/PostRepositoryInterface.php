@@ -10,13 +10,13 @@ interface PostRepositoryInterface
 
     public function findAll(): array;
 
-    public function findBySlug(string $slug): ?Post;
-
     public function findById(int $id): ?Post;
 
-    public function create(string $title, string $slug, string $preview, string $content, string $status): void;
+    public function findBySlug(string $slug): ?Post;
 
-    public function update(int $id, string $title, string $slug, string $preview, string $content, string $status): void;
+    public function create(Post $post): ?Post;
+
+    public function update(int $id, Post $post): ?Post;
     
-    public function delete(int $id): void;
+    public function delete(int $id): bool;
 }

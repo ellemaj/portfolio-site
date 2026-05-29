@@ -45,27 +45,78 @@ class PostRepository implements PostRepositoryInterface
         return $this->mapToPost($data);
     }
 
-    public function create(string $title, string $slug, string $preview, string $content, string $status): void
+    public function create(Post $post): ?Post
     {
-        $stmt = $this->db->prepare(
-            "INSERT INTO posts (title, slug, preview, content, status) VALUES (?, ?, ?, ?, ?)"
-        );
-        $stmt->execute([$title, $slug, $preview, $content, $status]);
+        $this->db->run("
+        INSERT INTO posts
+        (title, slug, preview, content, status, publication_date, created_at, deleted_at)
+        VALUES
+        (:title, :slug, :preview, :content, :status, :publication_date, :created_at, :deleted_at)
+        ", [
+            "title" => $post->title,
+            "slug" => $post->slug,
+            "preview" => $post->preview,
+            "content" => $post->content,
+            "status" => $post->status,
+            "publication_date" => $post->publication_date,
+            "created_at" => $post->created_at,
+            "deleted_at" => $post->deleted_at
+        ]);
+
+        $post->id = $this->db->getLastId();
+        return $post;
     }
 
-    public function update(int $id, string $title, string $slug, string $preview, string $content, string $status): void
+    public function update(int $id, Post $post): ?Post
     {
-        $stmt = $this->db->prepare("
-            UPDATE posts SET title = ?, slug = ?, preview = ?, content = ?, status = ?
-            WHERE id = ?
-        ");
-        $stmt->execute([$title, $slug, $preview, $content, $status, $id]);
+        $this->db->run("
+        UPDATE posts SET
+            title = :title,
+            slug = :slug,
+            preview = :preview,
+            content = :content,
+            status = :status,
+            publication_date = :publication_date
+        WHERE id = :id
+        ", [
+            "id" => $id,
+            "title" => $post->title,
+            "slug" => $post->slug,
+            "preview" => $post->preview,
+            "content" => $post->content,
+            "status" => $post->status,
+            "publication_date" => $post->publication_date,
+        ]);
+
+        return $this->findById($id);
     }
 
-    public function delete(int $id): void
+    public function delete(int $id): bool
     {
-        $stmt = $this->db->prepare("DELETE FROM posts WHERE id = ?");
-        $stmt->execute([$id]);
+        $this->db->run("
+        UPDATE posts SET
+            deleted_at = :deleted_at
+        WHERE id = :id
+    ", [
+            "id" => $id,
+            "deleted_at" => time() + 120
+        ]);
+
+        return $this->findById($id)->deleted_at;
+    }
+
+    public function undoDelete(int $id): bool
+    {
+        $this->db->run("
+        UPDATE posts SET
+            deleted_at = :deleted_at
+        WHERE id = :id
+    ", [
+            "id" => $id,
+            "deleted_at" => null
+        ]);
+
+        return !$this->findById($id)->deleted_at;
     }
 
     private function mapToPost(object $data): Post

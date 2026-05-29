@@ -10,5 +10,7 @@ class Post
     public string $preview;
     public string $content;
     public string $status;
-    public string $created_at;
+    public int $publication_date;
+    public int $created_at;
+    public int | null $deleted_at;
 }

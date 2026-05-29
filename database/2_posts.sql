@@ -5,7 +5,9 @@ CREATE TABLE posts (
     preview TEXT NOT NULL,
     content TEXT NOT NULL,
     status TEXT DEFAULT 'draft',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    publication_date INTEGER,
+    created_at INTEGER DEFAULT CURRENT_TIMESTAMP,
+    deleted_at INTEGER
 );
 
 INSERT INTO posts (title, slug, preview, content, status, created_at)

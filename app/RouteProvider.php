@@ -32,9 +32,10 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('GET',  '/blog/manage', [$blogController, "manage"]);
         $router->addRoute('GET',  '/blog/create', [$blogController, "showCreate"]);
         $router->addRoute('POST', '/blog/create', [$blogController, "create"]);
-        $router->addRoute('GET',  '/blog/{id}/edit', [$blogController, "showEdit"]);
-        $router->addRoute('POST', '/blog/{id}/update', [$blogController, "update"]);
-        $router->addRoute('POST', '/blog/{id}/delete', [$blogController, "delete"]);
+        $router->addRoute('GET',  '/blog/(?<id>\d+)/edit', [$blogController, "showEdit"]);
+        $router->addRoute('POST', '/blog/(?<id>\d+)/update', [$blogController, "update"]);
+        $router->addRoute('POST', '/blog/(?<id>\d+)/delete', [$blogController, "delete"]);
+        // $router->addRoute('POST', '/blog/(?<id>\d+)/restore', [$blogController, 'undoDelete']);
         $router->addRoute('GET',  '/blog/{slug}', [$blogController, "show"]);
 
         $userController = $container->get(UserController::class);
