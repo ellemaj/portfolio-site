@@ -95,12 +95,12 @@ class BlogController
 
         if (!$createdPost) {
             return $this->responseFactory
-            ->createToast('Er is iets misgegaan. Probeer het opnieuw.')
+            ->createToast('error', 'Er is iets misgegaan. Probeer het opnieuw.')
             ->internalError();
         }
 
         return $this->responseFactory
-        ->createToast('Post aangemaakt!')
+        ->createToast('success', 'Post aangemaakt!')
         ->redirect('/blog/manage');
     }
 
@@ -142,7 +142,7 @@ class BlogController
         $this->postRepository->update((int) $request->get('id'), $post);
 
         return $this->responseFactory
-        ->createToast('Post bijgewerkt!')
+        ->createToast('success', 'Post bijgewerkt!')
         ->redirect('/blog/manage');
     }
 
@@ -161,7 +161,7 @@ class BlogController
         }
 
         return $this->responseFactory
-        ->createToast('Post verwijderd.')
+        ->createToast('info', 'Post verwijderd.')
         ->redirect('/blog/manage');
     }
 
@@ -174,7 +174,7 @@ class BlogController
         }
 
         return $this->responseFactory
-        ->createToast('Post hersteld.')
+        ->createToast('info', 'Post hersteld.')
         ->redirect('/blog/manage');
     }
 }

@@ -43,7 +43,7 @@ class DashboardController
         $this->courses->updateGrade($id, $grade !== null ? (float) $grade : null);
 
         return $this->responseFactory
-        ->createToast('Succesvol geupdated.')
+        ->createToast('success', 'Succesvol geupdated.')
         ->redirect('/dashboard');
     }
 }

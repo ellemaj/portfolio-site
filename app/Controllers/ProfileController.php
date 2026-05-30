@@ -82,7 +82,7 @@ class ProfileController
         $this->profiles->update($profile);
 
         return $this->responseFactory
-        ->createToast('Succesvol aangepast!')
+        ->createToast('success', 'Succesvol aangepast!')
         ->redirect('/profile');
     }
 

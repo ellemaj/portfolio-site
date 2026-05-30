@@ -1,75 +1,180 @@
 {% if toasts is defined and toasts|length > 0 %}
 <div id="toast-viewport">
     {% for toast in toasts %}
-        <div class="toast" role="alert" data-toast>
-            <span class="toast-message">{{ toast.message }}</span>
-            <button type="button" class="toast-close">Sluiten</button>
+        <!-- toast types: success, error, info -->
+        <div class="toast toast-{{ toast.type|default('info') }}" role="alert" data-toast>
+            <div class="toast-content">
+                <div class="toast-icon">
+                    {% if toast.type == 'success' %}
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    {% elseif toast.type == 'error' %}
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    {% else %}
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    {% endif %}
+                </div>
+                <span class="toast-message">{{ toast.message }}</span>
+                <button type="button" class="toast-close" aria-label="Sluiten">&times;</button>
+            </div>
+
+            <div class="toast-progress"></div>
         </div>
     {% endfor %}
 </div>
 
 <style>
+    :root {
+        --toast-success: #28a745;
+        --toast-error: #dc3545;
+        --toast-info: #17a2b8;
+    }
+
     #toast-viewport {
         position: fixed;
-        bottom: 1.5rem;
-        left: 50%;
-        transform: translateX(-50%);
+        top: 1.5rem;
+        right: 1.5rem;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
+        align-items: flex-end;
+        gap: 0.75rem;
         z-index: 9999;
     }
 
     .toast {
         display: flex;
-        align-items: center;
-        gap: 1rem;
-        background: #333;
-        color: white;
-        padding: 0.75rem 1.25rem;
-        border-radius: 4px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        flex-direction: column;
+        min-width: 300px;
+        max-width: 450px;
+        background: #ffffff;
+        color: #333;
+        padding: 1rem;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border-left: 5px solid #333;
         opacity: 0;
-        transform: translateY(8px);
-        transition: opacity 0.2s ease, transform 0.2s ease;
-        min-width: 250px;
+        transform: translateX(20px);
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        position: relative;
+        overflow: hidden;
+        padding-bottom: 1.2rem;
     }
 
+    /* Type-specific colors */
+    .toast-success { border-left-color: var(--toast-success); }
+    .toast-error { border-left-color: var(--toast-error); }
+    .toast-info { border-left-color: var(--toast-info); }
+
+    .toast-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 0.75rem;
+        flex-shrink: 0;
+    }
+
+    .toast-success .toast-icon { color: var(--toast-success); }
+    .toast-error .toast-icon { color: var(--toast-error); }
+    .toast-info .toast-icon { color: var(--toast-info); }
+
     .toast-message {
-        font-size: 14px;
+        font-size: 0.9rem;
+        font-weight: 500;
         flex: 1;
+        line-height: 1.4;
     }
 
     .toast-close {
-        background: #c2004b;
-        color: white;
+        background: none;
         border: none;
-        padding: 0.25rem 0.75rem;
-        border-radius: 3px;
+        color: #999;
+        font-size: 1.5rem;
         cursor: pointer;
-        font-size: 13px;
+        padding: 0 0.5rem;
+        line-height: 1;
+        transition: color 0.2s;
     }
+
+    .toast-close:hover {
+        color: #333;
+    }
+
+    .toast-content {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .toast-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Progress bar */
+    .toast-progress::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: currentColor;
+        opacity: 0.7;
+        transform-origin: left;
+    }
+
+    .toast.active .toast-progress::before {
+        animation: toast-timer 6s linear forwards;
+    }
+
+    @keyframes toast-timer {
+        from { transform: scaleX(1); }
+        to { transform: scaleX(0); }
+    }
+
+    .toast-success .toast-progress::before { background: var(--toast-success); }
+    .toast-error .toast-progress::before { background: var(--toast-error); }
+    .toast-info .toast-progress::before { background: var(--toast-info); }
 </style>
 
 <script>
-    document.querySelectorAll('[data-toast]').forEach((toast, i) => {
-        setTimeout(() => {
-            toast.style.opacity = '1';
-            toast.style.transform = 'translateY(0)';
-        }, i * 70);
+    document.addEventListener('DOMContentLoaded', () => {
+        const toasts = document.querySelectorAll('[data-toast]');
+        
+        toasts.forEach((toast, i) => {
+            // Fade-in
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(0)';
+                toast.classList.add('active'); // Timer-bar
+            }, i * 150);
 
-        setTimeout(() => removeToast(toast), 10000);
+            // Remove after 6 seconds
+            const timer = setTimeout(() => {
+                removeToast(toast);
+            }, 6000);
 
-        toast.querySelector('.toast-close').addEventListener('click', () => {
-            removeToast(toast);
+            // Remove by click
+            toast.querySelector('.toast-close').addEventListener('click', () => {
+                clearTimeout(timer);
+                removeToast(toast);
+            });
         });
-    });
 
-    function removeToast(toast) {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(8px)';
-        setTimeout(() => toast.remove(), 200);
-    }
+        function removeToast(toast) {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(20px)';
+            setTimeout(() => {
+                toast.remove();
+
+                const viewport = document.getElementById('toast-viewport');
+                if (viewport && viewport.children.length === 0) {
+                    // viewport.remove(); // Optional for cleaning container
+                }
+            }, 300);
+        }
+    });
 </script>
 {% endif %}

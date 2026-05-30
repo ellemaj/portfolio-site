@@ -56,12 +56,12 @@ class UserController
 
         if (!$createdUser) {
             return $this->responseFactory
-            ->createToast('Er is iets misgegaan. Probeer het opnieuw.')
+            ->createToast('error', 'Er is iets misgegaan. Probeer het opnieuw.')
             ->internalError();
         }
 
         return $this->responseFactory
-        ->createToast('Account aangemaakt! Je kunt nu inloggen.')
+        ->createToast('success', 'Account aangemaakt! Je kunt nu inloggen.')
         ->redirect('/login');
     }
 
@@ -80,12 +80,12 @@ class UserController
             $_SESSION['lastName']  = $user->lastName;
 
             return $this->responseFactory
-            ->createToast('Welkom terug, ' . $user->firstName . '!')
+            ->createToast('success', 'Welkom terug, ' . $user->firstName . '!')
             ->redirect('/overview');
         }
 
         return $this->responseFactory
-        ->createToast('E-mailadres of wachtwoord klopt niet.')
+        ->createToast('error', 'E-mailadres of wachtwoord klopt niet.')
         ->redirect('/login');
     }
 

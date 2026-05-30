@@ -39,10 +39,15 @@ class ResponseFactory
         $this->session = $session;
     }
 
-    public function createToast(string $message): static
+    public function createToast(string $type, string $message): static
     {
         $toasts   = $this->session->getAttribute('_toasts') ?? [];
-        $toasts[] = ['message' => $message];
+
+        $toasts[] = [
+            'type' => $type,
+            'message' => $message
+        ];
+        
         $this->session->setAttribute('_toasts', $toasts);
         return $this;
     }
