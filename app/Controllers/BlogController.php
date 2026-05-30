@@ -94,10 +94,14 @@ class BlogController
         $createdPost = $this->postRepository->create($post);
 
         if (!$createdPost) {
-            return $this->responseFactory->internalError();
+            return $this->responseFactory
+            ->createToast('Er is iets misgegaan. Probeer het opnieuw.')
+            ->internalError();
         }
 
-        return $this->responseFactory->redirect('/blog/manage');
+        return $this->responseFactory
+        ->createToast('Post aangemaakt!')
+        ->redirect('/blog/manage');
     }
 
     public function showEdit(Request $request): Response
@@ -137,7 +141,9 @@ class BlogController
 
         $this->postRepository->update((int) $request->get('id'), $post);
 
-        return $this->responseFactory->redirect('/blog/manage');
+        return $this->responseFactory
+        ->createToast('Post bijgewerkt!')
+        ->redirect('/blog/manage');
     }
 
     public function delete(Request $request): Response
@@ -154,7 +160,9 @@ class BlogController
             return $this->responseFactory->internalError();
         }
 
-        return $this->responseFactory->redirect('/blog/manage');
+        return $this->responseFactory
+        ->createToast('Post verwijderd.')
+        ->redirect('/blog/manage');
     }
 
     public function undoDelete(Request $request): Response
@@ -165,6 +173,8 @@ class BlogController
             return $this->responseFactory->internalError();
         }
 
-        return $this->responseFactory->redirect('/blog/manage');
+        return $this->responseFactory
+        ->createToast('Post hersteld.')
+        ->redirect('/blog/manage');
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Framework;
 
-use Exception;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
@@ -10,8 +9,9 @@ use Twig\TwigFilter;
 class ResponseFactory
 {
     private Environment $twig;
+    private Session $session;
 
-    public function __construct(bool $debugMode, string $viewsPath)
+    public function __construct(bool $debugMode, string $viewsPath, Session $session)
     {
         $loader = new FilesystemLoader(__DIR__ . '/../' . $viewsPath);
         $twig = new Environment($loader, [
@@ -35,19 +35,33 @@ class ResponseFactory
             return $d . ' ' . $maanden[$m] . ' ' . $y;
         }));
 
-        $this->twig = $twig;
+        $this->twig    = $twig;
+        $this->session = $session;
+    }
+
+    public function createToast(string $message): static
+    {
+        $toasts   = $this->session->getAttribute('_toasts') ?? [];
+        $toasts[] = ['message' => $message];
+        $this->session->setAttribute('_toasts', $toasts);
+        return $this;
     }
 
     /**
-     * @param string $view
      * @param array<mixed> $context
      */
     public function view(string $view, array $context = []): Response
     {
+        $toasts = $this->session->getAttribute('_toasts') ?? [];
+        $this->session->clear('_toasts');
+
         $response = new Response();
         try {
             $response->responseCode = 200;
-            $response->body = $this->twig->render($view, $context);
+            $response->body = $this->twig->render($view, array_merge(
+                ['toasts' => $toasts],
+                $context
+            ));
             return $response;
         } catch (\Exception $e) {
             $response->responseCode = 500;

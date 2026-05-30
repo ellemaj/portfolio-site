@@ -2,6 +2,8 @@
 
 namespace Framework;
 
+use Framework\Session;
+
 class Kernel
 {
     private Router $router;
@@ -23,7 +25,11 @@ class Kernel
         +
         $debugMode = $this->configManager->get('APP_ENV') != 'production';
         $viewsPath = $this->configManager->get('VIEWS_PATH');
-        $responseFactory = new ResponseFactory($debugMode, $viewsPath);
+
+        $session = new Session();
+        $this->container->set(Session::class, $session);
+
+        $responseFactory = new ResponseFactory($debugMode, $viewsPath, $session);
         $this->container->set(ResponseFactory::class, $responseFactory);
 
         $dbName = $this->configManager->get('APP_DB');

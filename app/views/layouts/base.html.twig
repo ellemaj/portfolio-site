@@ -49,6 +49,7 @@
     <!-- Content -->
     <main>
         {% block content %}{% endblock %}
+        {% include 'layouts/toasts.html.twig' %}
     </main>
 
     <!-- Footer -->
@@ -57,5 +58,85 @@
         <a href="mailto:loen0029@hz.nl">Contact</a> |
         <a href="commandmaker" class="{% if active == 'commandmaker' %}active{% endif %}">Commandmaker</a>
     </footer>
+
+    <!-- Confirm dialog -->
+    <dialog id="confirm-dialog">
+        <p id="confirm-message">Weet je zeker dat je dit wilt verwijderen?</p>
+        <div class="confirm-buttons">
+            <button id="confirm-yes">Verwijderen</button>
+            <button id="confirm-no">Annuleren</button>
+        </div>
+    </dialog>
+
+    <style>
+        #confirm-dialog {
+            border: none;
+            border-radius: 6px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            min-width: 300px;
+        }
+
+        #confirm-dialog::backdrop {
+            background: rgba(0,0,0,0.5);
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: flex-end;
+        }
+
+        #confirm-yes {
+            background: #c2004b;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.25rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #confirm-no {
+            background: #eee;
+            color: #333;
+            border: none;
+            padding: 0.5rem 1.25rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        const dialog = document.getElementById('confirm-dialog');
+        const confirmYes = document.getElementById('confirm-yes');
+        const confirmNo = document.getElementById('confirm-no');
+
+        let pendingForm = null;
+
+        // Intercept all delete forms
+        document.querySelectorAll('[data-confirm]').forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                pendingForm = form;
+                document.getElementById('confirm-message').textContent =
+                    form.dataset.confirm || 'Weet je zeker dat je dit wilt verwijderen?';
+                dialog.showModal();
+            });
+        });
+
+        confirmYes.addEventListener('click', () => {
+            dialog.close();
+            if (pendingForm) {
+                pendingForm.removeEventListener('submit', () => {});
+                pendingForm.submit();
+            }
+        });
+
+        confirmNo.addEventListener('click', () => {
+            dialog.close();
+            pendingForm = null;
+        });
+    </script>
 </body>
 </html>

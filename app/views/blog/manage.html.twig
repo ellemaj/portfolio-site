@@ -31,7 +31,8 @@
                                     <button type="submit">Ongedaan maken</button>
                                 </form>
                             {% else %}
-                                <form action="/blog/{{ post.id }}/delete" method="POST">
+                                <form action="/blog/{{ post.id }}/delete" method="POST"
+                                    data-confirm="Weet je zeker dat je '{{ post.title }}' wilt verwijderen?">
                                     <button type="submit">Verwijderen</button>
                                 </form>
                             {% endif %}

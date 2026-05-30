@@ -1,0 +1,75 @@
+{% if toasts is defined and toasts|length > 0 %}
+<div id="toast-viewport">
+    {% for toast in toasts %}
+        <div class="toast" role="alert" data-toast>
+            <span class="toast-message">{{ toast.message }}</span>
+            <button type="button" class="toast-close">Sluiten</button>
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+    #toast-viewport {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        z-index: 9999;
+    }
+
+    .toast {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: #333;
+        color: white;
+        padding: 0.75rem 1.25rem;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        min-width: 250px;
+    }
+
+    .toast-message {
+        font-size: 14px;
+        flex: 1;
+    }
+
+    .toast-close {
+        background: #c2004b;
+        color: white;
+        border: none;
+        padding: 0.25rem 0.75rem;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 13px;
+    }
+</style>
+
+<script>
+    document.querySelectorAll('[data-toast]').forEach((toast, i) => {
+        setTimeout(() => {
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+        }, i * 70);
+
+        setTimeout(() => removeToast(toast), 10000);
+
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+            removeToast(toast);
+        });
+    });
+
+    function removeToast(toast) {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        setTimeout(() => toast.remove(), 200);
+    }
+</script>
+{% endif %}

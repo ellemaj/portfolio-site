@@ -55,10 +55,14 @@ class UserController
         $createdUser = $this->users->create($user);
 
         if (!$createdUser) {
-            return $this->responseFactory->internalError();
+            return $this->responseFactory
+            ->createToast('Er is iets misgegaan. Probeer het opnieuw.')
+            ->internalError();
         }
 
-        return $this->responseFactory->redirect('/login');
+        return $this->responseFactory
+        ->createToast('Account aangemaakt! Je kunt nu inloggen.')
+        ->redirect('/login');
     }
 
     public function login(Request $request): Response
@@ -75,10 +79,14 @@ class UserController
             $_SESSION['firstName'] = $user->firstName;
             $_SESSION['lastName']  = $user->lastName;
 
-            return $this->responseFactory->redirect('/overview');
+            return $this->responseFactory
+            ->createToast('Welkom terug, ' . $user->firstName . '!')
+            ->redirect('/overview');
         }
 
-        return $this->responseFactory->internalError();
+        return $this->responseFactory
+        ->createToast('E-mailadres of wachtwoord klopt niet.')
+        ->redirect('/login');
     }
 
     public function overview(Request $request): Response
@@ -92,7 +100,12 @@ class UserController
 
     public function logout(Request $request): Response
     {
+        $toasts = [['message' => 'Je bent uitgelogd.']];
         session_destroy();
+        
+        session_start();
+        $_SESSION['_toasts'] = $toasts;
+        
         return $this->responseFactory->redirect('/login');
     }
 }

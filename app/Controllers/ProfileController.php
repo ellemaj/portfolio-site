@@ -81,7 +81,9 @@ class ProfileController
 
         $this->profiles->update($profile);
 
-        return $this->responseFactory->redirect('/profile');
+        return $this->responseFactory
+        ->createToast('Succesvol aangepast!')
+        ->redirect('/profile');
     }
 
     public function edit(Request $request): Response
