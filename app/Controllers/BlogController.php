@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Middleware\AdminMiddleware;
 use App\Repositories\PostRepositoryInterface;
 use App\Models\Post;
 use Framework\Request;
@@ -13,8 +12,7 @@ class BlogController
 {
     public function __construct(
         private ResponseFactory $responseFactory,
-        private PostRepositoryInterface $postRepository,
-        private AdminMiddleware $adminMiddleware
+        private PostRepositoryInterface $postRepository
     ) {}
 
     public function index(Request $request): Response
@@ -43,8 +41,6 @@ class BlogController
 
     public function manage(Request $request): Response
     {
-        if ($response = $this->adminMiddleware->handle()) return $response;
-
         $posts = $this->postRepository->findAll();
 
         return $this->responseFactory->view('blog/manage.html.twig', [
@@ -55,8 +51,6 @@ class BlogController
 
     public function showCreate(Request $request): Response
     {
-        if ($response = $this->adminMiddleware->handle()) return $response;
-
         return $this->responseFactory->view('blog/create.html.twig', [
             'active' => 'blog'
         ]);
@@ -64,8 +58,6 @@ class BlogController
 
     public function create(Request $request): Response
     {
-        if ($response = $this->adminMiddleware->handle()) return $response;
-
         $title            = $request->get('title');
         $slug             = $request->get('slug');
         $preview          = $request->get('preview');
@@ -106,8 +98,6 @@ class BlogController
 
     public function showEdit(Request $request): Response
     {
-        if ($response = $this->adminMiddleware->handle()) return $response;
-
         $post = $this->postRepository->findById((int) $request->get('id'));
 
         if (!$post) {
@@ -122,8 +112,6 @@ class BlogController
 
     public function update(Request $request): Response
     {
-        if ($response = $this->adminMiddleware->handle()) return $response;
-
         $post = $this->postRepository->findById((int) $request->get('id'));
 
         if (!$post) {
@@ -148,8 +136,6 @@ class BlogController
 
     public function delete(Request $request): Response
     {
-        if ($response = $this->adminMiddleware->handle()) return $response;
-
         $post = $this->postRepository->findById((int) $request->get('id'));
 
         if (!$post) {
@@ -167,8 +153,6 @@ class BlogController
 
     public function undoDelete(Request $request): Response
     {
-        if ($response = $this->adminMiddleware->handle()) return $response;
-
         if (!$this->postRepository->undoDelete((int) $request->get('id'))) {
             return $this->responseFactory->internalError();
         }

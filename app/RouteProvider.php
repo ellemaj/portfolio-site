@@ -8,6 +8,8 @@ use App\Controllers\UserController;
 use App\Controllers\DashboardController;
 use App\Controllers\ProfileController;
 
+use App\Middleware\AdminMiddleware;
+
 use Framework\Router;
 use Framework\RouteProviderInterface;
 use Framework\ServiceContainer;
@@ -20,6 +22,9 @@ class RouteProvider implements RouteProviderInterface
      */
     public function register(Router $router, ServiceContainer $container): void
     {
+        // Middleware
+        $adminMiddleware = $container->get(AdminMiddleware::class);
+
         $homeController = $container->get(HomeController::class);
         $router->addRoute('GET', '/', [$homeController, "index"]);
         $router->addRoute('GET', '/faq', [$homeController, "faq"]);
@@ -27,30 +32,30 @@ class RouteProvider implements RouteProviderInterface
 
         $blogController = $container->get(BlogController::class);
         $router->addRoute('GET',  '/blog', [$blogController, "index"]);
-        $router->addRoute('GET',  '/blog/manage', [$blogController, "manage"]);
-        $router->addRoute('GET',  '/blog/create', [$blogController, "showCreate"]);
-        $router->addRoute('POST', '/blog/create', [$blogController, "create"]);
-        $router->addRoute('GET',  '/blog/(?<id>\d+)/edit', [$blogController, "showEdit"]);
-        $router->addRoute('POST', '/blog/(?<id>\d+)/update', [$blogController, "update"]);
-        $router->addRoute('POST', '/blog/(?<id>\d+)/delete', [$blogController, "delete"]);
-        $router->addRoute('POST', '/blog/(?<id>\d+)/restore', [$blogController, 'undoDelete']);
+        $router->addRoute('GET',  '/blog/manage', [$blogController, "manage"])->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('GET',  '/blog/create', [$blogController, "showCreate"])->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('POST', '/blog/create', [$blogController, "create"])->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('GET',  '/blog/(?<id>\d+)/edit', [$blogController, "showEdit"])->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('POST', '/blog/(?<id>\d+)/update', [$blogController, "update"])->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('POST', '/blog/(?<id>\d+)/delete', [$blogController, "delete"])->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('POST', '/blog/(?<id>\d+)/restore', [$blogController, 'undoDelete'])->middleware([$adminMiddleware, 'handle']);
         $router->addRoute('GET',  '/blog/{slug}', [$blogController, "show"]);
-
+        
         $userController = $container->get(UserController::class);
         $router->addRoute('GET', '/register', [$userController, "showRegister"]);
         $router->addRoute('POST', '/register', [$userController, "register"]);
         $router->addRoute('GET', '/login', [$userController, "showLogin"]);
         $router->addRoute('POST', '/login', [$userController, "login"]);
         $router->addRoute('GET', '/logout', [$userController, "logout"]);
-        $router->addRoute('GET', '/overview', [$userController, "overview"]);
+        $router->addRoute('GET', '/overview', [$userController, "overview"])->middleware([$adminMiddleware, 'handle']);
 
         $dashboardController = $container->get(DashboardController::class);
         $router->addRoute('GET',  '/dashboard', [$dashboardController, 'index']);
-        $router->addRoute('POST', '/dashboard/grade/update', [$dashboardController, 'updateGrade']);
+        $router->addRoute('POST', '/dashboard/grade/update', [$dashboardController, 'updateGrade'])->middleware([$adminMiddleware, 'handle']);
 
         $profileController = $container->get(ProfileController::class);
         $router->addRoute('GET',  '/profile', [$profileController, 'index']);
-        $router->addRoute('GET',  '/profile/edit', [$profileController, 'edit']);
-        $router->addRoute('POST', '/profile/update', [$profileController, 'update']);
+        $router->addRoute('GET',  '/profile/edit', [$profileController, 'edit'])->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('POST', '/profile/update', [$profileController, 'update'])->middleware([$adminMiddleware, 'handle']);
     }
 }

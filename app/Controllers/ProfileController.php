@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Middleware\AdminMiddleware;
 use App\Repositories\ProfileRepositoryInterface;
 use Framework\Request;
 use Framework\Response;
@@ -12,8 +11,7 @@ class ProfileController
 {
     public function __construct(
         private ResponseFactory $responseFactory,
-        private ProfileRepositoryInterface $profiles,
-        private AdminMiddleware $adminMiddleware
+        private ProfileRepositoryInterface $profiles
     ) {}
 
     public function index(Request $request): Response
@@ -42,10 +40,6 @@ class ProfileController
 
     public function update(Request $request): Response
     {
-        if ($response = $this->adminMiddleware->handle()) {
-            return $response;
-        }
-
         $profile = $this->profiles->get();
 
         if (!$profile) {
@@ -88,10 +82,6 @@ class ProfileController
 
     public function edit(Request $request): Response
     {
-        if ($response = $this->adminMiddleware->handle()) {
-            return $response;
-        }
-
         $profile = $this->profiles->get();
 
         if (!$profile) {

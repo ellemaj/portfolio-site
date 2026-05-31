@@ -24,6 +24,7 @@ use Framework\Database;
 use Framework\ResponseFactory;
 use Framework\ServiceContainer;
 use Framework\ServiceProviderInterface;
+use Framework\Session;
 
 class ServiceProvider implements ServiceProviderInterface
 {
@@ -34,9 +35,11 @@ class ServiceProvider implements ServiceProviderInterface
     {
         $responseFactory = $container->get(ResponseFactory::class);
         $database = $container->get(Database::class);
+        $session = $container->get(Session::class);
 
         // Middleware
         $adminMiddleware = new AdminMiddleware($responseFactory);
+        $container->set(AdminMiddleware::class, $adminMiddleware);
 
         // Repositories
         $postRepository = new PostRepository($database);
@@ -55,16 +58,16 @@ class ServiceProvider implements ServiceProviderInterface
         $homeController = new HomeController($responseFactory);
         $container->set(HomeController::class, $homeController);
 
-        $blogController = new BlogController($responseFactory, $container->get(PostRepositoryInterface::class), $adminMiddleware);
+        $blogController = new BlogController($responseFactory, $postRepository);
         $container->set(BlogController::class, $blogController);
 
-        $userController = new UserController($responseFactory, $container->get(UserRepositoryInterface::class));
+        $userController = new UserController($responseFactory, $userRepository, $session);
         $container->set(UserController::class, $userController);
 
-        $dashboardController = new DashboardController($responseFactory, $container->get(CourseRepositoryInterface::class), $adminMiddleware);
+        $dashboardController = new DashboardController($responseFactory, $courseRepository);
         $container->set(DashboardController::class, $dashboardController);
 
-        $profileController = new ProfileController($responseFactory, $container->get(ProfileRepositoryInterface::class), $adminMiddleware);
+        $profileController = new ProfileController($responseFactory, $profileRepository);
         $container->set(ProfileController::class, $profileController);
     }
 }

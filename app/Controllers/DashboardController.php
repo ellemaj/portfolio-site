@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Middleware\AdminMiddleware;
 use App\Repositories\CourseRepositoryInterface;
 use Framework\Request;
 use Framework\Response;
@@ -12,8 +11,7 @@ class DashboardController
 {
     public function __construct(
         private ResponseFactory $responseFactory,
-        private CourseRepositoryInterface $courses,
-        private AdminMiddleware $adminMiddleware
+        private CourseRepositoryInterface $courses
     ) {}
 
     public function index(Request $request): Response
@@ -35,8 +33,6 @@ class DashboardController
 
     public function updateGrade(Request $request): Response
     {
-        if ($response = $this->adminMiddleware->handle()) return $response;
-
         $id    = (int) $request->get('id');
         $grade = $request->get('grade');
 

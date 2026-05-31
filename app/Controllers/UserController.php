@@ -6,7 +6,6 @@ use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
 use App\Repositories\UserRepositoryInterface;
-use App\Middleware\AuthMiddleware;
 use App\Models\User;
 
 class UserController
@@ -91,8 +90,6 @@ class UserController
 
     public function overview(Request $request): Response
     {
-        AuthMiddleware::handle();
-
         return $this->responseFactory->view('user/overview.html.twig', [
             'active' => 'overview'
         ]);

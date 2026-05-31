@@ -6,9 +6,11 @@ use Exception;
 
 class Router
 {
-
     /** @var Route[] */
     public array $routes = [];
+
+    /** @var array<string, callable> */
+    private array $middlewares = [];
 
     private ResponseFactory $responseFactory;
 
@@ -17,9 +19,13 @@ class Router
         $this->responseFactory = $responseFactory;
     }
 
-    /**
-     * @throws Exception
-     */
+    public function addRoute(string $method, string $path, callable $callback): Route
+    {
+        $route = new Route($method, $path, $callback);
+        $this->routes[] = $route;
+        return $route;
+    }
+
     public function dispatch(Request $request): Response
     {
         foreach ($this->routes as $route) {
@@ -33,18 +39,18 @@ class Router
 
                 $request->routeParameters = $params;
 
-                $response = $callback($request);
+                // Run route-level middleware
+                if ($route->middleware) {
+                    $middlewareResponse = ($route->middleware)($request);
+                    if ($middlewareResponse instanceof Response) {
+                        return $middlewareResponse;
+                    }
+                }
 
-                return $response;
+                return $callback($request);
             }
         }
 
         return $this->responseFactory->notFound();
-    }
-
-    public function addRoute(string $method, string $path, callable $callback): void
-    {
-        $route = new Route($method, $path, $callback);
-        $this->routes[] = $route;
     }
 }

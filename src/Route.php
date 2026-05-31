@@ -10,15 +10,24 @@ class Route
 
     /** @var callable */
     public $callback;
+    
+    /** @var callable|null */
+    public $middleware = null;
 
     /** @var string[] */
-    public array $routeParameters;
+    public array $routeParameters = [];
 
     public function __construct(string $method, string $path, callable $callback)
     {
-        $this->method = $method;
-        $this->path = $path;
+        $this->method   = $method;
+        $this->path     = $path;
         $this->callback = $callback;
+    }
+
+    public function middleware(callable $middleware): static
+    {
+        $this->middleware = $middleware;
+        return $this;
     }
 
     public function matches(string $method, string $path): bool
