@@ -23,6 +23,7 @@ class ResponseFactory
         }
 
         $twig->addGlobal('session', $_SESSION);
+        $twig->addGlobal('csrf_token', $session->getCsrfToken());
 
         $twig->addFilter(new TwigFilter('nldate', function (int $timestamp): string {
             $maanden = [

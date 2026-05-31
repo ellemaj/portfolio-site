@@ -60,6 +60,7 @@
                     {% if session.role == 'admin' %}
                         <td>
                             <form action="/dashboard/grade/update" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                 <input type="hidden" name="id" value="{{ course.id }}">
                                 <input type="number" name="grade" step="0.1" min="1" max="10"
                                        value="{{ course.grade ?? '' }}" placeholder="-">

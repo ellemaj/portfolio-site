@@ -7,12 +7,14 @@ use Framework\Response;
 use Framework\ResponseFactory;
 use App\Repositories\UserRepositoryInterface;
 use App\Models\User;
+use Framework\Session;
 
 class UserController
 {
     public function __construct(
         private ResponseFactory $responseFactory,
-        private UserRepositoryInterface $users
+        private UserRepositoryInterface $users,
+        private Session $session
     ) {}
 
     public function showRegister(Request $request): Response
@@ -29,17 +31,34 @@ class UserController
 
     public function register(Request $request): Response
     {
-        $firstName = $request->get('firstName') ?? '';
-        $lastName  = $request->get('lastName') ?? '';
-        $email     = $request->get('email') ?? '';
+        $firstName = htmlspecialchars(trim($request->get('firstName') ?? ''));
+        $lastName  = htmlspecialchars(trim($request->get('lastName') ?? ''));
+        $email     = filter_var(trim($request->get('email') ?? ''), FILTER_SANITIZE_EMAIL);
         $password  = $request->get('password') ?? '';
 
+        // Checks
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return $this->responseFactory
+                ->createToast('error', 'Voer een geldig e-mailadres in.')
+                ->redirect('/register');
+        }
+
+        if (strlen($password) < 8) {
+            return $this->responseFactory
+                ->createToast('error', 'Wachtwoord moet minimaal 8 tekens zijn.')
+                ->redirect('/register');
+        }
+
         if (!$firstName || !$lastName || !$email || !$password) {
-            return $this->responseFactory->internalError();
+            return $this->responseFactory
+                ->createToast('error', 'Vul alle velden in.')
+                ->redirect('/register');
         }
 
         if ($this->users->findByEmail($email)) {
-            return $this->responseFactory->internalError();
+            return $this->responseFactory
+                ->createToast('error', 'Er bestaat al een gebruiker met dit emailadres.')
+                ->redirect('/register');
         }
 
         $user             = new User();
@@ -56,7 +75,7 @@ class UserController
         if (!$createdUser) {
             return $this->responseFactory
             ->createToast('error', 'Er is iets misgegaan. Probeer het opnieuw.')
-            ->internalError();
+            ->redirect('/register');
         }
 
         return $this->responseFactory
@@ -65,7 +84,14 @@ class UserController
     }
 
     public function login(Request $request): Response
-    {
+    {   
+        $token = $request->get('csrf_token') ?? '';
+        if (!$this->session->validateCsrfToken($token)) {
+            return $this->responseFactory
+                ->createToast('error', 'Ongeldig verzoek. Probeer opnieuw.')
+                ->redirect('/login');
+        }
+
         $email    = $request->get('email') ?? '';
         $password = $request->get('password') ?? '';
 

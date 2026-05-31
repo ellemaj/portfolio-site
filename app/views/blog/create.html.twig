@@ -7,6 +7,8 @@
         <h1>Nieuwe post</h1>
 
         <form action="/blog/create" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            
             <label>Titel
                 <input type="text" name="title" required>
             </label>

@@ -1,5 +1,10 @@
 <?php
 
+// Security headers
+header('X-Frame-Options: DENY');
+header('X-Content-Type-Options: nosniff');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+
 // Autoload dependencies and classes
 require __DIR__ . '/../vendor/autoload.php';
 

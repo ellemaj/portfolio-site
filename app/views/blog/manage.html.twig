@@ -28,11 +28,13 @@
                             {% if post.deleted_at is not null and post.deleted_at > date().timestamp %}
                             
                                 <form action="/blog/{{ post.id }}/restore" method="POST">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <button type="submit">Ongedaan maken</button>
                                 </form>
                             {% else %}
                                 <form action="/blog/{{ post.id }}/delete" method="POST"
                                     data-confirm="Weet je zeker dat je '{{ post.title }}' wilt verwijderen?">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <button type="submit">Verwijderen</button>
                                 </form>
                             {% endif %}
