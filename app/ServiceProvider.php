@@ -7,6 +7,7 @@ use App\Controllers\BlogController;
 use App\Controllers\UserController;
 use App\Controllers\DashboardController;
 use App\Controllers\ProfileController;
+use App\Controllers\ApiController;
 
 use App\Middleware\AdminMiddleware;
 
@@ -69,5 +70,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         $profileController = new ProfileController($responseFactory, $profileRepository);
         $container->set(ProfileController::class, $profileController);
+
+        $apiController = new ApiController($responseFactory, $postRepository);
+        $container->set(ApiController::class, $apiController);
     }
 }

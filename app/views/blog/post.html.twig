@@ -1,24 +1,57 @@
 {% extends "layouts/base.html.twig" %}
 
-{% block title %}{{ post.title }}{% endblock %}
+{% block title %}Blogpost{% endblock %}
 
 {% block styles %}
 <link rel="stylesheet" href="/assets/css/blogposts.css">
 {% endblock %}
 
 {% block content %}
-    <section>
-        <div>
-            <h2>{{ post.title }}<h2>
+    <section id="post-detail">
+        <div id="post-loading">Even wachten… Post ophalen…</div>
+        <div id="post-error" style="display: none; color: red;"></div>
+        <div id="post-content" style="display: none;">
+            <h2 id="post-title"></h2>
+            <div>
+                <h3><time id="post-date"></time></h3>
+            </div>
+            <div id="post-body"></div>
+            <h4><a href="/blog" class="terug-knop">← Terug naar blog</a></h4>
         </div>
-        <div>
-            <h3><time>{{ post.publication_date|nldate }}</time><h3>
-        </div>
-        <div>
-            {{ post.content|raw }}
-        </div>
-
-        <h4><a href="/blog" class="terug-knop">← Terug naar blog</a></h4>
     </section>
 
+    <script>
+        const slug = {{ slug|json_encode|raw }};
+        const loadingEl = document.getElementById('post-loading');
+        const errorEl = document.getElementById('post-error');
+        const contentEl = document.getElementById('post-content');
+        const titleEl = document.getElementById('post-title');
+        const dateEl = document.getElementById('post-date');
+        const bodyEl = document.getElementById('post-body');
+
+        fetch(`/api/posts/${encodeURIComponent(slug)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Post niet gevonden');
+                }
+                return response.json();
+            })
+            .then(post => {
+                loadingEl.style.display = 'none';
+                contentEl.style.display = 'block';
+                titleEl.textContent = post.title;
+                dateEl.textContent = new Date(post.publication_date * 1000).toLocaleDateString('nl-NL', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                bodyEl.innerHTML = post.content;
+                document.title = post.title;
+            })
+            .catch(error => {
+                loadingEl.style.display = 'none';
+                errorEl.textContent = 'Er ging iets mis: ' + error.message;
+                errorEl.style.display = 'block';
+            });
+    </script>
 {% endblock %}

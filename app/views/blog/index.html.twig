@@ -1,22 +1,63 @@
-{% extends "layouts/base.html.twig" %}
+{% extends 'layouts/base.html.twig' %}
 
-{% block title %}Blog{% endblock %}
+{% block title %}Blog Posts{% endblock %}
 
 {% block styles %}
 <link rel="stylesheet" href="/assets/css/blogposts.css">
 {% endblock %}
 
 {% block content %}
-    <section class="feed">
-        {% for post in posts %}
-            <a href="/blog/{{ post.slug }}" class="post-card-link">
-                <article class="post-card">
-                    <h2>{{ post.title }}</h2>
-                    <time>{{ post.publication_date|nldate }}</time>
-                    <p>{{ post.preview }}</p>
-                </article>
-            </a>
-        {% endfor %}
-    </section>
+
+<div id="loading" style="margin: 20px 0;">Laden...</div>
+<section id="posts-container" class="feed"></section>
+
+<script>
+  const postsContainer = document.getElementById('posts-container');
+  const loading = document.getElementById('loading');
+  const isAdmin = {{ auth.isAdmin ? 'true' : 'false' }};
+
+  fetch('/api/posts')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Fout bij ophalen posts');
+      }
+      return response.json();
+    })
+    .then(posts => {
+      loading.style.display = 'none';
+
+      posts.forEach(post => {
+        const link = document.createElement('a');
+        link.href = `/blog/${ post.slug }`;
+        link.className = 'post-card-link';
+
+        link.innerHTML = `
+          <article class="post-card">
+            <h2>${ post.title }</h2>
+            <time>${new Date(post.publication_date * 1000).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}</time>
+            <p>${ post.preview }</p>
+          </article>
+        `;
+
+        postsContainer.appendChild(link);
+
+        if (isAdmin) {
+          const editBtn = document.createElement('p');
+          editBtn.innerHTML = `<a href="/admin/posts/${post.id}/edit" class="auth-btn" style="display: inline-block; text-decoration: none; margin-top: 8px;">Bewerken</a>`;
+          postsContainer.appendChild(editBtn);
+        }
+      });
+
+      if (isAdmin) {
+        const addBtn = document.createElement('div');
+        addBtn.style.cssText = 'margin-top: 20px;';
+        addBtn.innerHTML = `<a href="/admin/posts" class="auth-btn" style="text-decoration: none;">Beheer overzicht</a>`;
+        postsContainer.appendChild(addBtn);
+      }
+    })
+    .catch(error => {
+      loading.textContent = 'Er ging iets mis: ' + error.message;
+    });
+</script>
 
 {% endblock %}

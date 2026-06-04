@@ -27,14 +27,14 @@ class BlogController
 
     public function show(Request $request): Response
     {
-        $post = $this->postRepository->findBySlug($request->get('slug'));
+        $slug = $request->get('slug');
 
-        if (!$post) {
+        if (!$slug) {
             return $this->responseFactory->notFound();
         }
 
         return $this->responseFactory->view('blog/post.html.twig', [
-            'post' => $post,
+            'slug' => $slug,
             'active' => 'blog'
         ]);
     }
@@ -70,7 +70,9 @@ class BlogController
         }
 
         if ($this->postRepository->findBySlug($slug)) {
-            return $this->responseFactory->internalError();
+            return $this->responseFactory
+                ->createToast('error', 'Er bestaat al een post met deze link. Probeer het opnieuw met een andere.')
+                ->redirect('/blog/create');
         }
 
         $post = new Post();

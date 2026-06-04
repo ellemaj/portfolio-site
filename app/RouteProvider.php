@@ -7,6 +7,7 @@ use App\Controllers\BlogController;
 use App\Controllers\UserController;
 use App\Controllers\DashboardController;
 use App\Controllers\ProfileController;
+use App\Controllers\ApiController;
 
 use App\Middleware\AdminMiddleware;
 
@@ -57,5 +58,9 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('GET',  '/profile', [$profileController, 'index']);
         $router->addRoute('GET',  '/profile/edit', [$profileController, 'edit'])->middleware([$adminMiddleware, 'handle']);
         $router->addRoute('POST', '/profile/update', [$profileController, 'update'])->middleware([$adminMiddleware, 'handle']);
+
+        $apiController = $container->get(ApiController::class);
+        $router->addRoute('GET', '/api/posts', [$apiController, 'getPosts']);
+        $router->addRoute('GET', '/api/posts/{slug}', [$apiController, 'getPost']);
     }
 }
