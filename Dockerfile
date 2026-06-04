@@ -5,7 +5,10 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     libsqlite3-dev \
-    && docker-php-ext-install pdo pdo_sqlite pdo_mysql
+    && docker-php-ext-install pdo pdo_sqlite pdo_mysql \
+    && pecl install pcov \
+    && docker-php-ext-enable pcov \
+    && echo "pcov.directory = /var/www/html" >> /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
