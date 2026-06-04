@@ -1,15 +1,3 @@
-## IT Development Portfolio
-
-This is my IT Development Portfolio (ITDP).
-
-### Author: ellemaj
-
-## Documentation
-
-You can find my documentation and explanations in the [/documentation folder](documentation/), and on the Github Wiki.
-
----
-
 ## Docker
 
 This project can be run using Docker. There are three steps, each building on the previous one.
@@ -107,21 +95,3 @@ docker compose down -v
 ```
 
 The application is now available at [http://localhost:8888](http://localhost:8888).
-
----
-
-## Tests
-
-This project uses PHPUnit for automated testing. The tests require the Docker container to be running.
-
-**Run all tests:**
-```bash
-docker compose exec app vendor/bin/phpunit
-```
-
-**Run with code coverage report:**
-```bash
-docker compose exec app vendor/bin/phpunit --coverage-text
-```
-
-A full test plan with all test cases can be found in [documentation/TEST_PLAN.md](documentation/TEST_PLAN.md).
