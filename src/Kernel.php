@@ -22,7 +22,6 @@ class Kernel
 
         $this->configManager = new ConfigManager($config);
 
-        +
         $debugMode = $this->configManager->get('APP_ENV') != 'production';
         $viewsPath = $this->configManager->get('VIEWS_PATH');
 

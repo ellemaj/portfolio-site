@@ -21,11 +21,15 @@ if ($argv[1] === 'deptrac') {
 }
 
 if ($argv[1] === 'migrate') {
+    $isMySQL = isset($_ENV['DB_HOST']);
+    $dir = $isMySQL ? __DIR__ . '/database/mysql/' : __DIR__ . '/database/';
+    $dbPath = $isMySQL ? '' : __DIR__ . '/database.sqlite';
+
     $kernel = new Kernel([
-        'DEBUG' => true,
-        'VIEWS_PATH' => './app/Views',
-        'APP_DB' => 'database.sqlite'
+        'APP_ENV' => 'development',
+        'VIEWS_PATH' => './app/views',
+        'APP_DB' => $dbPath
     ]);
 
-    $kernel->getDatabase()->migrate(__DIR__ . '/database');
-  }
+    $kernel->getDatabase()->migrate($dir);
+}

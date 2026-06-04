@@ -8,7 +8,7 @@ class Response
 
     public string $body;
 
-    public ?string $headers;
+    public ?string $header;
 
     public function __construct(string $body = "", int $responseCode = 200, ?string $header = null)
     {

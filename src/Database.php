@@ -9,24 +9,28 @@ class Database
 {
     private PDO $connection;
 
-    public function __construct(string $name)
+    public function __construct(string $path = '')
     {
-        $this->connection = new PDO("sqlite:" . $name);
+        if (str_ends_with($path, '.sqlite')) {
+            $dsn = "sqlite:{$path}";
+            $this->connection = new PDO($dsn);
+        } else {
+            $host = $_ENV['DB_HOST'] ?? 'db';
+            $name = $_ENV['DB_NAME'] ?? 'maestro';
+            $user = $_ENV['DB_USER'] ?? 'root';
+            $pass = $_ENV['DB_PASS'] ?? '';
+            $dsn = "mysql:host={$host};dbname={$name};charset=utf8mb4";
+            $this->connection = new PDO($dsn, $user, $pass);
+        }
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-        $this->connection->exec('PRAGMA foreign_keys = ON;');
     }
 
-    public function query(string $query): PDOStatement | false
+    public function query(string $query): PDOStatement|false
     {
         return $this->connection->query($query);
     }
 
-    /**
-     * @param string $sql
-     * @param mixed[]|null $params
-     * @return PDOStatement
-     */
     public function run(string $sql, array|null $params = null): PDOStatement
     {
         $stmt = $this->connection->prepare($sql);
@@ -60,7 +64,7 @@ class Database
                 continue;
             }
             echo "Migrating: " . $file . "\n";
-            if ($contents = file_get_contents($migrationsDirectory . '/' . $file)) {
+            if ($contents = file_get_contents($migrationsDirectory . $file)) {
                 $this->connection->exec($contents);
             }
         }
