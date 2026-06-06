@@ -12,7 +12,8 @@ class ProfileController
     public function __construct(
         private ResponseFactory $responseFactory,
         private ProfileRepositoryInterface $profiles
-    ) {}
+    ) {
+    }
 
     public function index(Request $request): Response
     {
@@ -46,8 +47,8 @@ class ProfileController
             return $this->responseFactory->internalError();
         }
 
-        $profile->intro      = $request->get('intro');
-        $profile->bio        = $request->get('bio');
+        $profile->intro      = $request->get('intro') ?? $profile->intro;
+        $profile->bio        = $request->get('bio') ?? $profile->bio;
 
         $profile->birthdate  = $request->get('birthdate');
 

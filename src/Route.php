@@ -10,7 +10,7 @@ class Route
 
     /** @var callable */
     public $callback;
-    
+
     /** @var callable|null */
     public $middleware = null;
 

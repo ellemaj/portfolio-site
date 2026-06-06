@@ -17,6 +17,6 @@ class User
     public string $role = 'user';
 
     public int $created_at;
-    
+
     public int|null $deleted_at = null;
 }

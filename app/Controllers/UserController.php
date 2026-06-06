@@ -15,7 +15,8 @@ class UserController
         private ResponseFactory $responseFactory,
         private UserRepositoryInterface $users,
         private Session $session
-    ) {}
+    ) {
+    }
 
     public function showRegister(Request $request): Response
     {
@@ -33,7 +34,7 @@ class UserController
     {
         $firstName       = htmlspecialchars(trim($request->get('firstName') ?? ''));
         $lastName        = htmlspecialchars(trim($request->get('lastName') ?? ''));
-        $email           = filter_var(trim($request->get('email') ?? ''), FILTER_SANITIZE_EMAIL);
+        $email           = (string) filter_var(trim($request->get('email') ?? ''), FILTER_SANITIZE_EMAIL);
         $password        = $request->get('password') ?? '';
         $passwordConfirm = $request->get('password_confirm') ?? '';
 
@@ -55,7 +56,7 @@ class UserController
                 ->redirect('/register');
         }
 
-        if (!$firstName || !$lastName || !$email || !$password) {
+        if (!$firstName || !$lastName) {
             return $this->responseFactory
                 ->createToast('error', 'Vul alle velden in.')
                 ->redirect('/register');
@@ -90,7 +91,7 @@ class UserController
     }
 
     public function login(Request $request): Response
-    {   
+    {
         $token = $request->get('csrf_token') ?? '';
         if (!$this->session->validateCsrfToken($token)) {
             return $this->responseFactory
@@ -131,10 +132,10 @@ class UserController
     {
         $toasts = [['message' => 'Je bent uitgelogd.']];
         session_destroy();
-        
+
         session_start();
         $_SESSION['_toasts'] = $toasts;
-        
+
         return $this->responseFactory->redirect('/login');
     }
 }

@@ -12,7 +12,8 @@ class DashboardController
     public function __construct(
         private ResponseFactory $responseFactory,
         private CourseRepositoryInterface $courses
-    ) {}
+    ) {
+    }
 
     public function index(Request $request): Response
     {

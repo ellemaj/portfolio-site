@@ -48,7 +48,7 @@ class ResponseFactory
             'type' => $type,
             'message' => $message
         ];
-        
+
         $this->session->setAttribute('_toasts', $toasts);
         return $this;
     }
@@ -113,7 +113,7 @@ class ResponseFactory
     {
         $response = new Response();
         $response->responseCode = $statusCode;
-        $response->body = json_encode($data);
+        $response->body = json_encode($data) ?: '{}';
         $response->header = "Content-Type: application/json";
         return $response;
     }

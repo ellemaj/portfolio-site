@@ -9,7 +9,8 @@ class ProfileRepository implements ProfileRepositoryInterface
 {
     public function __construct(
         private Database $db
-    ) {}
+    ) {
+    }
 
     public function get(): ?Profile
     {
@@ -17,7 +18,7 @@ class ProfileRepository implements ProfileRepositoryInterface
             ->run("SELECT * FROM profile LIMIT 1")
             ->fetch();
 
-        if (!$data) {
+        if (!$data instanceof \stdClass) {
             return null;
         }
 
@@ -60,7 +61,7 @@ class ProfileRepository implements ProfileRepositoryInterface
         return true;
     }
 
-    private function mapToProfile(object $data): Profile
+    private function mapToProfile(\stdClass $data): Profile
     {
         $profile = new Profile();
 

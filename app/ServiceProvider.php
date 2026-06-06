@@ -8,9 +8,7 @@ use App\Controllers\UserController;
 use App\Controllers\DashboardController;
 use App\Controllers\ProfileController;
 use App\Controllers\ApiController;
-
 use App\Middleware\AdminMiddleware;
-
 use App\Repositories\PostRepository;
 use App\Repositories\PostRepositoryInterface;
 use App\Repositories\UserRepository;
@@ -19,7 +17,6 @@ use App\Repositories\CourseRepository;
 use App\Repositories\CourseRepositoryInterface;
 use App\Repositories\ProfileRepository;
 use App\Repositories\ProfileRepositoryInterface;
-
 use Exception;
 use Framework\Database;
 use Framework\ResponseFactory;

@@ -13,7 +13,8 @@ class BlogController
     public function __construct(
         private ResponseFactory $responseFactory,
         private PostRepositoryInterface $postRepository
-    ) {}
+    ) {
+    }
 
     public function index(Request $request): Response
     {
@@ -81,7 +82,7 @@ class BlogController
         $post->preview          = $preview;
         $post->content          = $content;
         $post->status           = $status;
-        $post->publication_date = $publication_date ? strtotime($publication_date) : time();
+        $post->publication_date = $publication_date ? (int)strtotime($publication_date) : time();
         $post->created_at       = time();
         $post->deleted_at       = null;
 
@@ -126,7 +127,7 @@ class BlogController
         $post->content          = $request->get('content') ?? $post->content;
         $post->status           = $request->get('status') ?? $post->status;
         $post->publication_date = $request->get('publication_date')
-            ? strtotime($request->get('publication_date'))
+            ? (int)strtotime($request->get('publication_date'))
             : $post->publication_date;
 
         $this->postRepository->update((int) $request->get('id'), $post);

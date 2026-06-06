@@ -7,7 +7,9 @@ use Framework\ResponseFactory;
 
 class AdminMiddleware
 {
-    public function __construct(private ResponseFactory $responseFactory) {}
+    public function __construct(private ResponseFactory $responseFactory)
+    {
+    }
 
     public function handle(): ?Response
     {

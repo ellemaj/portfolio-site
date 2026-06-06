@@ -31,6 +31,7 @@ class Database
         return $this->connection->query($query);
     }
 
+    /** @param array<int|string, mixed>|null $params */
     public function run(string $sql, array|null $params = null): PDOStatement
     {
         $stmt = $this->connection->prepare($sql);

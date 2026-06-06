@@ -7,20 +7,26 @@ use App\Models\Post;
 
 class PostRepository implements PostRepositoryInterface
 {
-    public function __construct(private Database $db) {}
-
-    public function findAllPublished(): array
+    public function __construct(private Database $db)
     {
-        $stmt = $this->db->prepare("SELECT * FROM posts WHERE status = 'published' AND deleted_at IS NULL ORDER BY publication_date DESC");
-        $stmt->execute();
-        return $stmt->fetchAll();
     }
 
+    /** @return mixed[] */
+    public function findAllPublished(): array
+    {
+        $stmt = $this->db->prepare(
+            "SELECT * FROM posts WHERE status = 'published' AND deleted_at IS NULL ORDER BY publication_date DESC"
+        );
+        $stmt->execute();
+        return $stmt->fetchAll() ?: [];
+    }
+
+    /** @return mixed[] */
     public function findAll(): array
     {
         $stmt = $this->db->prepare("SELECT * FROM posts ORDER BY created_at DESC");
         $stmt->execute();
-        return $stmt->fetchAll();
+        return $stmt->fetchAll() ?: [];
     }
 
     public function findById(int $id): ?Post
@@ -29,7 +35,9 @@ class PostRepository implements PostRepositoryInterface
         $stmt->execute([$id]);
         $data = $stmt->fetch();
 
-        if (!$data) return null;
+        if (!$data instanceof \stdClass) {
+            return null;
+        }
 
         return $this->mapToPost($data);
     }
@@ -40,7 +48,9 @@ class PostRepository implements PostRepositoryInterface
         $stmt->execute([$slug]);
         $data = $stmt->fetch();
 
-        if (!$data) return null;
+        if (!$data instanceof \stdClass) {
+            return null;
+        }
 
         return $this->mapToPost($data);
     }
@@ -102,7 +112,8 @@ class PostRepository implements PostRepositoryInterface
             "deleted_at" => time() + 120
         ]);
 
-        return $this->findById($id)->deleted_at;
+        $post = $this->findById($id);
+        return $post !== null && $post->deleted_at !== null;
     }
 
     public function undoDelete(int $id): bool
@@ -116,10 +127,11 @@ class PostRepository implements PostRepositoryInterface
             "deleted_at" => null
         ]);
 
-        return !$this->findById($id)->deleted_at;
+        $post = $this->findById($id);
+        return $post !== null && $post->deleted_at === null;
     }
 
-    private function mapToPost(object $data): Post
+    private function mapToPost(\stdClass $data): Post
     {
         $post = new Post();
         $post->id = $data->id;

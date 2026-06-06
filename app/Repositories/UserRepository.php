@@ -7,7 +7,9 @@ use Framework\Database;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function __construct(private Database $db) {}
+    public function __construct(private Database $db)
+    {
+    }
 
     public function findByEmail(string $email): ?User
     {
@@ -16,7 +18,9 @@ class UserRepository implements UserRepositoryInterface
             ["email" => $email]
         )->fetch();
 
-        if (!$data) return null;
+        if (!$data instanceof \stdClass) {
+            return null;
+        }
 
         return $this->mapToUser($data);
     }
@@ -28,7 +32,9 @@ class UserRepository implements UserRepositoryInterface
             ["id" => $id]
         )->fetch();
 
-        if (!$data) return null;
+        if (!$data instanceof \stdClass) {
+            return null;
+        }
 
         return $this->mapToUser($data);
     }
@@ -52,7 +58,7 @@ class UserRepository implements UserRepositoryInterface
         return $user;
     }
 
-    private function mapToUser(object $data): User
+    private function mapToUser(\stdClass $data): User
     {
         $user = new User();
         $user->id         = $data->id;

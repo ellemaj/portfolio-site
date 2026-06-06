@@ -2,15 +2,10 @@
 
 namespace Framework;
 
-use Exception;
-
 class Router
 {
     /** @var Route[] */
     public array $routes = [];
-
-    /** @var array<string, callable> */
-    private array $middlewares = [];
 
     private ResponseFactory $responseFactory;
 

@@ -7,11 +7,15 @@ use Framework\Database;
 
 class CourseRepository implements CourseRepositoryInterface
 {
-    public function __construct(private Database $db) {}
+    public function __construct(private Database $db)
+    {
+    }
 
+    /** @return Course[] */
     public function findAll(): array
     {
-        $rows = $this->db->run("SELECT * FROM courses ORDER BY id ASC")->fetchAll();
+        /** @var \stdClass[] $rows */
+        $rows = $this->db->run("SELECT * FROM courses ORDER BY id ASC")->fetchAll() ?: [];
         return array_map([$this, 'mapToCourse'], $rows);
     }
 
@@ -22,7 +26,9 @@ class CourseRepository implements CourseRepositoryInterface
             ["id" => $id]
         )->fetch();
 
-        if (!$data) return null;
+        if (!$data instanceof \stdClass) {
+            return null;
+        }
 
         return $this->mapToCourse($data);
     }
@@ -37,7 +43,7 @@ class CourseRepository implements CourseRepositoryInterface
         return true;
     }
 
-    private function mapToCourse(object $data): Course
+    private function mapToCourse(\stdClass $data): Course
     {
         $course = new Course();
         $course->id        = $data->id;

@@ -12,7 +12,8 @@ class ApiController
     public function __construct(
         private ResponseFactory $responseFactory,
         private PostRepositoryInterface $posts
-    ) {}
+    ) {
+    }
 
     public function getPosts(Request $request): Response
     {

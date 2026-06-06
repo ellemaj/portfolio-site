@@ -6,8 +6,10 @@ use App\Models\Post;
 
 interface PostRepositoryInterface
 {
+    /** @return mixed[] */
     public function findAllPublished(): array;
 
+    /** @return mixed[] */
     public function findAll(): array;
 
     public function findById(int $id): ?Post;
