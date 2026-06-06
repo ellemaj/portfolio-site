@@ -6,78 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', 'monospace'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
 
     {% block styles %}{% endblock %}
     {% block scripts %}{% endblock %}
 
-    <title> {% block title %}{% endblock %}</title>
-</head>
-
-<body>
-
-    <div id="page-loading-bar" aria-hidden="true"></div>
-
-    <header>
-        <a href="/"><img src="/assets/images/logo.png" width="10%" alt="Logo"></a>
-    </header>
-
-    <nav class="menu">
-        <ul>
-            <li><a href="/" class="{% if active == 'home' %}active{% endif %}">Home</a></li>
-            <li><a href="/profile" class="{% if active == 'profile' %}active{% endif %}">Profile</a></li>
-            <li><a href="/dashboard" class="{% if active == 'dashboard' %}active{% endif %}">Dashboard</a></li>
-            <li><a href="/faq" class="{% if active == 'faq' %}active{% endif %}">FAQ</a></li>
-            <li><a href="/blog" class="{% if active == 'blog' %}active{% endif %}">Blog</a></li>
-
-            {% if session.user_id %}
-                <li><a href="/overview" class="{% if active == 'overview' %}active{% endif %}">Overview</a></li>
-
-                {% if session.role == 'admin' %}
-                    <li><a href="/blog/manage" class="{% if active == 'manage' %}active{% endif %}">Blog beheren</a></li>
-                    <li><a href="/profile/edit" class="{% if active == 'editProfile' %}active{% endif %}">Edit profile</a></li>
-                {% endif %}
-
-                <li>
-                    <a href="/logout">Logout</a>
-                </li>
-            {% else %}
-                <li><a href="/login" class="{% if active == 'login' %}active{% endif %}">Login</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-
-    <!-- Content -->
-    <main>
-        {% block content %}{% endblock %}
-        {% include 'layouts/toasts.html.twig' %}
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <a href="/">© {{ "now"|date("Y") }} ellemaj</a> |
-        <a href="mailto:loen0029@hz.nl">Contact</a> |
-        <a href="commandmaker" class="{% if active == 'commandmaker' %}active{% endif %}">Commandmaker</a>
-    </footer>
-
-    <!-- Confirm dialog -->
-    <dialog id="confirm-dialog">
-        <p id="confirm-message">Weet je zeker dat je dit wilt verwijderen?</p>
-        <div class="confirm-buttons">
-            <button id="confirm-yes">Verwijderen</button>
-            <button id="confirm-no">Annuleren</button>
-        </div>
-    </dialog>
+    <title>{% block title %}{% endblock %} — ellemaj</title>
 
     <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .font-mono-custom { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+
+        /* Loading bar */
         #page-loading-bar {
             position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
+            top: 0; left: 0;
+            height: 2px;
             width: 0;
-            background: #c2004b;
+            background: linear-gradient(90deg, #22d3ee, #3b82f6, #a855f7);
             z-index: 10000;
             opacity: 0;
             transition: opacity 0.2s;
@@ -93,43 +57,129 @@
             100% { width: 88%; }
         }
 
-        #confirm-dialog {
-            border: none;
-            border-radius: 6px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            min-width: 300px;
-        }
-
+        /* Dialog backdrop */
         #confirm-dialog::backdrop {
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
         }
 
-        .confirm-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-            justify-content: flex-end;
-        }
-
-        #confirm-yes {
-            background: #c2004b;
-            color: white;
-            border: none;
-            padding: 0.5rem 1.25rem;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        #confirm-no {
-            background: #eee;
-            color: #333;
-            border: none;
-            padding: 0.5rem 1.25rem;
-            border-radius: 4px;
-            cursor: pointer;
+        /* Active nav glow */
+        .nav-active-glow {
+            text-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
         }
     </style>
+</head>
+
+<body class="bg-slate-900 text-slate-200 min-h-screen flex flex-col">
+
+    <div id="page-loading-bar" aria-hidden="true"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14">
+
+                <!-- Brand -->
+                <a href="/" class="flex items-center group">
+                    <span class="font-mono-custom font-semibold text-sm">
+                        <span class="text-slate-600">&lt;</span><span class="text-cyan-400 group-hover:text-cyan-300 transition-colors">ellemaj</span><span class="text-slate-600">/&gt;</span>
+                    </span>
+                </a>
+
+                <!-- Desktop links -->
+                <div class="hidden md:flex items-center gap-0.5">
+                    <a href="/" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'home' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Home</a>
+                    <a href="/profile" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'profile' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Profile</a>
+                    <a href="/dashboard" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'dashboard' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Dashboard</a>
+                    <a href="/faq" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'faq' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">FAQ</a>
+                    <a href="/blog" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'blog' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Blog</a>
+
+                    {% if session.user_id %}
+                        <a href="/overview" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'overview' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Overview</a>
+                        {% if session.role == 'admin' %}
+                            <a href="/blog/manage" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'manage' %}text-amber-400 bg-amber-400/10{% else %}text-slate-500 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">
+                                <span class="font-mono-custom text-xs">⚙</span> Manage
+                            </a>
+                            <a href="/profile/edit" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'editProfile' %}text-amber-400 bg-amber-400/10{% else %}text-slate-500 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">Edit</a>
+                        {% endif %}
+                        <a href="/logout" class="ml-1 px-3 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:text-red-400 hover:bg-red-400/10 transition-colors">Logout</a>
+                    {% else %}
+                        <a href="/login" class="ml-2 px-4 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-md text-sm transition-colors font-mono-custom tracking-tight">Login</a>
+                    {% endif %}
+                </div>
+
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors" aria-label="Toggle menu">
+                    <svg id="menu-icon-open" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <svg id="menu-icon-close" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-slate-800 bg-slate-950/95">
+            <div class="px-4 py-3 flex flex-col gap-1">
+                <a href="/" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'home' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Home</a>
+                <a href="/profile" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'profile' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Profile</a>
+                <a href="/dashboard" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'dashboard' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Dashboard</a>
+                <a href="/faq" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'faq' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">FAQ</a>
+                <a href="/blog" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'blog' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Blog</a>
+                {% if session.user_id %}
+                    <a href="/overview" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'overview' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Overview</a>
+                    {% if session.role == 'admin' %}
+                        <a href="/blog/manage" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Manage Blog</a>
+                        <a href="/profile/edit" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Edit Profile</a>
+                    {% endif %}
+                    <a href="/logout" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-colors">Logout</a>
+                {% else %}
+                    <a href="/login" class="px-3 py-2.5 rounded-md text-sm font-medium text-cyan-400 hover:bg-cyan-400/10 transition-colors">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="flex-1 pt-14">
+        {% block content %}{% endblock %}
+        {% include 'layouts/toasts.html.twig' %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/60 bg-slate-950/80 py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span class="font-mono-custom text-slate-500 text-sm">
+                <span class="text-slate-700">&lt;</span><span class="text-slate-400">ellemaj</span><span class="text-slate-700">/&gt;</span>
+                <span class="text-slate-700 ml-2">© {{ "now"|date("Y") }}</span>
+            </span>
+            <div class="flex items-center gap-4 text-sm">
+                <a href="mailto:loen0029@hz.nl" class="text-slate-500 hover:text-cyan-400 transition-colors">Contact</a>
+                <span class="text-slate-800">|</span>
+                <a href="/commandmaker" class="text-slate-500 hover:text-cyan-400 transition-colors {% if active == 'commandmaker' %}text-cyan-400{% endif %}">Commandmaker</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Confirm dialog -->
+    <dialog id="confirm-dialog" class="rounded-xl border border-slate-700 bg-slate-900 text-slate-200 p-0 shadow-2xl w-full max-w-sm">
+        <div class="p-6">
+            <div class="flex items-start gap-3 mb-4">
+                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                </div>
+                <p id="confirm-message" class="text-slate-200 font-medium pt-1.5 leading-snug">Weet je zeker dat je dit wilt verwijderen?</p>
+            </div>
+            <div class="flex gap-3 justify-end">
+                <button id="confirm-no" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-lg text-sm font-medium transition-colors cursor-pointer">Annuleren</button>
+                <button id="confirm-yes" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg text-sm font-semibold transition-colors cursor-pointer">Verwijderen</button>
+            </div>
+        </div>
+    </dialog>
 
     <script>
         const loadingBar = document.getElementById('page-loading-bar');
@@ -169,7 +219,6 @@
         const dialog = document.getElementById('confirm-dialog');
         const confirmYes = document.getElementById('confirm-yes');
         const confirmNo = document.getElementById('confirm-no');
-
         let pendingForm = null;
 
         document.querySelectorAll('[data-confirm]').forEach(form => {
@@ -194,6 +243,19 @@
         confirmNo.addEventListener('click', () => {
             dialog.close();
             pendingForm = null;
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIconOpen = document.getElementById('menu-icon-open');
+        const menuIconClose = document.getElementById('menu-icon-close');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = !mobileMenu.classList.contains('hidden');
+            mobileMenu.classList.toggle('hidden', isOpen);
+            menuIconOpen.classList.toggle('hidden', !isOpen);
+            menuIconClose.classList.toggle('hidden', isOpen);
         });
     </script>
 </body>

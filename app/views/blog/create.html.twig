@@ -3,115 +3,172 @@
 {% block title %}Nieuwe post{% endblock %}
 
 {% block content %}
-    <section>
-        <h1>Nieuwe post</h1>
 
-        <form action="/blog/create" method="POST">
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8 gap-4 flex-wrap">
+        <div>
+            <div class="font-mono-custom text-xs text-amber-500 tracking-widest uppercase flex items-center gap-2 mb-2">
+                <span class="inline-block w-6 h-px bg-amber-500/50"></span>
+                <span>Admin</span>
+            </div>
+            <h1 class="text-3xl font-bold text-slate-100">Nieuwe post</h1>
+        </div>
+        <a href="/blog/manage" class="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-cyan-400 transition-colors font-mono-custom group">
+            <svg class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Terug
+        </a>
+    </div>
+
+    <!-- Form card -->
+    <div class="bg-slate-800/40 border border-slate-700/60 rounded-2xl overflow-hidden">
+
+        <div class="px-6 py-4 border-b border-slate-700/60 flex items-center gap-3">
+            <div class="flex gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500/60"></span>
+            </div>
+            <span class="font-mono-custom text-xs text-slate-500">new-post.md</span>
+        </div>
+
+        <form action="/blog/create" method="POST" class="p-6 space-y-5">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
-            <label>Titel
-                <input type="text" id="post-title" name="title" required>
-            </label>
-
-            <label>Slug
-                <input type="text" id="post-slug" name="slug" required
-                       pattern="^[a-z0-9-]+$">
-                <span id="slug-error" style="color:#dc3545;font-size:0.8rem;display:none;">
-                    Alleen kleine letters, cijfers en koppeltekens (-) toegestaan.
-                </span>
-                <small style="color:#888;">Automatisch ingevuld op basis van de titel.</small>
-            </label>
-
-            <label>Preview
-                <textarea name="preview" required></textarea>
-            </label>
-
-            <label>Content
-                <textarea name="content" required></textarea>
-            </label>
-
-            <label>Status
-                <select name="status">
-                    <option value="draft">Draft</option>
-                    <option value="published">Gepubliceerd</option>
-                </select>
-            </label>
-
-            <div>
-                <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">
-                    Datum van publiceren
-                </label>
-                <input type="text" id="publication-date" name="publication_date" required
-                        class="w-full border border-gray-300 px-3 py-3">
+            <!-- Title + Slug -->
+            <div class="grid sm:grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Titel</label>
+                    <input type="text" id="post-title" name="title" required
+                           class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors"
+                           placeholder="Mijn eerste post">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">
+                        Slug
+                        <span class="ml-1 text-slate-600 normal-case font-sans font-normal">(auto)</span>
+                    </label>
+                    <input type="text" id="post-slug" name="slug" required pattern="^[a-z0-9-]+$"
+                           class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors"
+                           placeholder="mijn-eerste-post">
+                    <p id="slug-error" class="hidden mt-1.5 text-xs text-red-400 font-mono-custom">Alleen kleine letters, cijfers en koppeltekens (-).</p>
+                </div>
             </div>
 
-            <button type="submit">Opslaan</button>
+            <!-- Preview -->
+            <div>
+                <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Preview</label>
+                <textarea name="preview" rows="3" required
+                          class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors resize-y"
+                          placeholder="Korte samenvatting van de post…"></textarea>
+            </div>
+
+            <!-- Content -->
+            <div>
+                <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Content</label>
+                <textarea name="content" rows="12" required
+                          class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors resize-y"
+                          placeholder="Schrijf hier je post…"></textarea>
+            </div>
+
+            <!-- Status + Date -->
+            <div class="grid sm:grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Status</label>
+                    <select name="status"
+                            class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
+                        <option value="draft">Draft</option>
+                        <option value="published">Gepubliceerd</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Datum van publiceren</label>
+                    <input type="text" id="publication-date" name="publication_date" required
+                           class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors"
+                           placeholder="dd-mm-jjjj">
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="pt-2 flex items-center gap-3">
+                <button type="submit"
+                        class="px-6 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-lg text-sm transition-colors font-mono-custom">
+                    Opslaan
+                </button>
+                <a href="/blog/manage" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Annuleren</a>
+            </div>
+
         </form>
+    </div>
+</div>
 
-        <a href="/blog/manage">← Terug</a>
-    </section>
+<!-- Flatpickr -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/nl.js"></script>
 
+<style>
+    /* Flatpickr dark theme overrides */
+    .flatpickr-calendar {
+        background: #1e293b !important;
+        border: 1px solid #334155 !important;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+        border-radius: 12px !important;
+        color: #e2e8f0 !important;
+    }
+    .flatpickr-months .flatpickr-month,
+    .flatpickr-current-month,
+    .flatpickr-monthDropdown-months { background: #1e293b !important; color: #e2e8f0 !important; }
+    .flatpickr-weekday { color: #64748b !important; }
+    .flatpickr-day { color: #94a3b8 !important; border-radius: 6px !important; }
+    .flatpickr-day:hover { background: #334155 !important; border-color: transparent !important; color: #e2e8f0 !important; }
+    .flatpickr-day.selected { background: #06b6d4 !important; border-color: #06b6d4 !important; color: #0f172a !important; }
+    .flatpickr-day.today { border-color: #06b6d4 !important; }
+    .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #64748b !important; }
+    .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: #22d3ee !important; }
+    .numInputWrapper:hover { background: #334155 !important; }
+    .numInput { color: #e2e8f0 !important; }
+</style>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/nl.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        flatpickr.localize(flatpickr.l10ns.nl);
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        flatpickr("#publication-date", {
+            dateFormat: "d-m-Y",
+            minDate: "today",
+            disableMobile: true,
+        });
 
-            flatpickr.localize(flatpickr.l10ns.nl);
+        const titleInput = document.getElementById('post-title');
+        const slugInput  = document.getElementById('post-slug');
 
-            const datePicker = flatpickr("#publication-date", {
-                dateFormat: "d-m-Y",
-                minDate: "today",
-                disableMobile: true,
-                onChange: function(selectedDates) {
-                    const selected = selectedDates[0];
-                    const today = new Date();
-                    const isToday = selected.toDateString() === today.toDateString();
-
-                    if (isToday) {
-                        const currentTime = today.toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" });
-                        startPicker.set("minTime", currentTime);
-                    } else {
-                        startPicker.set("minTime", "00:00");
-                    }
-                }
-            });
-
-            const titleInput = document.getElementById('post-title');
-            const slugInput  = document.getElementById('post-slug');
-
-            titleInput.addEventListener('input', () => {
-                if (!slugInput.dataset.edited) {
-                    slugInput.value = titleInput.value
-                        .toLowerCase()
-                        .trim()
-                        .replace(/[^a-z0-9\s-]/g, '')
-                        .replace(/\s+/g, '-')
-                        .replace(/-+/g, '-');
-                }
-            });
-
-            slugInput.addEventListener('input', () => {
-                slugInput.dataset.edited = '1';
-                validateSlug();
-            });
-
-            slugInput.addEventListener('blur', validateSlug);
-
-            function validateSlug() {
-                const error = document.getElementById('slug-error');
-                const valid = /^[a-z0-9-]+$/.test(slugInput.value) && slugInput.value.length > 0;
-                if (!valid) {
-                    slugInput.style.border = '2px solid #dc3545';
-                    error.style.display = 'block';
-                } else {
-                    slugInput.style.border = '';
-                    error.style.display = 'none';
-                }
+        titleInput.addEventListener('input', () => {
+            if (!slugInput.dataset.edited) {
+                slugInput.value = titleInput.value
+                    .toLowerCase().trim()
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-');
             }
         });
-    </script>
+
+        slugInput.addEventListener('input', () => {
+            slugInput.dataset.edited = '1';
+            validateSlug();
+        });
+        slugInput.addEventListener('blur', validateSlug);
+
+        function validateSlug() {
+            const error = document.getElementById('slug-error');
+            const valid = /^[a-z0-9-]+$/.test(slugInput.value) && slugInput.value.length > 0;
+            slugInput.style.borderColor = valid ? '' : 'rgb(248 113 113)';
+            error.classList.toggle('hidden', valid);
+        }
+    });
+</script>
 
 {% endblock %}

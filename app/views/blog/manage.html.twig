@@ -3,45 +3,111 @@
 {% block title %}Posts beheren{% endblock %}
 
 {% block content %}
-    <section>
-        <h1>Posts beheren</h1>
-        <a href="/blog/create">Nieuwe post</a>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Titel</th>
-                    <th>Slug</th>
-                    <th>Status</th>
-                    <th>Acties</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for post in posts %}
-                    <tr>
-                        <td>{{ post.title }}</td>
-                        <td>{{ post.slug }}</td>
-                        <td>{{ post.status }}</td>
-                        <td>
-                            <a href="/blog/{{ post.id }}/edit">Bewerken</a>
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-                            {% if post.deleted_at is not null and post.deleted_at > date().timestamp %}
-                            
-                                <form action="/blog/{{ post.id }}/restore" method="POST">
-                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                                    <button type="submit">Ongedaan maken</button>
-                                </form>
-                            {% else %}
-                                <form action="/blog/{{ post.id }}/delete" method="POST"
-                                    data-confirm="Weet je zeker dat je '{{ post.title }}' wilt verwijderen?">
-                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                                    <button type="submit">Verwijderen</button>
-                                </form>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8 gap-4 flex-wrap">
+        <div>
+            <div class="font-mono-custom text-xs text-amber-500 tracking-widest uppercase flex items-center gap-2 mb-2">
+                <span class="inline-block w-6 h-px bg-amber-500/50"></span>
+                <span>Admin</span>
+            </div>
+            <h1 class="text-3xl font-bold text-slate-100">Posts beheren</h1>
+        </div>
+        <a href="/blog/create"
+           class="inline-flex items-center gap-2 px-4 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-lg text-sm transition-colors font-mono-custom">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Nieuwe post
+        </a>
+    </div>
+
+    <!-- Table card -->
+    <div class="bg-slate-800/40 border border-slate-700/60 rounded-2xl overflow-hidden">
+
+        <div class="px-6 py-4 border-b border-slate-700/60 flex items-center gap-3">
+            <div class="flex gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500/60"></span>
+            </div>
+            <span class="font-mono-custom text-xs text-slate-500">posts.csv — {{ posts|length }} entries</span>
+        </div>
+
+        {% if posts|length == 0 %}
+            <div class="px-6 py-16 text-center text-slate-500">
+                <p class="font-mono-custom text-sm">// Geen posts gevonden</p>
+                <a href="/blog/create" class="mt-4 inline-block text-cyan-400 hover:text-cyan-300 text-sm transition-colors">Maak je eerste post →</a>
+            </div>
+        {% else %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700/60">
+                            <th class="px-5 py-3 text-left font-mono-custom text-xs text-slate-500 uppercase tracking-wider">Titel</th>
+                            <th class="px-5 py-3 text-left font-mono-custom text-xs text-slate-500 uppercase tracking-wider hidden sm:table-cell">Slug</th>
+                            <th class="px-5 py-3 text-left font-mono-custom text-xs text-slate-500 uppercase tracking-wider">Status</th>
+                            <th class="px-5 py-3 text-right font-mono-custom text-xs text-slate-500 uppercase tracking-wider">Acties</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700/40">
+                        {% for post in posts %}
+                            <tr class="hover:bg-slate-700/20 transition-colors">
+                                <td class="px-5 py-3.5 font-medium text-slate-200 max-w-xs truncate">{{ post.title }}</td>
+                                <td class="px-5 py-3.5 hidden sm:table-cell">
+                                    <span class="font-mono-custom text-xs text-slate-500">{{ post.slug }}</span>
+                                </td>
+                                <td class="px-5 py-3.5">
+                                    {% if post.status == 'published' %}
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full text-xs font-mono-custom">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                            published
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-full text-xs font-mono-custom">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                                            draft
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-5 py-3.5">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <a href="/blog/{{ post.id }}/edit"
+                                           class="px-3 py-1.5 bg-slate-700/60 hover:bg-slate-700 border border-slate-600/60 text-slate-300 hover:text-slate-100 rounded-md text-xs font-medium transition-colors">
+                                            Bewerken
+                                        </a>
+
+                                        {% if post.deleted_at is not null and post.deleted_at > date().timestamp %}
+                                            <form action="/blog/{{ post.id }}/restore" method="POST">
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                                <button type="submit"
+                                                        class="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-md text-xs font-medium transition-colors">
+                                                    Herstel
+                                                </button>
+                                            </form>
+                                        {% else %}
+                                            <form action="/blog/{{ post.id }}/delete" method="POST"
+                                                  data-confirm="Weet je zeker dat je '{{ post.title }}' wilt verwijderen?">
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                                <button type="submit"
+                                                        class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 rounded-md text-xs font-medium transition-colors">
+                                                    Verwijder
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
 {% endblock %}

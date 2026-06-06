@@ -2,56 +2,92 @@
 
 {% block title %}Blogpost{% endblock %}
 
-{% block styles %}
-<link rel="stylesheet" href="/assets/css/blogposts.css">
-{% endblock %}
-
 {% block content %}
-    <section id="post-detail">
-        <div id="post-loading">Even wachten… Post ophalen…</div>
-        <div id="post-error" style="display: none; color: red;"></div>
-        <div id="post-content" style="display: none;">
-            <h2 id="post-title"></h2>
-            <div>
-                <h3><time id="post-date"></time></h3>
+
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Loading state -->
+    <div id="post-loading" class="flex items-center gap-3 text-slate-500 py-8">
+        <svg class="w-4 h-4 animate-spin text-cyan-500" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+        </svg>
+        <span class="text-sm font-mono-custom">Post ophalen…</span>
+    </div>
+
+    <!-- Error state -->
+    <div id="post-error" class="hidden flex items-center gap-2 text-red-400 py-8">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span class="text-sm font-mono-custom"></span>
+    </div>
+
+    <!-- Post content -->
+    <article id="post-content" class="hidden">
+
+        <!-- Back link -->
+        <a href="/blog" class="inline-flex items-center gap-1.5 text-slate-500 hover:text-cyan-400 text-sm transition-colors font-mono-custom mb-8 group">
+            <svg class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Terug naar blog
+        </a>
+
+        <!-- Post header -->
+        <header class="mb-8 pb-6 border-b border-slate-700/60">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="font-mono-custom text-xs text-slate-600">//</span>
+                <time id="post-date" class="font-mono-custom text-xs text-slate-500"></time>
             </div>
-            <div id="post-body"></div>
-            <h4><a href="/blog" class="terug-knop">← Terug naar blog</a></h4>
+            <h1 id="post-title" class="text-3xl md:text-4xl font-bold text-slate-100 leading-tight"></h1>
+        </header>
+
+        <!-- Post body -->
+        <div id="post-body" class="prose-custom"></div>
+
+        <!-- Footer -->
+        <div class="mt-12 pt-6 border-t border-slate-700/60">
+            <a href="/blog" class="inline-flex items-center gap-1.5 text-slate-500 hover:text-cyan-400 text-sm transition-colors font-mono-custom group">
+                <svg class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Terug naar blog
+            </a>
         </div>
-    </section>
 
-    <script>
-        const slug = {{ slug|json_encode|raw }};
-        const loadingEl = document.getElementById('post-loading');
-        const errorEl = document.getElementById('post-error');
-        const contentEl = document.getElementById('post-content');
-        const titleEl = document.getElementById('post-title');
-        const dateEl = document.getElementById('post-date');
-        const bodyEl = document.getElementById('post-body');
+    </article>
+</div>
 
-        fetch(`/api/posts/${encodeURIComponent(slug)}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Post niet gevonden');
-                }
-                return response.json();
-            })
-            .then(post => {
-                loadingEl.style.display = 'none';
-                contentEl.style.display = 'block';
-                titleEl.textContent = post.title;
-                dateEl.textContent = new Date(post.publication_date * 1000).toLocaleDateString('nl-NL', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                });
-                bodyEl.innerHTML = post.content;
-                document.title = post.title;
-            })
-            .catch(error => {
-                loadingEl.style.display = 'none';
-                errorEl.textContent = 'Er ging iets mis: ' + error.message;
-                errorEl.style.display = 'block';
+<script>
+    const slug = {{ slug|json_encode|raw }};
+    const loadingEl = document.getElementById('post-loading');
+    const errorEl = document.getElementById('post-error');
+    const contentEl = document.getElementById('post-content');
+    const titleEl = document.getElementById('post-title');
+    const dateEl = document.getElementById('post-date');
+    const bodyEl = document.getElementById('post-body');
+
+    fetch(`/api/posts/${encodeURIComponent(slug)}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Post niet gevonden');
+            return response.json();
+        })
+        .then(post => {
+            loadingEl.style.display = 'none';
+            contentEl.classList.remove('hidden');
+            titleEl.textContent = post.title;
+            dateEl.textContent = new Date(post.publication_date * 1000).toLocaleDateString('nl-NL', {
+                day: 'numeric', month: 'long', year: 'numeric'
             });
-    </script>
+            bodyEl.innerHTML = post.content;
+            document.title = post.title + ' — ellemaj';
+        })
+        .catch(error => {
+            loadingEl.style.display = 'none';
+            errorEl.querySelector('span').textContent = 'Er ging iets mis: ' + error.message;
+            errorEl.classList.remove('hidden');
+        });
+</script>
+
 {% endblock %}

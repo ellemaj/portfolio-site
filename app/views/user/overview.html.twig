@@ -1,65 +1,92 @@
 {% extends "layouts/base.html.twig" %}
 
-{% block title %}
-Overview
-{% endblock %}
+{% block title %}Overview{% endblock %}
 
 {% block content %}
 
-<section style="max-width: 700px; margin: 40px auto;">
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-    <h1 style="text-align: center;">
-        Gebruikersdashboard
-    </h1>
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="font-mono-custom text-xs text-cyan-500 tracking-widest uppercase flex items-center gap-2 mb-2">
+            <span class="inline-block w-6 h-px bg-cyan-500/50"></span>
+            <span>Account</span>
+        </div>
+        <h1 class="text-3xl font-bold text-slate-100">Gebruikersdashboard</h1>
+        <p class="mt-1.5 text-slate-400 text-sm">Welkom terug, <span class="text-cyan-400 font-medium">{{ session.firstName }}</span>.</p>
+    </div>
 
-    <p style="text-align: center;">
-        Welkom {{ session.firstName }}!
-    </p>
+    <div class="space-y-5">
 
-    <section style="margin-top: 30px;">
+        <!-- Stats -->
+        <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-6">
+            <h2 class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest mb-4">Statistics</h2>
+            <ul class="space-y-2">
+                <li class="flex items-center gap-2.5 text-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 flex-shrink-0"></span>
+                    <span class="text-slate-400">Aantal blogposts</span>
+                </li>
+                <li class="flex items-center gap-2.5 text-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 flex-shrink-0"></span>
+                    <span class="text-slate-400">Project voortgang</span>
+                </li>
+                <li class="flex items-center gap-2.5 text-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 flex-shrink-0"></span>
+                    <span class="text-slate-400">Laatste login</span>
+                </li>
+            </ul>
+        </div>
 
-        <h2>Statistics</h2>
+        <!-- Projects -->
+        <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-6">
+            <h2 class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest mb-4">Projects</h2>
+            <ul class="space-y-2">
+                <li class="flex items-center gap-2.5 text-sm">
+                    <span class="font-mono-custom text-cyan-600 text-xs">01</span>
+                    <span class="text-slate-300">Portfolio website</span>
+                </li>
+                <li class="flex items-center gap-2.5 text-sm">
+                    <span class="font-mono-custom text-cyan-600 text-xs">02</span>
+                    <span class="text-slate-300">Dashboard systeem</span>
+                </li>
+                <li class="flex items-center gap-2.5 text-sm">
+                    <span class="font-mono-custom text-cyan-600 text-xs">03</span>
+                    <span class="text-slate-300">Blog CMS</span>
+                </li>
+            </ul>
+        </div>
 
-        <ul>
-            <li>Aantal blogposts</li>
-            <li>Project voortgang</li>
-            <li>Laatste login</li>
-        </ul>
+        <!-- Recent activity -->
+        <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-6">
+            <h2 class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest mb-4">Recent Activity</h2>
+            <ul class="space-y-3">
+                <li class="flex items-start gap-3 text-sm">
+                    <span class="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    <span class="text-slate-400">Nieuwe blogpost toegevoegd</span>
+                </li>
+                <li class="flex items-start gap-3 text-sm">
+                    <span class="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    <span class="text-slate-400">Database migratie uitgevoerd</span>
+                </li>
+                <li class="flex items-start gap-3 text-sm">
+                    <span class="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    <span class="text-slate-400">User login systeem gemaakt</span>
+                </li>
+            </ul>
+        </div>
 
-    </section>
+        <!-- Logout -->
+        <div class="pt-2">
+            <a href="/logout"
+               class="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-red-500/10 border border-slate-700 hover:border-red-500/30 text-slate-400 hover:text-red-400 rounded-lg text-sm font-medium transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                </svg>
+                Logout
+            </a>
+        </div>
 
-    <section style="margin-top: 20px;">
-
-        <h2>Projects</h2>
-
-        <ul>
-            <li>Portfolio website</li>
-            <li>Dashboard systeem</li>
-            <li>Blog CMS</li>
-        </ul>
-
-    </section>
-
-    <section style="margin-top: 20px;">
-
-        <h2>Recent activity</h2>
-
-        <ul>
-            <li>Nieuwe blogpost toegevoegd</li>
-            <li>Database migratie uitgevoerd</li>
-            <li>User login systeem gemaakt</li>
-        </ul>
-
-    </section>
-
-    <p style="text-align: center; margin-top: 30px;">
-
-        <a href="/logout">
-            Logout
-        </a>
-
-    </p>
-
-</section>
+    </div>
+</div>
 
 {% endblock %}

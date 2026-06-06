@@ -1,162 +1,92 @@
 {% if toasts is defined and toasts|length > 0 %}
-<div id="toast-viewport">
+<div id="toast-viewport" style="position:fixed;top:1.25rem;right:1.25rem;display:flex;flex-direction:column;align-items:flex-end;gap:0.625rem;z-index:9999;">
     {% for toast in toasts %}
-        <!-- toast types: success, error, info -->
-        <div class="toast toast-{{ toast.type|default('info') }}" role="alert" data-toast>
-            <div class="toast-content">
-                <div class="toast-icon">
+        <div class="toast toast-{{ toast.type|default('info') }}" role="alert" data-toast
+             style="display:flex;flex-direction:column;min-width:300px;max-width:420px;border-radius:0.75rem;overflow:hidden;opacity:0;transform:translateX(12px);transition:opacity 0.25s ease,transform 0.25s ease;position:relative;">
+
+            <div style="display:flex;align-items:center;gap:0.625rem;padding:0.875rem 1rem;">
+                <!-- Icon -->
+                <div class="toast-icon" style="flex-shrink:0;width:18px;height:18px;">
                     {% if toast.type == 'success' %}
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                     {% elseif toast.type == 'error' %}
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                     {% else %}
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     {% endif %}
                 </div>
-                <span class="toast-message">{{ toast.message }}</span>
-                <button type="button" class="toast-close" aria-label="Sluiten">&times;</button>
+                <!-- Message -->
+                <span style="flex:1;font-size:0.8125rem;font-weight:500;line-height:1.4;">{{ toast.message }}</span>
+                <!-- Close -->
+                <button type="button" class="toast-close" aria-label="Sluiten"
+                        style="background:none;border:none;cursor:pointer;padding:0 0.25rem;font-size:1.1rem;line-height:1;opacity:0.5;transition:opacity 0.15s;"
+                        onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.5'">✕</button>
             </div>
 
-            <div class="toast-progress"></div>
+            <!-- Progress bar -->
+            <div class="toast-progress" style="height:2px;width:100%;"></div>
         </div>
     {% endfor %}
 </div>
 
 <style>
-    :root {
-        --toast-success: #28a745;
-        --toast-error: #dc3545;
-        --toast-info: #17a2b8;
+    /* Toast type theming */
+    .toast-success {
+        background: #0f2818;
+        border: 1px solid rgba(52, 211, 153, 0.25);
+        color: #6ee7b7;
     }
+    .toast-success .toast-icon { color: #34d399; }
+    .toast-success .toast-progress { background: rgba(52, 211, 153, 0.15); }
+    .toast-success .toast-progress::after { background: #34d399; }
 
-    #toast-viewport {
-        position: fixed;
-        top: 1.5rem;
-        right: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 0.75rem;
-        z-index: 9999;
+    .toast-error {
+        background: #2a0f0f;
+        border: 1px solid rgba(248, 113, 113, 0.25);
+        color: #fca5a5;
     }
+    .toast-error .toast-icon { color: #f87171; }
+    .toast-error .toast-progress { background: rgba(248, 113, 113, 0.15); }
+    .toast-error .toast-progress::after { background: #f87171; }
 
-    .toast {
-        display: flex;
-        flex-direction: column;
-        min-width: 300px;
-        max-width: 450px;
-        background: #ffffff;
-        color: #333;
-        padding: 1rem;
-        border-radius: 6px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        border-left: 5px solid #333;
-        opacity: 0;
-        transform: translateX(20px);
-        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        position: relative;
-        overflow: hidden;
-        padding-bottom: 1.2rem;
+    .toast-info {
+        background: #0c1a2e;
+        border: 1px solid rgba(34, 211, 238, 0.25);
+        color: #7dd3fc;
     }
+    .toast-info .toast-icon { color: #22d3ee; }
+    .toast-info .toast-progress { background: rgba(34, 211, 238, 0.15); }
+    .toast-info .toast-progress::after { background: #22d3ee; }
 
-    /* Type-specific colors */
-    .toast-success { border-left-color: var(--toast-success); }
-    .toast-error { border-left-color: var(--toast-error); }
-    .toast-info { border-left-color: var(--toast-info); }
-
-    .toast-icon {
-        width: 20px;
-        height: 20px;
-        margin-right: 0.75rem;
-        flex-shrink: 0;
-    }
-
-    .toast-success .toast-icon { color: var(--toast-success); }
-    .toast-error .toast-icon { color: var(--toast-error); }
-    .toast-info .toast-icon { color: var(--toast-info); }
-
-    .toast-message {
-        font-size: 0.9rem;
-        font-weight: 500;
-        flex: 1;
-        line-height: 1.4;
-    }
-
-    .toast-close {
-        background: none;
-        border: none;
-        color: #999;
-        font-size: 1.5rem;
-        cursor: pointer;
-        padding: 0 0.5rem;
-        line-height: 1;
-        transition: color 0.2s;
-    }
-
-    .toast-close:hover {
-        color: #333;
-    }
-
-    .toast-content {
-        display: flex;
-        align-items: center;
-        width: 100%;
-    }
-
-    .toast-progress {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 4px;
-        width: 100%;
-        background: rgba(0, 0, 0, 0.1);
-    }
-
-    /* Progress bar */
-    .toast-progress::before {
+    /* Progress bar fill */
+    .toast-progress { position: relative; overflow: hidden; }
+    .toast-progress::after {
         content: '';
         position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        background: currentColor;
-        opacity: 0.7;
+        inset: 0;
         transform-origin: left;
+        transform: scaleX(1);
     }
-
-    .toast.active .toast-progress::before {
-        animation: toast-timer 6s linear forwards;
+    .toast.active .toast-progress::after {
+        animation: toast-shrink 6s linear forwards;
     }
-
-    @keyframes toast-timer {
+    @keyframes toast-shrink {
         from { transform: scaleX(1); }
-        to { transform: scaleX(0); }
+        to   { transform: scaleX(0); }
     }
-
-    .toast-success .toast-progress::before { background: var(--toast-success); }
-    .toast-error .toast-progress::before { background: var(--toast-error); }
-    .toast-info .toast-progress::before { background: var(--toast-info); }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const toasts = document.querySelectorAll('[data-toast]');
-        
-        toasts.forEach((toast, i) => {
-            // Fade-in
+        document.querySelectorAll('[data-toast]').forEach((toast, i) => {
             setTimeout(() => {
                 toast.style.opacity = '1';
                 toast.style.transform = 'translateX(0)';
-                toast.classList.add('active'); // Timer-bar
-            }, i * 150);
+                toast.classList.add('active');
+            }, i * 120);
 
-            // Remove after 6 seconds
-            const timer = setTimeout(() => {
-                removeToast(toast);
-            }, 6000);
+            const timer = setTimeout(() => removeToast(toast), 6000);
 
-            // Remove by click
             toast.querySelector('.toast-close').addEventListener('click', () => {
                 clearTimeout(timer);
                 removeToast(toast);
@@ -165,15 +95,8 @@
 
         function removeToast(toast) {
             toast.style.opacity = '0';
-            toast.style.transform = 'translateX(20px)';
-            setTimeout(() => {
-                toast.remove();
-
-                const viewport = document.getElementById('toast-viewport');
-                if (viewport && viewport.children.length === 0) {
-                    // viewport.remove(); // Optional for cleaning container
-                }
-            }, 300);
+            toast.style.transform = 'translateX(12px)';
+            setTimeout(() => toast.remove(), 280);
         }
     });
 </script>

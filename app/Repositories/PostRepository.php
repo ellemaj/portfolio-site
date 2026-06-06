@@ -11,7 +11,7 @@ class PostRepository implements PostRepositoryInterface
 
     public function findAllPublished(): array
     {
-        $stmt = $this->db->prepare("SELECT * FROM posts WHERE status = 'published' ORDER BY publication_date DESC");
+        $stmt = $this->db->prepare("SELECT * FROM posts WHERE status = 'published' AND deleted_at IS NULL ORDER BY publication_date DESC");
         $stmt->execute();
         return $stmt->fetchAll();
     }
@@ -36,7 +36,7 @@ class PostRepository implements PostRepositoryInterface
 
     public function findBySlug(string $slug): ?Post
     {
-        $stmt = $this->db->prepare("SELECT * FROM posts WHERE slug = ?");
+        $stmt = $this->db->prepare("SELECT * FROM posts WHERE slug = ? AND deleted_at IS NULL");
         $stmt->execute([$slug]);
         $data = $stmt->fetch();
 

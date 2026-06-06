@@ -1,38 +1,38 @@
 {% extends "layouts/error.html.twig" %}
 
-{% block title %}404 - Pagina niet gevonden{% endblock %}
+{% block title %}404 — Pagina niet gevonden{% endblock %}
 
 {% block content %}
-    <div class="text-center px-8">
 
-        <h1 class="text-9xl font-extrabold text-blue-500">404</h1>
+    <!-- Glow -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="w-24 h-1 bg-blue-500 mx-auto my-6 rounded"></div>
+    <div class="relative">
+        <p class="font-mono-custom text-xs text-slate-600 uppercase tracking-widest mb-4">// error</p>
 
-        <h2 class="text-2xl font-semibold">
-            Pagina niet gevonden
-        </h2>
+        <h1 class="text-8xl md:text-9xl font-bold font-mono-custom text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-blue-600 leading-none mb-2">
+            404
+        </h1>
 
-        <p class="text-gray-400 mt-4 max-w-md mx-auto">
+        <div class="w-12 h-px bg-gradient-to-r from-cyan-500 to-blue-500 mx-auto my-6"></div>
+
+        <h2 class="text-xl font-semibold text-slate-100 mb-3">Pagina niet gevonden</h2>
+
+        <p class="text-slate-400 text-sm leading-relaxed max-w-sm mx-auto">
             De pagina die je zoekt bestaat niet of is verplaatst.
             Controleer of het adres klopt, of ga terug naar de homepagina.
         </p>
 
-        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; flex-wrap: wrap;">
+        <div class="flex gap-3 justify-center mt-8 flex-wrap">
             <a href="/"
-               class="inline-block bg-blue-600 hover:bg-blue-700
-                          text-white px-8 py-3 rounded-lg shadow-lg
-                          transition duration-300">
+               class="px-5 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-lg text-sm transition-colors font-mono-custom">
                 Naar homepagina
             </a>
             <a href="javascript:history.back()"
-               class="inline-block bg-gray-200 hover:bg-gray-300
-                          text-gray-700 px-8 py-3 rounded-lg shadow-lg
-                          transition duration-300">
+               class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-medium rounded-lg text-sm transition-colors">
                 Ga terug
             </a>
         </div>
-
     </div>
 
 {% endblock %}

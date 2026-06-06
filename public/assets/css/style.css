@@ -1,144 +1,51 @@
-/*------------------ basis --------------------*/
-body {
-    background: url("../images/background.jpeg");
-    background-color: #3B3B3B;
-    background-size: 100%;
-    background-attachment: fixed;
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
-}
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0f172a; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #475569; }
 
-/*------------------ header -------------------*/
-header {
-    background-color: rgba(20, 20, 20, 0.6);
-    color: white;
-    text-align: center;
-}
-
-/*------------------- menu --------------------*/
-.menu {
-    position: sticky;
-    top: 0;
-    background-color: #1F1F1F;
-    padding: 0px;
-    margin: 0px;
-    overflow: hidden;
-}
-
-.menu ul {
-    list-style-type: none;
-    padding: 0px;
-    margin: 0px;
-}
-
-.menu li {
-    float: left;
-}
-
-.menu a {
-    color: #969696;
-    text-decoration: none;
-    padding: 15px;
-    display: block;
-    text-align: center;
-    transition: background-color 0.5s;
-}
-
-.menu a:hover {
-    background-color: #3B3B3B;
-    color: #C4C4C4;
-}
-
-.menu a.active {
-    background-color: #3B3B3B;
-    color: white;
-}
-
-/*------------------ vlakken ------------------*/
-main {
-    padding: 15px;
-    background-color: rgba(31, 31, 31, 0.5);
-}
-
-section {
-    margin-bottom: 20px;
-    background: rgba(59, 59, 59, 0.95);
-    padding: 10px;
-    border-radius: 6px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    color: white;
-}
-
-section a {
-    color: rgb(37, 150, 190);
-    text-decoration: underline;
-}
-
-section a:hover {
-    font-weight: bold;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-
+/* Profile image */
 .profile-image {
-    width: 300px;
-    height: 300px;
-    object-fit: cover;
-
-    border-radius: 24px;
-
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-/*-------------------- FAQ --------------------*/
-details {
-    margin-bottom: 10px;
-    background: #969696;
-    border-radius: 8px;
-    padding: 10px 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-details:hover summary {
-    color: #3B3B3B;
-}
-
-summary {
-    cursor: pointer;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-details[open] summary {
-    color: #3B3B3B;
-}
-
-/*--------------opmaak footer -----------------*/
-footer {
-    text-align: center;
-    background-color: #1F1F1F;
-    color: #2596be;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    position: relative;
-    bottom: 0;
+    border-radius: 0.75rem;
     width: 100%;
+    object-fit: cover;
+    border: 1px solid #334155;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
 }
 
-footer a {
-    color: #2581be;
-    text-decoration: none;
+/* Blog post body typography (for dynamic innerHTML content) */
+#post-body h1, #post-body h2, #post-body h3 {
+    color: #e2e8f0;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
 }
-
-footer a:hover {
-    font-weight: bold;
+#post-body p {
+    color: #94a3b8;
+    line-height: 1.75;
+    margin-bottom: 1rem;
 }
-
-footer a.active {
-    font-weight: bold;
-    color: white;
+#post-body a { color: #22d3ee; text-decoration: underline; }
+#post-body code {
+    background: #1e293b;
+    color: #22d3ee;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875em;
 }
+#post-body pre {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+#post-body ul, #post-body ol {
+    color: #94a3b8;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+#post-body ul { list-style-type: disc; }
+#post-body ol { list-style-type: decimal; }

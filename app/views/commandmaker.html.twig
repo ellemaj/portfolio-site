@@ -2,37 +2,91 @@
 
 {% block title %}Commandmaker{% endblock %}
 
-{% block styles %}
-<link rel="stylesheet" href="/assets/css/commandmaker.css">
-{% endblock %}
-
 {% block scripts %}
 <script src="/assets/js/optomacmdgenerator.js"></script>
 {% endblock %}
 
 {% block content %}
-    <section class="generator-card">
-        <h1>Optoma commandmaker</h1>
-        <div class="generator-row">
-            <label>Protocol</label>
-            <select id="protocol">
-                <option value="tcp">TCP</option>
-                <option value="udp">UDP</option>
-            </select>
-            <label>IP</label>
-            <input id="ip" type="text" placeholder="bv. 192.168.1.110">
-            <label>Poort</label>
-            <input id="port" type="number" placeholder="bv. 23" min="1" max="65535" style="width:80px">
+
+<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="font-mono-custom text-xs text-cyan-500 tracking-widest uppercase flex items-center gap-2 mb-2">
+            <span class="inline-block w-6 h-px bg-cyan-500/50"></span>
+            <span>Tool</span>
         </div>
-        <div class="generator-row">
-            <label>Hex input</label>
-            <textarea id="hex" placeholder="bv. 7E 30 30 30 30 20 31 0d"></textarea>
+        <h1 class="text-3xl font-bold text-slate-100">Optoma Commandmaker</h1>
+        <p class="mt-1.5 text-slate-400 text-sm">Genereer TCP/UDP commando's voor Optoma projectors.</p>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-slate-800/40 border border-slate-700/60 rounded-2xl overflow-hidden">
+
+        <!-- Card header bar -->
+        <div class="px-6 py-4 border-b border-slate-700/60 flex items-center gap-3">
+            <div class="flex gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500/60"></span>
+            </div>
+            <span class="font-mono-custom text-xs text-slate-500">cmd-generator.sh</span>
         </div>
-        <div class="generator-buttons">
-            <button id="generate">Genereer</button>
-            <button id="copy">Kopieer naar klembord</button>
+
+        <div class="p-6 space-y-6">
+
+            <!-- Connection row -->
+            <div>
+                <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest mb-3">Verbinding</p>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs text-slate-500 mb-1.5">Protocol</label>
+                        <select id="protocol"
+                                class="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
+                            <option value="tcp">TCP</option>
+                            <option value="udp">UDP</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-500 mb-1.5">IP-adres</label>
+                        <input id="ip" type="text" placeholder="192.168.1.110"
+                               class="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-500 mb-1.5">Poort</label>
+                        <input id="port" type="number" placeholder="23" min="1" max="65535"
+                               class="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hex input -->
+            <div>
+                <label class="block font-mono-custom text-xs text-slate-500 uppercase tracking-widest mb-2">Hex Input</label>
+                <textarea id="hex" rows="3"
+                          placeholder="bv. 7E 30 30 30 30 20 31 0d"
+                          class="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors resize-none"></textarea>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-3">
+                <button id="generate"
+                        class="px-5 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-lg text-sm transition-colors font-mono-custom">
+                    Genereer
+                </button>
+                <button id="copy"
+                        class="px-5 py-2.5 bg-slate-700/60 hover:bg-slate-700 border border-slate-600 text-slate-200 font-medium rounded-lg text-sm transition-colors">
+                    Kopieer naar klembord
+                </button>
+            </div>
+
+            <!-- Output -->
+            <div id="output"
+                 class="min-h-12 px-4 py-3 bg-slate-950/60 border border-slate-700/40 rounded-lg font-mono-custom text-sm text-cyan-400 whitespace-pre-wrap empty:before:content-['_'] empty:before:text-slate-700">
+            </div>
+
         </div>
-        <div class="generator-output" id="output"></div>
-    </section>
+    </div>
+</div>
 
 {% endblock %}

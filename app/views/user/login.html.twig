@@ -3,115 +3,117 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<section style="max-width: 500px; margin: 40px auto; text-align: center;">
 
-    <h1>Login</h1>
+<div class="min-h-[calc(100vh-3.5rem)] flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-sm">
 
-    <p>
-        Log in om toegang te krijgen tot je account.
-    </p>
+        <!-- Logo / brand -->
+        <div class="text-center mb-8">
+            <span class="font-mono-custom text-2xl font-semibold">
+                <span class="text-slate-600">&lt;</span><span class="text-cyan-400">ellemaj</span><span class="text-slate-600">/&gt;</span>
+            </span>
+            <h1 class="mt-4 text-2xl font-bold text-slate-100">Welkom terug</h1>
+            <p class="mt-1 text-sm text-slate-500">Log in om toegang te krijgen tot je account.</p>
+        </div>
 
-    <style>
-        .field-error {
-            color: #dc3545;
-            font-size: 0.8rem;
-            margin-top: 4px;
-            display: none;
-            text-align: left;
-            padding-left: 5%;
-        }
-        .input-invalid {
-            border: 2px solid #dc3545 !important;
-        }
-    </style>
+        <!-- Card -->
+        <div class="bg-slate-800/50 border border-slate-700/60 rounded-2xl p-7">
+            <form method="POST" action="/login" id="login-form" novalidate class="space-y-4">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
-    <form method="POST" action="/login" id="login-form" novalidate>
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="jou@email.nl"
+                        autocomplete="email"
+                        required
+                        class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors"
+                    >
+                    <p class="field-error hidden mt-1.5 text-xs text-red-400 font-mono-custom" id="email-error">Voer een geldig e-mailadres in.</p>
+                </div>
 
-        <p>
-            <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Email"
-                autocomplete="email"
-                required
-                style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
-            >
-            <span class="field-error" id="email-error">Voer een geldig e-mailadres in.</span>
+                <!-- Password -->
+                <div>
+                    <label for="password" class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Wachtwoord</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="••••••••"
+                        autocomplete="current-password"
+                        required
+                        class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors"
+                    >
+                    <p class="field-error hidden mt-1.5 text-xs text-red-400 font-mono-custom" id="password-error">Wachtwoord is verplicht.</p>
+                </div>
+
+                <!-- Submit -->
+                <button
+                    type="submit"
+                    class="w-full mt-2 px-4 py-2.5 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-slate-950 font-semibold rounded-lg text-sm transition-colors font-mono-custom"
+                >
+                    Login →
+                </button>
+            </form>
+        </div>
+
+        <!-- Register link -->
+        <p class="mt-5 text-center text-sm text-slate-500">
+            Nog geen account?
+            <a href="/register" class="text-cyan-400 hover:text-cyan-300 transition-colors">Registreer hier</a>
         </p>
 
-        <p>
-            <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Password"
-                autocomplete="current-password"
-                required
-                style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
-            >
-            <span class="field-error" id="password-error">Wachtwoord is verplicht.</span>
-        </p>
+    </div>
+</div>
 
-        <p>
-            <button
-                type="submit"
-                style="padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer;"
-            >
-                Login
-            </button>
-        </p>
+<style>
+    .input-invalid { border-color: rgb(248 113 113) !important; }
+</style>
 
-    </form>
+<script>
+    function showError(inputId, errorId) {
+        document.getElementById(inputId).classList.add('input-invalid');
+        document.getElementById(errorId).classList.remove('hidden');
+    }
 
-    <p>
-        Nog geen account?
-        <a href="/register">Registreer hier</a>
-    </p>
+    function clearError(inputId, errorId) {
+        document.getElementById(inputId).classList.remove('input-invalid');
+        document.getElementById(errorId).classList.add('hidden');
+    }
 
-    <script>
-        function showError(inputId, errorId) {
-            document.getElementById(inputId).classList.add('input-invalid');
-            document.getElementById(errorId).style.display = 'block';
+    const emailInput    = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    emailInput.addEventListener('blur', () => {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+            showError('email', 'email-error');
+        }
+    });
+    emailInput.addEventListener('input', () => clearError('email', 'email-error'));
+
+    passwordInput.addEventListener('blur', () => {
+        if (!passwordInput.value) showError('password', 'password-error');
+    });
+    passwordInput.addEventListener('input', () => clearError('password', 'password-error'));
+
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+        let hasError = false;
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+            showError('email', 'email-error');
+            hasError = true;
+        }
+        if (!passwordInput.value) {
+            showError('password', 'password-error');
+            hasError = true;
         }
 
-        function clearError(inputId, errorId) {
-            document.getElementById(inputId).classList.remove('input-invalid');
-            document.getElementById(errorId).style.display = 'none';
-        }
-
-        const emailInput    = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-
-        emailInput.addEventListener('blur', () => {
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
-                showError('email', 'email-error');
-            }
-        });
-        emailInput.addEventListener('input', () => clearError('email', 'email-error'));
-
-        passwordInput.addEventListener('blur', () => {
-            if (!passwordInput.value) showError('password', 'password-error');
-        });
-        passwordInput.addEventListener('input', () => clearError('password', 'password-error'));
-
-        document.getElementById('login-form').addEventListener('submit', (e) => {
-            let hasError = false;
-
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
-                showError('email', 'email-error');
-                hasError = true;
-            }
-            if (!passwordInput.value) {
-                showError('password', 'password-error');
-                hasError = true;
-            }
-
-            if (hasError) e.preventDefault();
-        });
-    </script>
-
-</section>
+        if (hasError) e.preventDefault();
+    });
+</script>
 
 {% endblock %}

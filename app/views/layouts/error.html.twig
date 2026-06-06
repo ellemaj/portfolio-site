@@ -3,14 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', 'monospace'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
+
     <title>{% block title %}{% endblock %}</title>
+
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .font-mono-custom { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    </style>
 </head>
 
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black
-             text-white min-h-screen flex items-center justify-center">
+<body class="bg-slate-900 text-slate-200 min-h-screen flex flex-col items-center justify-center px-4">
 
-{% block content %}{% endblock %}
+    <!-- Dot grid background -->
+    <div class="fixed inset-0 pointer-events-none opacity-[0.03]"
+         style="background-image: radial-gradient(circle, #94a3b8 1px, transparent 1px); background-size: 28px 28px;"></div>
+
+    <div class="relative w-full max-w-lg text-center">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer link -->
+    <a href="/" class="relative mt-10 font-mono-custom text-xs text-slate-700 hover:text-slate-500 transition-colors">
+        <span class="text-slate-800">&lt;</span>ellemaj<span class="text-slate-800">/&gt;</span>
+    </a>
 
 </body>
 </html>
