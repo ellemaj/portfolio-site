@@ -31,12 +31,12 @@ class UserController
 
     public function register(Request $request): Response
     {
-        $firstName = htmlspecialchars(trim($request->get('firstName') ?? ''));
-        $lastName  = htmlspecialchars(trim($request->get('lastName') ?? ''));
-        $email     = filter_var(trim($request->get('email') ?? ''), FILTER_SANITIZE_EMAIL);
-        $password  = $request->get('password') ?? '';
+        $firstName       = htmlspecialchars(trim($request->get('firstName') ?? ''));
+        $lastName        = htmlspecialchars(trim($request->get('lastName') ?? ''));
+        $email           = filter_var(trim($request->get('email') ?? ''), FILTER_SANITIZE_EMAIL);
+        $password        = $request->get('password') ?? '';
+        $passwordConfirm = $request->get('password_confirm') ?? '';
 
-        // Checks
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return $this->responseFactory
                 ->createToast('error', 'Voer een geldig e-mailadres in.')
@@ -46,6 +46,12 @@ class UserController
         if (strlen($password) < 8) {
             return $this->responseFactory
                 ->createToast('error', 'Wachtwoord moet minimaal 8 tekens zijn.')
+                ->redirect('/register');
+        }
+
+        if ($password !== $passwordConfirm) {
+            return $this->responseFactory
+                ->createToast('error', 'Wachtwoorden komen niet overeen.')
                 ->redirect('/register');
         }
 

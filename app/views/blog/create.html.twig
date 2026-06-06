@@ -8,13 +8,18 @@
 
         <form action="/blog/create" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-            
+
             <label>Titel
-                <input type="text" name="title" required>
+                <input type="text" id="post-title" name="title" required>
             </label>
 
             <label>Slug
-                <input type="text" name="slug" required>
+                <input type="text" id="post-slug" name="slug" required
+                       pattern="^[a-z0-9-]+$">
+                <span id="slug-error" style="color:#dc3545;font-size:0.8rem;display:none;">
+                    Alleen kleine letters, cijfers en koppeltekens (-) toegestaan.
+                </span>
+                <small style="color:#888;">Automatisch ingevuld op basis van de titel.</small>
             </label>
 
             <label>Preview
@@ -36,7 +41,7 @@
                 <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">
                     Datum van publiceren
                 </label>
-                <input type="text" id="publication-date" name="date" required
+                <input type="text" id="publication-date" name="publication_date" required
                         class="w-full border border-gray-300 px-3 py-3">
             </div>
 
@@ -47,12 +52,15 @@
     </section>
 
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/nl.js"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
 
             flatpickr.localize(flatpickr.l10ns.nl);
 
-            // Datum picker
             const datePicker = flatpickr("#publication-date", {
                 dateFormat: "d-m-Y",
                 minDate: "today",
@@ -62,7 +70,6 @@
                     const today = new Date();
                     const isToday = selected.toDateString() === today.toDateString();
 
-                    // Only set mintime if its today
                     if (isToday) {
                         const currentTime = today.toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" });
                         startPicker.set("minTime", currentTime);
@@ -71,10 +78,40 @@
                     }
                 }
             });
+
+            const titleInput = document.getElementById('post-title');
+            const slugInput  = document.getElementById('post-slug');
+
+            titleInput.addEventListener('input', () => {
+                if (!slugInput.dataset.edited) {
+                    slugInput.value = titleInput.value
+                        .toLowerCase()
+                        .trim()
+                        .replace(/[^a-z0-9\s-]/g, '')
+                        .replace(/\s+/g, '-')
+                        .replace(/-+/g, '-');
+                }
+            });
+
+            slugInput.addEventListener('input', () => {
+                slugInput.dataset.edited = '1';
+                validateSlug();
+            });
+
+            slugInput.addEventListener('blur', validateSlug);
+
+            function validateSlug() {
+                const error = document.getElementById('slug-error');
+                const valid = /^[a-z0-9-]+$/.test(slugInput.value) && slugInput.value.length > 0;
+                if (!valid) {
+                    slugInput.style.border = '2px solid #dc3545';
+                    error.style.display = 'block';
+                } else {
+                    slugInput.style.border = '';
+                    error.style.display = 'none';
+                }
+            }
         });
     </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/nl.js"></script>
 
 {% endblock %}

@@ -11,27 +11,47 @@
         Log in om toegang te krijgen tot je account.
     </p>
 
-    <form method="POST" action="/login">
+    <style>
+        .field-error {
+            color: #dc3545;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            display: none;
+            text-align: left;
+            padding-left: 5%;
+        }
+        .input-invalid {
+            border: 2px solid #dc3545 !important;
+        }
+    </style>
+
+    <form method="POST" action="/login" id="login-form" novalidate>
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
         <p>
             <input
                 type="email"
+                id="email"
                 name="email"
                 placeholder="Email"
+                autocomplete="email"
                 required
                 style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
             >
+            <span class="field-error" id="email-error">Voer een geldig e-mailadres in.</span>
         </p>
 
         <p>
             <input
                 type="password"
+                id="password"
                 name="password"
                 placeholder="Password"
+                autocomplete="current-password"
                 required
                 style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
             >
+            <span class="field-error" id="password-error">Wachtwoord is verplicht.</span>
         </p>
 
         <p>
@@ -49,6 +69,48 @@
         Nog geen account?
         <a href="/register">Registreer hier</a>
     </p>
+
+    <script>
+        function showError(inputId, errorId) {
+            document.getElementById(inputId).classList.add('input-invalid');
+            document.getElementById(errorId).style.display = 'block';
+        }
+
+        function clearError(inputId, errorId) {
+            document.getElementById(inputId).classList.remove('input-invalid');
+            document.getElementById(errorId).style.display = 'none';
+        }
+
+        const emailInput    = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+
+        emailInput.addEventListener('blur', () => {
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+                showError('email', 'email-error');
+            }
+        });
+        emailInput.addEventListener('input', () => clearError('email', 'email-error'));
+
+        passwordInput.addEventListener('blur', () => {
+            if (!passwordInput.value) showError('password', 'password-error');
+        });
+        passwordInput.addEventListener('input', () => clearError('password', 'password-error'));
+
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            let hasError = false;
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+                showError('email', 'email-error');
+                hasError = true;
+            }
+            if (!passwordInput.value) {
+                showError('password', 'password-error');
+                hasError = true;
+            }
+
+            if (hasError) e.preventDefault();
+        });
+    </script>
 
 </section>
 

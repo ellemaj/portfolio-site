@@ -17,6 +17,8 @@
 
 <body>
 
+    <div id="page-loading-bar" aria-hidden="true"></div>
+
     <header>
         <a href="/"><img src="/assets/images/logo.png" width="10%" alt="Logo"></a>
     </header>
@@ -69,6 +71,28 @@
     </dialog>
 
     <style>
+        #page-loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0;
+            background: #c2004b;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        #page-loading-bar.is-loading {
+            opacity: 1;
+            animation: loadbar 2s ease-in-out forwards;
+        }
+        @keyframes loadbar {
+            0%   { width: 0; }
+            40%  { width: 60%; }
+            85%  { width: 88%; }
+            100% { width: 88%; }
+        }
+
         #confirm-dialog {
             border: none;
             border-radius: 6px;
@@ -108,13 +132,46 @@
     </style>
 
     <script>
+        const loadingBar = document.getElementById('page-loading-bar');
+
+        function startLoading() {
+            loadingBar.classList.remove('is-loading');
+            void loadingBar.offsetWidth;
+            loadingBar.classList.add('is-loading');
+        }
+
+        function disableSubmitButton(form) {
+            const btn = form.querySelector('[type="submit"]');
+            if (btn && !btn.disabled) {
+                btn.disabled = true;
+                btn.dataset.original = btn.textContent;
+                btn.textContent = 'Bezig...';
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a[href]');
+            if (link) {
+                const href = link.getAttribute('href') ?? '';
+                if (href && !href.startsWith('#') && !href.startsWith('javascript')) {
+                    startLoading();
+                }
+            }
+        });
+
+        document.querySelectorAll('form:not([data-confirm])').forEach(form => {
+            form.addEventListener('submit', () => {
+                startLoading();
+                disableSubmitButton(form);
+            });
+        });
+
         const dialog = document.getElementById('confirm-dialog');
         const confirmYes = document.getElementById('confirm-yes');
         const confirmNo = document.getElementById('confirm-no');
 
         let pendingForm = null;
 
-        // Intercept all delete forms
         document.querySelectorAll('[data-confirm]').forEach(form => {
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -128,7 +185,8 @@
         confirmYes.addEventListener('click', () => {
             dialog.close();
             if (pendingForm) {
-                pendingForm.removeEventListener('submit', () => {});
+                startLoading();
+                disableSubmitButton(pendingForm);
                 pendingForm.submit();
             }
         });

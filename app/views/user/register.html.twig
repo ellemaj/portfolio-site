@@ -12,46 +12,96 @@
         Maak een account aan om toegang te krijgen tot extra functies.
     </p>
 
-    <form method="POST" action="/register">
+    <style>
+        .field-error {
+            color: #dc3545;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            display: none;
+            text-align: left;
+            padding-left: 5%;
+        }
+        .input-invalid {
+            border: 2px solid #dc3545 !important;
+        }
+        .password-hint {
+            font-size: 0.78rem;
+            color: #888;
+            text-align: left;
+            padding-left: 5%;
+            margin-top: 4px;
+        }
+    </style>
+
+    <form method="POST" action="/register" id="register-form" novalidate>
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-        
+
         <p>
             <input
                 type="text"
-                name="username"
-                placeholder="Username"
+                id="firstName"
+                name="firstName"
+                placeholder="Voornaam"
+                autocomplete="given-name"
                 required
                 style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
             >
+            <span class="field-error" id="firstName-error">Voornaam is verplicht.</span>
         </p>
 
         <p>
             <input
                 type="text"
-                name="name"
-                placeholder="Name"
+                id="lastName"
+                name="lastName"
+                placeholder="Achternaam"
+                autocomplete="family-name"
+                required
                 style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
             >
+            <span class="field-error" id="lastName-error">Achternaam is verplicht.</span>
         </p>
 
         <p>
             <input
                 type="email"
+                id="email"
                 name="email"
                 placeholder="Email"
+                autocomplete="email"
                 required
                 style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
             >
+            <span class="field-error" id="email-error">Voer een geldig e-mailadres in.</span>
         </p>
 
         <p>
             <input
                 type="password"
+                id="password"
                 name="password"
-                placeholder="Password"
+                placeholder="Wachtwoord"
+                autocomplete="new-password"
+                minlength="8"
                 required
                 style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
             >
+            <span class="password-hint">Minimaal 8 tekens.</span>
+            <span class="field-error" id="password-error">Wachtwoord moet minimaal 8 tekens zijn.</span>
+        </p>
+
+        <p>
+            <input
+                type="password"
+                id="password_confirm"
+                name="password_confirm"
+                placeholder="Wachtwoord bevestigen"
+                autocomplete="new-password"
+                minlength="8"
+                required
+                style="width: 90%; padding: 12px; border-radius: 6px; border: none;"
+            >
+            <span class="field-error" id="password-confirm-error">Wachtwoorden komen niet overeen.</span>
         </p>
 
         <p>
@@ -69,6 +119,77 @@
         Heb je al een account?
         <a href="/login">Login hier</a>
     </p>
+
+    <script>
+        const form = document.getElementById('register-form');
+
+        function showError(inputId, errorId) {
+            document.getElementById(inputId).classList.add('input-invalid');
+            document.getElementById(errorId).style.display = 'block';
+        }
+
+        function clearError(inputId, errorId) {
+            document.getElementById(inputId).classList.remove('input-invalid');
+            document.getElementById(errorId).style.display = 'none';
+        }
+
+        ['firstName', 'lastName'].forEach(id => {
+            const input = document.getElementById(id);
+            input.addEventListener('blur', () => {
+                if (!input.value.trim()) showError(id, id + '-error');
+            });
+            input.addEventListener('input', () => clearError(id, id + '-error'));
+        });
+
+        const emailInput = document.getElementById('email');
+        emailInput.addEventListener('blur', () => {
+            const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
+            if (!valid) showError('email', 'email-error');
+        });
+        emailInput.addEventListener('input', () => clearError('email', 'email-error'));
+
+        const passwordInput = document.getElementById('password');
+        passwordInput.addEventListener('blur', () => {
+            if (passwordInput.value.length < 8) showError('password', 'password-error');
+        });
+        passwordInput.addEventListener('input', () => clearError('password', 'password-error'));
+
+        const confirmInput = document.getElementById('password_confirm');
+        confirmInput.addEventListener('blur', () => {
+            if (confirmInput.value !== passwordInput.value) {
+                showError('password_confirm', 'password-confirm-error');
+            }
+        });
+        confirmInput.addEventListener('input', () => clearError('password_confirm', 'password-confirm-error'));
+
+        form.addEventListener('submit', (e) => {
+            let hasError = false;
+
+            if (!document.getElementById('firstName').value.trim()) {
+                showError('firstName', 'firstName-error');
+                hasError = true;
+            }
+            if (!document.getElementById('lastName').value.trim()) {
+                showError('lastName', 'lastName-error');
+                hasError = true;
+            }
+            const emailVal = emailInput.value;
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+                showError('email', 'email-error');
+                hasError = true;
+            }
+            if (passwordInput.value.length < 8) {
+                showError('password', 'password-error');
+                hasError = true;
+            }
+            if (confirmInput.value !== passwordInput.value) {
+                showError('password_confirm', 'password-confirm-error');
+                hasError = true;
+            }
+
+            if (hasError) e.preventDefault();
+        });
+    </script>
 
 </section>
 

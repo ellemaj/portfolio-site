@@ -1,6 +1,6 @@
 {% extends "layouts/error.html.twig" %}
 
-{% block title %}404 - Not Found{% endblock %}
+{% block title %}404 - Pagina niet gevonden{% endblock %}
 
 {% block content %}
     <div class="text-center px-8">
@@ -10,21 +10,29 @@
         <div class="w-24 h-1 bg-blue-500 mx-auto my-6 rounded"></div>
 
         <h2 class="text-2xl font-semibold">
-            Not found
+            Pagina niet gevonden
         </h2>
 
         <p class="text-gray-400 mt-4 max-w-md mx-auto">
-            The page you're looking for doesn't exist or is
-            moved to another location.
+            De pagina die je zoekt bestaat niet of is verplaatst.
+            Controleer of het adres klopt, of ga terug naar de homepagina.
         </p>
 
-        <a href="/"
-           class="mt-10 inline-block bg-blue-600 hover:bg-blue-700
-                      text-white px-8 py-3 rounded-lg shadow-lg
-                      transition duration-300">
-            Back to Home
-        </a>
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; flex-wrap: wrap;">
+            <a href="/"
+               class="inline-block bg-blue-600 hover:bg-blue-700
+                          text-white px-8 py-3 rounded-lg shadow-lg
+                          transition duration-300">
+                Naar homepagina
+            </a>
+            <a href="javascript:history.back()"
+               class="inline-block bg-gray-200 hover:bg-gray-300
+                          text-gray-700 px-8 py-3 rounded-lg shadow-lg
+                          transition duration-300">
+                Ga terug
+            </a>
+        </div>
 
     </div>
-    
+
 {% endblock %}

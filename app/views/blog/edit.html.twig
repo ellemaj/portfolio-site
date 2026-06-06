@@ -6,7 +6,7 @@
     <section>
         <h1>Post bewerken</h1>
 
-        <form action="/blog/{{ post.id }}/update" method="POST">
+        <form action="/blog/{{ post.id }}/update" method="POST" id="edit-form">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <label>Titel
@@ -14,7 +14,11 @@
             </label>
 
             <label>Slug
-                <input type="text" name="slug" value="{{ post.slug }}" required>
+                <input type="text" id="edit-slug" name="slug" value="{{ post.slug }}" required
+                       pattern="^[a-z0-9-]+$">
+                <span id="slug-error" style="color:#dc3545;font-size:0.8rem;display:none;">
+                    Alleen kleine letters, cijfers en koppeltekens (-) toegestaan.
+                </span>
             </label>
 
             <label>Preview
@@ -37,4 +41,31 @@
 
         <a href="/blog/manage">← Terug</a>
     </section>
+
+    <script>
+        const slugInput = document.getElementById('edit-slug');
+        const slugError = document.getElementById('slug-error');
+
+        function validateSlug() {
+            const valid = /^[a-z0-9-]+$/.test(slugInput.value) && slugInput.value.length > 0;
+            if (!valid) {
+                slugInput.style.border = '2px solid #dc3545';
+                slugError.style.display = 'block';
+            } else {
+                slugInput.style.border = '';
+                slugError.style.display = 'none';
+            }
+        }
+
+        slugInput.addEventListener('input', validateSlug);
+        slugInput.addEventListener('blur', validateSlug);
+
+        document.getElementById('edit-form').addEventListener('submit', (e) => {
+            const valid = /^[a-z0-9-]+$/.test(slugInput.value) && slugInput.value.length > 0;
+            if (!valid) {
+                validateSlug();
+                e.preventDefault();
+            }
+        });
+    </script>
 {% endblock %}
