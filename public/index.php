@@ -8,6 +8,25 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
 // Autoload dependencies and classes
 require __DIR__ . '/../vendor/autoload.php';
 
+// Load .env file for environments that don't inject variables (e.g. shared hosting)
+$envFile = dirname(__DIR__) . '/.env';
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    if ($lines !== false) {
+        foreach ($lines as $line) {
+            if (str_starts_with(trim($line), '#') || !str_contains($line, '=')) {
+                continue;
+            }
+            $parts = explode('=', $line, 2);
+            $key = trim($parts[0]);
+            $value = isset($parts[1]) ? trim($parts[1], " \t\n\r\0\x0B\"'") : '';
+            if ($key !== '') {
+                $_ENV[$key] = $value;
+            }
+        }
+    }
+}
+
 session_start();
 
 use App\RouteProvider;
@@ -15,11 +34,11 @@ use App\ServiceProvider;
 use Framework\Kernel;
 use Framework\Request;
 
-$config = array(
-    'APP_ENV' => 'development',
-    'VIEWS_PATH' => 'app/views',
-    'APP_DB' => 'database.sqlite'
-);
+$config = [
+    'APP_ENV'    => (string)($_ENV['APP_ENV'] ?? 'development'),
+    'VIEWS_PATH' => (string)($_ENV['VIEWS_PATH'] ?? 'app/views'),
+    'APP_DB'     => (string)($_ENV['APP_DB'] ?? 'database.sqlite'),
+];
 
 // Initialize the Kernel with configuration
 $kernel = new Kernel($config);

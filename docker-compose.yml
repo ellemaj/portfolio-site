@@ -9,6 +9,9 @@ services:
       db:
         condition: service_healthy
     environment:
+      APP_ENV: development
+      APP_DB: mysql
+      VIEWS_PATH: app/views
       DB_HOST: db
       DB_NAME: maestro
       DB_USER: root
