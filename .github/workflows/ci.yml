@@ -62,19 +62,25 @@ jobs:
           coverage: none
       - name: Install production dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/tests/**
-            **/.github/**
-            .env
-            .env.example
-            *.sqlite
-            hash.php
+      - name: Install lftp
+        run: sudo apt-get install -y lftp
+      - name: Deploy via SFTP
+        env:
+          SFTP_HOST: ${{ secrets.FTP_SERVER }}
+          SFTP_USER: ${{ secrets.FTP_USERNAME }}
+          SFTP_PASS: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          lftp -u "$SFTP_USER,$SFTP_PASS" "sftp://$SFTP_HOST" << 'LFTP'
+          set sftp:auto-confirm yes
+          set net:timeout 60
+          mirror -R --delete \
+            --exclude-glob .git \
+            --exclude-glob .github \
+            --exclude-glob tests \
+            --exclude .env \
+            --exclude .env.example \
+            --exclude-glob "*.sqlite" \
+            --exclude hash.php \
+            . /
+          quit
+          LFTP
