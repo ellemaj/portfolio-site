@@ -77,13 +77,13 @@
             <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-6">
                 <div class="flex items-center justify-between mb-3">
                     <p class="font-mono-custom text-xs text-cyan-500 uppercase tracking-widest">Studiepunten voortgang</p>
-                    <span class="font-mono-custom text-sm font-semibold text-slate-300">{{ earned }} / {{ total }} EC</span>
+                    <span id="ec-earned-text" class="font-mono-custom text-sm font-semibold text-slate-300">{{ earned }} / {{ total }} EC</span>
                 </div>
                 <div class="w-full bg-slate-700/60 rounded-full h-2.5 overflow-hidden">
-                    <div class="h-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-700"
+                    <div id="ec-progress-bar" class="h-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-700"
                          style="width: {{ (earned / total * 100)|round }}%"></div>
                 </div>
-                <p class="mt-2 text-right font-mono-custom text-xs text-slate-500">{{ (earned / total * 100)|round }}% behaald</p>
+                <p id="ec-percent-text" class="mt-2 text-right font-mono-custom text-xs text-slate-500">{{ (earned / total * 100)|round }}% behaald</p>
             </div>
 
             <!-- Grades table -->
@@ -116,11 +116,11 @@
                                 <tr class="hover:bg-slate-700/20 transition-colors {% if course.grade is null %}opacity-60{% endif %}">
                                     <td class="px-4 py-3 font-mono-custom text-xs text-slate-400">{{ course.blok }}</td>
                                     <td class="px-4 py-3 text-slate-200 font-medium">{{ course.name }}</td>
-                                    <td class="px-4 py-3 text-center">
+                                    <td class="ec px-4 py-3 text-center">
                                         <span class="font-mono-custom text-xs text-slate-400">{{ course.ec }}</span>
                                     </td>
                                     <td class="px-4 py-3 text-slate-400 text-xs">{{ course.exam_type }}</td>
-                                    <td class="px-4 py-3 text-center">
+                                    <td class="grade px-4 py-3 text-center">
                                         {% if course.grade is not null %}
                                             <span class="font-mono-custom font-semibold text-sm
                                                 {% if course.grade >= 5.5 %}text-emerald-400{% else %}text-red-400{% endif %}">
@@ -137,7 +137,7 @@
                                                 <input type="hidden" name="id" value="{{ course.id }}">
                                                 <input type="number" name="grade" step="0.1" min="1" max="10"
                                                        value="{{ course.grade ?? '' }}" placeholder="—"
-                                                       class="w-16 px-2 py-1 bg-slate-700/60 border border-slate-600 text-slate-200 rounded-md text-xs font-mono-custom text-center focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30">
+                                                       class="grade-input w-16 px-2 py-1 bg-slate-700/60 border border-slate-600 text-slate-200 rounded-md text-xs font-mono-custom text-center focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30">
                                                 <button type="submit"
                                                         class="px-2.5 py-1 bg-cyan-600/20 hover:bg-cyan-600/40 border border-cyan-600/40 text-cyan-400 rounded-md text-xs font-medium transition-colors">
                                                     Save

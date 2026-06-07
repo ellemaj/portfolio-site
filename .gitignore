@@ -9,6 +9,9 @@ vendor/
 composer.lock
 .deptrac.cache
 
+# Node
+node_modules/
+
 # User level
 .env
 .vscode

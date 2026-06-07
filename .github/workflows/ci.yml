@@ -62,6 +62,11 @@ jobs:
           coverage: none
       - name: Install production dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build CSS
+        run: npm ci && npm run build
       - name: Install lftp
         run: sudo apt-get install -y lftp
       - name: Deploy via SFTP
@@ -77,6 +82,8 @@ jobs:
             --exclude-glob .git \
             --exclude-glob .github \
             --exclude-glob tests \
+            --exclude-glob node_modules \
+            --exclude-glob resources \
             --exclude .env \
             --exclude .env.example \
             --exclude-glob "*.sqlite" \

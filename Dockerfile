@@ -5,6 +5,9 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     libsqlite3-dev \
+    curl \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
     && docker-php-ext-install pdo pdo_sqlite pdo_mysql \
     && pecl install pcov \
     && docker-php-ext-enable pcov \
@@ -17,6 +20,7 @@ WORKDIR /var/www/html
 COPY . .
 
 RUN composer install --no-interaction
+RUN npm install --silent && npm run build
 
 RUN mkdir -p /var/www/html/database \
     && chown -R www-data:www-data /var/www/html/database

@@ -17,6 +17,13 @@ services:
       DB_USER: root
       DB_PASS: secret
 
+  tailwind:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "npm install --silent && npm run dev"
+
   db:
     image: mysql:8
     restart: always

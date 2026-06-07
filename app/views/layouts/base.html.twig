@@ -6,24 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        mono: ['JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', 'monospace'],
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/app.css">
     <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
 
     {% block styles %}{% endblock %}
@@ -31,43 +17,7 @@
 
     <title>{% block title %}{% endblock %} — ellemaj</title>
 
-    <style>
-        body { font-family: 'Inter', system-ui, sans-serif; }
-        .font-mono-custom { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 
-        /* Loading bar */
-        #page-loading-bar {
-            position: fixed;
-            top: 0; left: 0;
-            height: 2px;
-            width: 0;
-            background: linear-gradient(90deg, #22d3ee, #3b82f6, #a855f7);
-            z-index: 10000;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-        #page-loading-bar.is-loading {
-            opacity: 1;
-            animation: loadbar 2s ease-in-out forwards;
-        }
-        @keyframes loadbar {
-            0%   { width: 0; }
-            40%  { width: 60%; }
-            85%  { width: 88%; }
-            100% { width: 88%; }
-        }
-
-        /* Dialog backdrop */
-        #confirm-dialog::backdrop {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
-        }
-
-        /* Active nav glow */
-        .nav-active-glow {
-            text-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
-        }
-    </style>
 </head>
 
 <body class="bg-slate-900 text-slate-200 min-h-screen flex flex-col">

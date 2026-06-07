@@ -11,9 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
 let confettiShown = false;
 
 function updateProgress() {
-  const rows = document.querySelectorAll(".dashboard_section table tr");
-  const progressBar = document.querySelector(".progress");
-  const ecText = document.querySelector(".dashboard_section p");
+  const rows = document.querySelectorAll("table tbody tr");
+  const progressBar = document.getElementById("ec-progress-bar");
+  const ecEarnedText = document.getElementById("ec-earned-text");
+  const ecPercentText = document.getElementById("ec-percent-text");
+
+  if (!progressBar || !ecEarnedText) return;
 
   let totalEC = 0;
   const maxEC = 60;
@@ -25,39 +28,26 @@ function updateProgress() {
 
     if (!ecCell || !gradeCell) return;
 
-    const ecValue = parseFloat(ecCell.textContent.replace(",", "."));
+    const ecValue = parseFloat(ecCell.textContent.trim().replace(",", "."));
 
-    let grade = null;
     const input = gradeCell.querySelector(".grade-input");
-
-    if (input) {
-      grade = parseFloat(input.value);
-    } else {
-      grade = parseFloat(gradeCell.textContent.replace(",", "."));
-    }
-
-    // reset classes
-    row.querySelectorAll("td").forEach(td => {
-      td.classList.remove("behaald", "onvoldoende");
-    });
+    const grade = input
+      ? parseFloat(input.value)
+      : parseFloat(gradeCell.textContent.trim().replace(",", "."));
 
     if (!isNaN(grade) && grade >= 5.5) {
       totalEC += ecValue;
-      row.querySelectorAll("td").forEach(td => td.classList.add("behaald"));
-    } else if (!isNaN(grade)) {
-      row.querySelectorAll("td").forEach(td => td.classList.add("onvoldoende"));
     }
   });
 
-  // progress bar
-  const percentage = Math.min((totalEC / maxEC) * 100, 100);
-  progressBar.style.width = `${percentage}%`;
-
-  // tekst
   const displayEC = Math.round(totalEC * 10) / 10;
-  ecText.textContent = `${Number.isInteger(displayEC) ? displayEC : displayEC.toFixed(1)} / ${maxEC} EC behaald`;
+  const percentage = Math.min((displayEC / maxEC) * 100, 100);
+  const percentRounded = Math.round(percentage);
 
-  // confetti
+  progressBar.style.width = `${percentage}%`;
+  ecEarnedText.textContent = `${Number.isInteger(displayEC) ? displayEC : displayEC.toFixed(1)} / ${maxEC} EC`;
+  if (ecPercentText) ecPercentText.textContent = `${percentRounded}% behaald`;
+
   if (totalEC >= nbsaGrens && !confettiShown) {
     startConfetti();
     confettiShown = true;
