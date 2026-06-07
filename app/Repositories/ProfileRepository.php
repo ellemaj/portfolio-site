@@ -65,7 +65,7 @@ class ProfileRepository implements ProfileRepositoryInterface
     {
         $profile = new Profile();
 
-        $profile->id         = $data->id;
+        $profile->id         = (int) $data->id;
         $profile->intro      = $data->intro;
         $profile->bio        = $data->bio;
 

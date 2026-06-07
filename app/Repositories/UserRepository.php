@@ -61,14 +61,14 @@ class UserRepository implements UserRepositoryInterface
     private function mapToUser(\stdClass $data): User
     {
         $user = new User();
-        $user->id         = $data->id;
+        $user->id         = (int) $data->id;
         $user->firstName  = $data->firstName;
         $user->lastName   = $data->lastName;
         $user->email      = $data->email;
         $user->password   = $data->password;
         $user->role       = $data->role;
-        $user->created_at = $data->created_at ?? 0;
-        $user->deleted_at = $data->deleted_at ?? null;
+        $user->created_at = (int) ($data->created_at ?? 0);
+        $user->deleted_at = isset($data->deleted_at) ? (int) $data->deleted_at : null;
         return $user;
     }
 }

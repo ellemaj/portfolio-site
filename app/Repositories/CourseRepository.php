@@ -46,13 +46,13 @@ class CourseRepository implements CourseRepositoryInterface
     private function mapToCourse(\stdClass $data): Course
     {
         $course = new Course();
-        $course->id        = $data->id;
+        $course->id        = (int) $data->id;
         $course->blok      = $data->blok;
         $course->name      = $data->name;
         $course->ec        = (float) $data->ec;
         $course->exam_type = $data->exam_type;
         $course->grade     = isset($data->grade) ? (float) $data->grade : null;
-        $course->created_at = $data->created_at ?? 0;
+        $course->created_at = (int) ($data->created_at ?? 0);
         return $course;
     }
 }

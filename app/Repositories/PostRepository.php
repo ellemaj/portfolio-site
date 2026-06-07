@@ -134,15 +134,15 @@ class PostRepository implements PostRepositoryInterface
     private function mapToPost(\stdClass $data): Post
     {
         $post = new Post();
-        $post->id = $data->id;
+        $post->id = (int) $data->id;
         $post->title = $data->title;
         $post->slug = $data->slug;
         $post->preview = $data->preview;
         $post->content = $data->content;
         $post->status = $data->status;
-        $post->publication_date = $data->publication_date ?? 0;
-        $post->created_at       = $data->created_at ?? 0;
-        $post->deleted_at       = $data->deleted_at ?? null;
+        $post->publication_date = (int) ($data->publication_date ?? 0);
+        $post->created_at       = (int) ($data->created_at ?? 0);
+        $post->deleted_at       = isset($data->deleted_at) ? (int) $data->deleted_at : null;
         return $post;
     }
 }
