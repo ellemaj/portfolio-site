@@ -65,7 +65,14 @@ class ServiceProvider implements ServiceProviderInterface
         $blogController = new BlogController($responseFactory, $postRepository);
         $container->set(BlogController::class, $blogController);
 
-        $userController = new UserController($responseFactory, $userRepository, $session, $postRepository, $courseRepository, $projectRepository);
+        $userController = new UserController(
+            $responseFactory,
+            $userRepository,
+            $session,
+            $postRepository,
+            $courseRepository,
+            $projectRepository
+        );
         $container->set(UserController::class, $userController);
 
         $dashboardController = new DashboardController($responseFactory, $courseRepository);
