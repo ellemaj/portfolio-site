@@ -6,6 +6,9 @@ use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
 use App\Repositories\UserRepositoryInterface;
+use App\Repositories\PostRepositoryInterface;
+use App\Repositories\CourseRepositoryInterface;
+use App\Repositories\ProjectRepositoryInterface;
 use App\Models\User;
 use Framework\Session;
 
@@ -14,7 +17,10 @@ class UserController
     public function __construct(
         private ResponseFactory $responseFactory,
         private UserRepositoryInterface $users,
-        private Session $session
+        private Session $session,
+        private PostRepositoryInterface $posts,
+        private CourseRepositoryInterface $courses,
+        private ProjectRepositoryInterface $projects,
     ) {
     }
 
@@ -123,8 +129,22 @@ class UserController
 
     public function overview(Request $request): Response
     {
+        $publishedPosts = $this->posts->findAllPublished();
+        $courses        = $this->courses->findAll();
+        $earned         = array_sum(array_map(
+            fn($c) => ($c->grade !== null && $c->grade >= 5.5) ? $c->ec : 0,
+            $courses
+        ));
+        $total          = array_sum(array_map(fn($c) => $c->ec, $courses));
+
         return $this->responseFactory->view('user/overview.html.twig', [
-            'active' => 'overview'
+            'active'      => 'overview',
+            'postCount'   => count($publishedPosts),
+            'recentPosts' => array_slice($publishedPosts, 0, 3),
+            'earned'      => $earned,
+            'total'       => $total,
+            'ecPercent'   => $total > 0 ? round($earned / $total * 100) : 0,
+            'projects'    => $this->projects->findAll(),
         ]);
     }
 

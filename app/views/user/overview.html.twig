@@ -4,89 +4,222 @@
 
 {% block content %}
 
-<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
     <!-- Header -->
-    <div class="mb-8">
+    <div class="mb-10">
         <div class="font-mono-custom text-xs text-cyan-500 tracking-widest uppercase flex items-center gap-2 mb-2">
             <span class="inline-block w-6 h-px bg-cyan-500/50"></span>
             <span>Account</span>
         </div>
-        <h1 class="text-3xl font-bold text-slate-100">Gebruikersdashboard</h1>
-        <p class="mt-1.5 text-slate-400 text-sm">Welkom terug, <span class="text-cyan-400 font-medium">{{ session.firstName }}</span>.</p>
+        <h1 class="text-3xl font-bold text-slate-100">
+            Welkom terug, <span class="text-cyan-400">{{ session.firstName }}</span>.
+        </h1>
+        <p class="mt-1.5 text-slate-500 text-sm font-mono-custom">
+            {{ "now"|date("l, d F Y") }}
+        </p>
     </div>
 
-    <div class="space-y-5">
+    <!-- Stat cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
 
-        <!-- Stats -->
-        <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-6">
-            <h2 class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest mb-4">Statistics</h2>
-            <ul class="space-y-2">
-                <li class="flex items-center gap-2.5 text-sm">
-                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 flex-shrink-0"></span>
-                    <span class="text-slate-400">Aantal blogposts</span>
-                </li>
-                <li class="flex items-center gap-2.5 text-sm">
-                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 flex-shrink-0"></span>
-                    <span class="text-slate-400">Project voortgang</span>
-                </li>
-                <li class="flex items-center gap-2.5 text-sm">
-                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 flex-shrink-0"></span>
-                    <span class="text-slate-400">Laatste login</span>
-                </li>
-            </ul>
+        <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-5 flex flex-col gap-1">
+            <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Blog posts</p>
+            <p class="text-3xl font-bold text-slate-100 font-mono-custom" data-count-up="{{ postCount }}">0</p>
+            <p class="text-xs text-slate-600">gepubliceerd</p>
         </div>
+
+        <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-5 flex flex-col gap-1">
+            <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Studiepunten</p>
+            <p class="text-3xl font-bold text-slate-100 font-mono-custom">
+                <span data-count-up="{{ earned|round(0) }}">0</span><span class="text-slate-600 text-xl"> / {{ total|round(0) }}</span>
+            </p>
+            <p class="text-xs text-slate-600">EC behaald</p>
+        </div>
+
+        <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-5 flex flex-col gap-1">
+            <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Projects</p>
+            <p class="text-3xl font-bold text-slate-100 font-mono-custom" data-count-up="{{ projects|length }}">0</p>
+            <p class="text-xs text-slate-600">in portfolio</p>
+        </div>
+
+    </div>
+
+    <!-- EC Progress -->
+    <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-5 mb-6">
+        <div class="flex items-center justify-between mb-3">
+            <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">EC Voortgang</p>
+            <span class="font-mono-custom text-sm font-semibold text-cyan-400">{{ ecPercent }}%</span>
+        </div>
+        <div style="width:100%;height:8px;background:rgba(51,65,85,0.6);border-radius:9999px;overflow:hidden;">
+            <div style="width:0%;height:100%;background:linear-gradient(to right,#06b6d4,#3b82f6);border-radius:9999px;"
+                 data-progress="{{ ecPercent }}"></div>
+        </div>
+        <div class="flex justify-between mt-2">
+            <span class="font-mono-custom text-xs text-slate-600">0 EC</span>
+            <span class="font-mono-custom text-xs text-slate-600">{{ total|round(0) }} EC</span>
+        </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
 
         <!-- Projects -->
-        <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-6">
-            <h2 class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest mb-4">Projects</h2>
-            <ul class="space-y-2">
-                <li class="flex items-center gap-2.5 text-sm">
-                    <span class="font-mono-custom text-cyan-600 text-xs">01</span>
-                    <span class="text-slate-300">Portfolio website</span>
-                </li>
-                <li class="flex items-center gap-2.5 text-sm">
-                    <span class="font-mono-custom text-cyan-600 text-xs">02</span>
-                    <span class="text-slate-300">Dashboard systeem</span>
-                </li>
-                <li class="flex items-center gap-2.5 text-sm">
-                    <span class="font-mono-custom text-cyan-600 text-xs">03</span>
-                    <span class="text-slate-300">Blog CMS</span>
-                </li>
-            </ul>
+        <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl overflow-hidden">
+            <div class="px-5 py-4 border-b border-slate-700/60 flex items-center justify-between">
+                <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Projects</p>
+                {% if session.role == 'admin' %}
+                    <a href="/projects/manage" class="text-xs text-amber-500 hover:text-amber-400 transition-colors font-mono-custom">beheren →</a>
+                {% endif %}
+            </div>
+            <div class="p-2">
+                {% if projects|length == 0 %}
+                    <p class="px-3 py-4 text-center text-slate-600 text-sm font-mono-custom">// geen projects</p>
+                {% else %}
+                    <ul class="space-y-1">
+                        {% for project in projects %}
+                            <li>
+                                {% if project.url %}
+                                    <a href="{{ project.url }}" target="_blank" rel="noopener"
+                                       class="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/40 transition-colors group">
+                                        <span class="flex-shrink-0 mt-0.5 font-mono-custom text-xs text-cyan-700 group-hover:text-cyan-500 transition-colors">
+                                            {{ loop.index|number_format(0,'','') < 10 ? '0' ~ loop.index : loop.index }}
+                                        </span>
+                                        <div class="min-w-0">
+                                            <p class="text-sm font-medium text-slate-300 group-hover:text-slate-100 transition-colors truncate">{{ project.name }}</p>
+                                            <p class="text-xs text-slate-600 truncate mt-0.5">{{ project.description }}</p>
+                                        </div>
+                                        <svg class="flex-shrink-0 w-3.5 h-3.5 text-slate-700 group-hover:text-cyan-500 mt-0.5 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                        </svg>
+                                    </a>
+                                {% else %}
+                                    <div class="flex items-start gap-3 px-3 py-2.5 rounded-lg">
+                                        <span class="flex-shrink-0 mt-0.5 font-mono-custom text-xs text-cyan-700">
+                                            {{ loop.index|number_format(0,'','') < 10 ? '0' ~ loop.index : loop.index }}
+                                        </span>
+                                        <div class="min-w-0">
+                                            <p class="text-sm font-medium text-slate-300 truncate">{{ project.name }}</p>
+                                            <p class="text-xs text-slate-600 truncate mt-0.5">{{ project.description }}</p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
         </div>
 
-        <!-- Recent activity -->
-        <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-6">
-            <h2 class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest mb-4">Recent Activity</h2>
-            <ul class="space-y-3">
-                <li class="flex items-start gap-3 text-sm">
-                    <span class="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                    <span class="text-slate-400">Nieuwe blogpost toegevoegd</span>
-                </li>
-                <li class="flex items-start gap-3 text-sm">
-                    <span class="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                    <span class="text-slate-400">Database migratie uitgevoerd</span>
-                </li>
-                <li class="flex items-start gap-3 text-sm">
-                    <span class="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                    <span class="text-slate-400">User login systeem gemaakt</span>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Logout -->
-        <div class="pt-2">
-            <a href="/logout"
-               class="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-red-500/10 border border-slate-700 hover:border-red-500/30 text-slate-400 hover:text-red-400 rounded-lg text-sm font-medium transition-colors">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                </svg>
-                Logout
-            </a>
+        <!-- Recent posts -->
+        <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl overflow-hidden">
+            <div class="px-5 py-4 border-b border-slate-700/60 flex items-center justify-between">
+                <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Recente posts</p>
+                <a href="/blog" class="text-xs text-cyan-500 hover:text-cyan-400 transition-colors font-mono-custom">alle posts →</a>
+            </div>
+            <div class="p-2">
+                {% if recentPosts|length == 0 %}
+                    <p class="px-3 py-4 text-center text-slate-600 text-sm font-mono-custom">// geen posts</p>
+                {% else %}
+                    <ul class="space-y-1">
+                        {% for post in recentPosts %}
+                            <li>
+                                <a href="/blog/{{ post.slug }}"
+                                   class="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/40 transition-colors group">
+                                    <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5"></span>
+                                    <div class="min-w-0">
+                                        <p class="text-sm font-medium text-slate-300 group-hover:text-slate-100 transition-colors truncate">{{ post.title }}</p>
+                                        <p class="text-xs text-slate-600 mt-0.5">
+                                            {{ post.publication_date|date("d M Y") }}
+                                        </p>
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
         </div>
 
     </div>
+
+    <!-- Quick actions -->
+    <div class="mt-10 flex items-center justify-between gap-3 flex-wrap">
+
+        <div class="flex items-center gap-3 flex-wrap">
+            <a href="/dashboard"
+               class="inline-flex items-center gap-2 px-4 py-2 bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700 text-slate-300 hover:text-slate-100 rounded-lg text-sm font-medium transition-colors">
+                <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                Dashboard
+            </a>
+            <a href="/profile"
+               class="inline-flex items-center gap-2 px-4 py-2 bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700 text-slate-300 hover:text-slate-100 rounded-lg text-sm font-medium transition-colors">
+                <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                Profile
+            </a>
+            {% if session.role == 'admin' %}
+                <a href="/blog/create"
+                   class="inline-flex items-center gap-2 px-4 py-2 bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700 text-slate-300 hover:text-slate-100 rounded-lg text-sm font-medium transition-colors">
+                    <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Nieuwe post
+                </a>
+                <a href="/blog/manage"
+                   class="inline-flex items-center gap-2 px-4 py-2 bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700 text-slate-300 hover:text-slate-100 rounded-lg text-sm font-medium transition-colors">
+                    <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    Blog beheren
+                </a>
+            {% endif %}
+        </div>
+
+        <a href="/logout"
+           class="inline-flex items-center gap-2 px-4 py-2 bg-slate-800/60 hover:bg-red-500/10 border border-slate-700 hover:border-red-500/30 text-slate-400 hover:text-red-400 rounded-lg text-sm font-medium transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+            </svg>
+            Logout
+        </a>
+
+    </div>
+
 </div>
+
+<script>
+    // Count-up animation
+    function countUp(el, target, duration = 900) {
+        const start = performance.now();
+        const update = (now) => {
+            const elapsed = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - elapsed, 3); // ease-out cubic
+            el.textContent = Math.round(eased * target);
+            if (elapsed < 1) requestAnimationFrame(update);
+        };
+        requestAnimationFrame(update);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-count-up]').forEach(el => {
+            countUp(el, parseInt(el.dataset.countUp, 10));
+        });
+    });
+
+    window.addEventListener('load', () => {
+        document.querySelectorAll('[data-progress]').forEach(el => {
+            const target = parseFloat(el.dataset.progress);
+            el.style.width = target + '%';
+            el.animate(
+                [{ width: '0%' }, { width: target + '%' }],
+                { duration: 1200, easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' }
+            );
+        });
+    });
+</script>
 
 {% endblock %}

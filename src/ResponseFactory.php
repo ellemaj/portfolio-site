@@ -62,6 +62,7 @@ class ResponseFactory
         $this->session->clear('_toasts');
 
         $response = new Response();
+        $response->header = "Content-Type: text/html; charset=utf-8";
         try {
             $response->responseCode = 200;
             $response->body = $this->twig->render($view, array_merge(
@@ -84,6 +85,7 @@ class ResponseFactory
     public function notFound(): Response
     {
         $response = new Response();
+        $response->header = "Content-Type: text/html; charset=utf-8";
         try {
             $response->responseCode = 404;
             $response->body = $this->twig->render('errors/404.html.twig');
@@ -98,6 +100,7 @@ class ResponseFactory
     public function internalError(): Response
     {
         $response = new Response();
+        $response->header = "Content-Type: text/html; charset=utf-8";
         try {
             $response->responseCode = 500;
             $response->body = $this->twig->render('errors/500.html.twig');
@@ -129,6 +132,7 @@ class ResponseFactory
     public function forbidden(): Response
     {
         $response = new Response();
+        $response->header = "Content-Type: text/html; charset=utf-8";
         try {
             $response->responseCode = 403;
             $response->body = $this->twig->render('errors/403.html.twig');
