@@ -1,0 +1,102 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block title %}Projects beheren{% endblock %}
+
+{% block content %}
+
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8 gap-4 flex-wrap">
+        <div>
+            <div class="font-mono-custom text-xs text-amber-500 tracking-widest uppercase flex items-center gap-2 mb-2">
+                <span class="inline-block w-6 h-px bg-amber-500/50"></span>
+                <span>Admin</span>
+            </div>
+            <h1 class="text-3xl font-bold text-slate-100">Projects beheren</h1>
+        </div>
+        <a href="/projects/create"
+           class="inline-flex items-center gap-2 px-4 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-lg text-sm transition-colors font-mono-custom">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Nieuw project
+        </a>
+    </div>
+
+    <!-- Table card -->
+    <div class="bg-slate-800/40 border border-slate-700/60 rounded-2xl overflow-hidden">
+
+        <div class="px-6 py-4 border-b border-slate-700/60 flex items-center gap-3">
+            <div class="flex gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500/60"></span>
+            </div>
+            <span class="font-mono-custom text-xs text-slate-500">projects.csv — {{ projects|length }} entries</span>
+        </div>
+
+        {% if projects|length == 0 %}
+            <div class="px-6 py-16 text-center text-slate-500">
+                <p class="font-mono-custom text-sm">// Geen projects gevonden</p>
+                <a href="/projects/create" class="mt-4 inline-block text-cyan-400 hover:text-cyan-300 text-sm transition-colors">Voeg je eerste project toe →</a>
+            </div>
+        {% else %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700/60">
+                            <th class="px-5 py-3 text-left font-mono-custom text-xs text-slate-500 uppercase tracking-wider">Naam</th>
+                            <th class="px-5 py-3 text-left font-mono-custom text-xs text-slate-500 uppercase tracking-wider hidden md:table-cell">URL</th>
+                            <th class="px-5 py-3 text-left font-mono-custom text-xs text-slate-500 uppercase tracking-wider hidden sm:table-cell">Volgorde</th>
+                            <th class="px-5 py-3 text-right font-mono-custom text-xs text-slate-500 uppercase tracking-wider">Acties</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700/40">
+                        {% for project in projects %}
+                            <tr class="hover:bg-slate-700/20 transition-colors">
+                                <td class="px-5 py-3.5">
+                                    <p class="font-medium text-slate-200 truncate max-w-xs">{{ project.name }}</p>
+                                    <p class="text-xs text-slate-500 truncate max-w-xs mt-0.5">{{ project.description }}</p>
+                                </td>
+                                <td class="px-5 py-3.5 hidden md:table-cell">
+                                    {% if project.url %}
+                                        <a href="{{ project.url }}" target="_blank" rel="noopener"
+                                           class="font-mono-custom text-xs text-cyan-500 hover:text-cyan-400 transition-colors truncate block max-w-xs">
+                                            {{ project.url }}
+                                        </a>
+                                    {% else %}
+                                        <span class="font-mono-custom text-xs text-slate-600">—</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-5 py-3.5 hidden sm:table-cell">
+                                    <span class="font-mono-custom text-xs text-slate-400">{{ project.sort_order }}</span>
+                                </td>
+                                <td class="px-5 py-3.5">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <a href="/projects/{{ project.id }}/edit"
+                                           class="px-3 py-1.5 bg-slate-700/60 hover:bg-slate-700 border border-slate-600/60 text-slate-300 hover:text-slate-100 rounded-md text-xs font-medium transition-colors">
+                                            Bewerken
+                                        </a>
+                                        <form action="/projects/{{ project.id }}/delete" method="POST"
+                                              data-confirm="Weet je zeker dat je '{{ project.name }}' wilt verwijderen?">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                            <button type="submit"
+                                                    class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 rounded-md text-xs font-medium transition-colors">
+                                                Verwijder
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

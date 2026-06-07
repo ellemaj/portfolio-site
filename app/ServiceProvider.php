@@ -8,6 +8,7 @@ use App\Controllers\UserController;
 use App\Controllers\DashboardController;
 use App\Controllers\ProfileController;
 use App\Controllers\ApiController;
+use App\Controllers\ProjectController;
 use App\Middleware\AdminMiddleware;
 use App\Repositories\PostRepository;
 use App\Repositories\PostRepositoryInterface;
@@ -17,6 +18,8 @@ use App\Repositories\CourseRepository;
 use App\Repositories\CourseRepositoryInterface;
 use App\Repositories\ProfileRepository;
 use App\Repositories\ProfileRepositoryInterface;
+use App\Repositories\ProjectRepository;
+use App\Repositories\ProjectRepositoryInterface;
 use Exception;
 use Framework\Database;
 use Framework\ResponseFactory;
@@ -52,6 +55,9 @@ class ServiceProvider implements ServiceProviderInterface
         $profileRepository = new ProfileRepository($database);
         $container->set(ProfileRepositoryInterface::class, $profileRepository);
 
+        $projectRepository = new ProjectRepository($database);
+        $container->set(ProjectRepositoryInterface::class, $projectRepository);
+
         // Controllers
         $homeController = new HomeController($responseFactory);
         $container->set(HomeController::class, $homeController);
@@ -65,8 +71,11 @@ class ServiceProvider implements ServiceProviderInterface
         $dashboardController = new DashboardController($responseFactory, $courseRepository);
         $container->set(DashboardController::class, $dashboardController);
 
-        $profileController = new ProfileController($responseFactory, $profileRepository);
+        $profileController = new ProfileController($responseFactory, $profileRepository, $projectRepository);
         $container->set(ProfileController::class, $profileController);
+
+        $projectController = new ProjectController($responseFactory, $projectRepository);
+        $container->set(ProjectController::class, $projectController);
 
         $apiController = new ApiController($responseFactory, $postRepository);
         $container->set(ApiController::class, $apiController);

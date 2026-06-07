@@ -1,0 +1,89 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block title %}Project bewerken{% endblock %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8 gap-4 flex-wrap">
+        <div>
+            <div class="font-mono-custom text-xs text-amber-500 tracking-widest uppercase flex items-center gap-2 mb-2">
+                <span class="inline-block w-6 h-px bg-amber-500/50"></span>
+                <span>Admin</span>
+            </div>
+            <h1 class="text-3xl font-bold text-slate-100">Project bewerken</h1>
+        </div>
+        <a href="/projects/manage" class="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-cyan-400 transition-colors font-mono-custom group">
+            <svg class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Terug
+        </a>
+    </div>
+
+    <!-- Form card -->
+    <div class="bg-slate-800/40 border border-slate-700/60 rounded-2xl overflow-hidden">
+
+        <div class="px-6 py-4 border-b border-slate-700/60 flex items-center gap-3">
+            <div class="flex gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500/60"></span>
+            </div>
+            <span class="font-mono-custom text-xs text-slate-500">project-{{ project.id }}.json</span>
+        </div>
+
+        <form action="/projects/{{ project.id }}/update" method="POST" class="p-6 space-y-5">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <!-- Name -->
+            <div>
+                <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Naam</label>
+                <input type="text" name="name" required value="{{ project.name }}"
+                       class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Beschrijving</label>
+                <textarea name="description" rows="3" required
+                          class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors resize-y">{{ project.description }}</textarea>
+            </div>
+
+            <!-- URL + Sort order -->
+            <div class="grid sm:grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">
+                        URL
+                        <span class="ml-1 text-slate-600 normal-case font-sans font-normal">(optioneel)</span>
+                    </label>
+                    <input type="url" name="url" value="{{ project.url }}"
+                           class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors"
+                           placeholder="https://example.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">
+                        Volgorde
+                        <span class="ml-1 text-slate-600 normal-case font-sans font-normal">(lager = eerder)</span>
+                    </label>
+                    <input type="number" name="sort_order" value="{{ project.sort_order }}" min="0"
+                           class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="pt-2 flex items-center gap-3">
+                <button type="submit"
+                        class="px-6 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-lg text-sm transition-colors font-mono-custom">
+                    Opslaan
+                </button>
+                <a href="/projects/manage" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Annuleren</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

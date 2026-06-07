@@ -8,6 +8,7 @@ use App\Controllers\UserController;
 use App\Controllers\DashboardController;
 use App\Controllers\ProfileController;
 use App\Controllers\ApiController;
+use App\Controllers\ProjectController;
 use App\Middleware\AdminMiddleware;
 use Framework\Router;
 use Framework\RouteProviderInterface;
@@ -65,6 +66,20 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('GET', '/profile/edit', [$profileController, 'edit'])
             ->middleware([$adminMiddleware, 'handle']);
         $router->addRoute('POST', '/profile/update', [$profileController, 'update'])
+            ->middleware([$adminMiddleware, 'handle']);
+
+        $projectController = $container->get(ProjectController::class);
+        $router->addRoute('GET', '/projects/manage', [$projectController, 'manage'])
+            ->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('GET', '/projects/create', [$projectController, 'showCreate'])
+            ->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('POST', '/projects/create', [$projectController, 'create'])
+            ->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('GET', '/projects/(?<id>\d+)/edit', [$projectController, 'showEdit'])
+            ->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('POST', '/projects/(?<id>\d+)/update', [$projectController, 'update'])
+            ->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('POST', '/projects/(?<id>\d+)/delete', [$projectController, 'delete'])
             ->middleware([$adminMiddleware, 'handle']);
 
         $apiController = $container->get(ApiController::class);

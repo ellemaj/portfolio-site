@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Repositories\ProfileRepositoryInterface;
+use App\Repositories\ProjectRepositoryInterface;
 use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
@@ -11,7 +12,8 @@ class ProfileController
 {
     public function __construct(
         private ResponseFactory $responseFactory,
-        private ProfileRepositoryInterface $profiles
+        private ProfileRepositoryInterface $profiles,
+        private ProjectRepositoryInterface $projectRepository
     ) {
     }
 
@@ -31,11 +33,12 @@ class ProfileController
         }
 
         return $this->responseFactory->view('profile.html.twig', [
-            'active'  => 'profile',
-            'profile' => $profile,
-            'skills'  => explode('|', $profile->skills),
-            'traits'  => explode('|', $profile->traits),
-            'age'     => $age,
+            'active'    => 'profile',
+            'profile'   => $profile,
+            'skills'    => explode('|', $profile->skills),
+            'traits'    => explode('|', $profile->traits),
+            'age'       => $age,
+            'projects'  => $this->projectRepository->findAll(),
         ]);
     }
 
