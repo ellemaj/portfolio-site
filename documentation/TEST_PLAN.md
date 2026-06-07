@@ -13,6 +13,7 @@
 | US-7 | As a visitor, I want to see my course grades and results |
 | US-8 | As a visitor, I want to view the profile page with personal information |
 | US-9 | As a visitor, I want to navigate the home, FAQ and commandmaker pages |
+| US-10 | As an admin, I want to create, edit and delete portfolio projects |
 
 ---
 
@@ -45,6 +46,23 @@ Unit tests test a single class in isolation. Dependencies (like the database) ar
 | `test_show_create_returns_response` | `BlogController` | Create page returns a response | US-5 |
 | `test_show_edit_returns_not_found_when_post_missing` | `BlogController` | Returns 404 when post does not exist | US-5 |
 | `test_show_edit_returns_view_when_post_found` | `BlogController` | Returns 200 when post exists | US-5 |
+| `test_url_is_null_by_default` | `Project` | A new Project has no URL by default | US-10 |
+| `test_can_set_name_and_description` | `Project` | Name and description can be assigned | US-10 |
+| `test_can_set_url` | `Project` | URL can be assigned | US-10 |
+| `test_can_set_sort_order` | `Project` | Sort order can be assigned | US-10 |
+| `test_can_set_created_at` | `Project` | Created-at timestamp can be assigned | US-10 |
+| `test_manage_returns_response` | `ProjectController` | Manage page returns a 200 response | US-10 |
+| `test_show_create_returns_response` | `ProjectController` | Create form returns a 200 response | US-10 |
+| `test_create_returns_error_when_name_missing` | `ProjectController` | Returns 500 when name is missing | US-10 |
+| `test_create_returns_error_when_description_missing` | `ProjectController` | Returns 500 when description is missing | US-10 |
+| `test_create_returns_redirect_on_success` | `ProjectController` | Returns 302 after creating a project | US-10 |
+| `test_show_edit_returns_not_found_when_project_missing` | `ProjectController` | Returns 404 when project does not exist | US-10 |
+| `test_show_edit_returns_view_when_project_found` | `ProjectController` | Returns 200 when project exists | US-10 |
+| `test_update_returns_not_found_when_project_missing` | `ProjectController` | Returns 404 when project does not exist | US-10 |
+| `test_update_returns_error_when_name_missing` | `ProjectController` | Returns 500 when name is missing on update | US-10 |
+| `test_update_returns_redirect_on_success` | `ProjectController` | Returns 302 after updating a project | US-10 |
+| `test_delete_returns_error_when_repository_fails` | `ProjectController` | Returns 500 when delete fails | US-10 |
+| `test_delete_returns_redirect_on_success` | `ProjectController` | Returns 302 after deleting a project | US-10 |
 | `test_show_login_returns_response` | `UserController` | Login page returns a 200 response | US-4 |
 | `test_show_register_returns_response` | `UserController` | Register page returns a 200 response | US-3 |
 | `test_overview_returns_response` | `UserController` | Overview page returns a 200 response | US-3 |
@@ -90,6 +108,15 @@ Integration tests test the repository classes against a real (temporary) SQLite 
 | `test_get_returns_null_for_optional_fields_when_empty` | `ProfileRepository` | Optional fields default to null | US-8 |
 | `test_update_saves_changes` | `ProfileRepository` | Profile changes are saved to the database | US-8 |
 | `test_update_returns_true` | `ProfileRepository` | Update returns true on success | US-8 |
+| `test_create_returns_project_with_id` | `ProjectRepository` | Creating a project assigns an ID | US-10 |
+| `test_create_saves_correct_data` | `ProjectRepository` | Project data is saved correctly | US-10 |
+| `test_find_by_id_returns_project` | `ProjectRepository` | Project can be found by ID | US-10 |
+| `test_find_by_id_returns_null_when_not_found` | `ProjectRepository` | Returns null for unknown ID | US-10 |
+| `test_find_all_returns_all_projects` | `ProjectRepository` | All projects are returned | US-10 |
+| `test_find_all_returns_empty_array_when_no_projects` | `ProjectRepository` | Returns empty array when no projects exist | US-10 |
+| `test_find_all_orders_by_sort_order` | `ProjectRepository` | Projects are ordered by sort_order | US-10 |
+| `test_update_changes_name` | `ProjectRepository` | Editing a project saves changes | US-10 |
+| `test_delete_removes_project` | `ProjectRepository` | Deleting a project removes it from the database | US-10 |
 
 ---
 
