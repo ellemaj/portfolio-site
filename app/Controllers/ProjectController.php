@@ -20,6 +20,7 @@ class ProjectController
     {
         return $this->responseFactory->view('projects/manage.html.twig', [
             'projects' => $this->projects->findAll(),
+            'active'   => 'manageProjects',
         ]);
     }
 

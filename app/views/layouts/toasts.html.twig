@@ -1,5 +1,5 @@
 {% if toasts is defined and toasts|length > 0 %}
-<div id="toast-viewport" style="position:fixed;top:1.25rem;right:1.25rem;display:flex;flex-direction:column;align-items:flex-end;gap:0.625rem;z-index:9999;">
+<div id="toast-viewport" style="position:fixed;top:4.5rem;right:1.25rem;display:flex;flex-direction:column;align-items:flex-end;gap:0.625rem;z-index:9999;">
     {% for toast in toasts %}
         <div class="toast toast-{{ toast.type|default('info') }}" role="alert" data-toast
              style="display:flex;flex-direction:column;min-width:300px;max-width:420px;border-radius:0.75rem;overflow:hidden;opacity:0;transform:translateX(12px);transition:opacity 0.25s ease,transform 0.25s ease;position:relative;">
