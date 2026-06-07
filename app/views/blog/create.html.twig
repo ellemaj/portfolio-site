@@ -69,9 +69,8 @@
             <!-- Content -->
             <div>
                 <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Content</label>
-                <textarea name="content" rows="12" required
-                          class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors resize-y"
-                          placeholder="Schrijf hier je post…"></textarea>
+                <input type="hidden" name="content" id="content-input">
+                <div id="quill-editor"></div>
             </div>
 
             <!-- Status + Date -->
@@ -105,6 +104,10 @@
     </div>
 </div>
 
+<!-- Quill -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
+
 <!-- Flatpickr -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -133,8 +136,84 @@
     .numInput { color: #e2e8f0 !important; }
 </style>
 
+<style>
+    /* Quill dark theme */
+    .ql-toolbar.ql-snow {
+        background: #1e293b;
+        border: 1px solid rgba(71,85,105,.6) !important;
+        border-bottom: 1px solid rgba(71,85,105,.3) !important;
+        border-radius: .5rem .5rem 0 0;
+    }
+    .ql-container.ql-snow {
+        background: rgba(51,65,85,.5);
+        border: 1px solid rgba(71,85,105,.6) !important;
+        border-top: none !important;
+        border-radius: 0 0 .5rem .5rem;
+        font-family: Inter, system-ui, sans-serif;
+        font-size: .875rem;
+    }
+    .ql-editor {
+        min-height: 280px;
+        color: #e2e8f0;
+        line-height: 1.625;
+    }
+    .ql-editor.ql-blank::before { color: #475569; font-style: normal; }
+    .ql-snow .ql-stroke { stroke: #94a3b8; }
+    .ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill { fill: #94a3b8; }
+    .ql-snow .ql-picker { color: #94a3b8; }
+    .ql-snow .ql-picker-options {
+        background: #1e293b;
+        border: 1px solid #334155 !important;
+        border-radius: .5rem;
+    }
+    .ql-snow .ql-picker-item { color: #94a3b8; }
+    .ql-snow .ql-picker-item:hover,
+    .ql-snow.ql-toolbar button:hover .ql-stroke,
+    .ql-snow.ql-toolbar button.ql-active .ql-stroke { stroke: #22d3ee; }
+    .ql-snow.ql-toolbar button:hover .ql-fill,
+    .ql-snow.ql-toolbar button.ql-active .ql-fill { fill: #22d3ee; }
+    .ql-snow.ql-toolbar .ql-picker-label:hover,
+    .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+    .ql-snow .ql-picker-item:hover { color: #22d3ee; }
+    .ql-snow a { color: #22d3ee; }
+    #quill-editor-error { display: none; margin-top: .375rem; font-size: .75rem; color: #f87171; }
+</style>
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+        const quill = new Quill('#quill-editor', {
+            theme: 'snow',
+            placeholder: 'Schrijf hier je post…',
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['link'],
+                    ['clean'],
+                ],
+            },
+        });
+
+        const form = document.querySelector('form');
+        const contentInput = document.getElementById('content-input');
+        const editorError = document.createElement('p');
+        editorError.id = 'quill-editor-error';
+        editorError.textContent = 'Content mag niet leeg zijn.';
+        document.getElementById('quill-editor').after(editorError);
+
+        form.addEventListener('submit', (e) => {
+            if (quill.getText().trim().length === 0) {
+                e.preventDefault();
+                editorError.style.display = 'block';
+                quill.focus();
+                return;
+            }
+            editorError.style.display = 'none';
+            contentInput.value = quill.getSemanticHTML();
+        });
+
         flatpickr.localize(flatpickr.l10ns.nl);
 
         flatpickr("#publication-date", {
