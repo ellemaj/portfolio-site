@@ -122,6 +122,7 @@ class UserController
             ->redirect('/overview');
         }
 
+        $redirect = ($user && $user->role === 'admin') ? '/overview' : '/home';
         return $this->responseFactory
         ->createToast('error', 'E-mailadres of wachtwoord klopt niet.')
         ->redirect('/login');
