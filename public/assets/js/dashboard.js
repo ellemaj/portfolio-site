@@ -54,7 +54,8 @@ function updateProgress() {
   progressBar.style.width = `${percentage}%`;
 
   // tekst
-  ecText.textContent = `${totalEC.toFixed(1)} / ${maxEC} EC behaald`;
+  const displayEC = Math.round(totalEC * 10) / 10;
+  ecText.textContent = `${Number.isInteger(displayEC) ? displayEC : displayEC.toFixed(1)} / ${maxEC} EC behaald`;
 
   // confetti
   if (totalEC >= nbsaGrens && !confettiShown) {
