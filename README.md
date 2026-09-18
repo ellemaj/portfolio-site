@@ -1,12 +1,14 @@
-## IT Development Portfolio
+## Portfolio website
 
-This is my IT Development Portfolio (ITDP).
+This is my portfolio website, you can find it on [www.elmarvanloenhout.nl](https://elmarvanloenhout.nl).
 
-### Author: ellemaj
+Originally, this was an assignment for school (my IT Development Portfolio), so I'm slowly rebuilding it to my own portfolio website. The framework I'm using is custom-made and school-provided: the *maestro* framework. [Original school-provided repository](https://github.com/HZ-ICT1-2526/itdp-ellemaj).
+
+### Author: [ellemaj](https://github.com/ellemaj)
 
 ## Documentation
 
-You can find my documentation and explanations in the [/documentation folder](documentation/), and on the Github Wiki.
+You can find my documentation and explanations in the [/documentation folder](documentation/).
 
 ---
 
