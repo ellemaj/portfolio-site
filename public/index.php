@@ -19,7 +19,7 @@ if (file_exists($envFile)) {
             }
             $parts = explode('=', $line, 2);
             $key = trim($parts[0]);
-            $value = isset($parts[1]) ? trim($parts[1], " \t\n\r\0\x0B\"'") : '';
+            $value = trim($parts[1], " \t\n\r\0\x0B\"'");
             if ($key !== '') {
                 $_ENV[$key] = $value;
             }
