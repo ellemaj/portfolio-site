@@ -15,7 +15,7 @@ services:
       DB_HOST: db
       DB_NAME: maestro
       DB_USER: root
-      DB_PASS: secret
+      DB_PASS: ${DOCKER_DB_PASSWORD:?set DOCKER_DB_PASSWORD in .env, see .env.example}
 
   tailwind:
     image: node:20-alpine
@@ -28,15 +28,15 @@ services:
     image: mysql:8
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: ${DOCKER_DB_PASSWORD:?set DOCKER_DB_PASSWORD in .env, see .env.example}
       MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: maestro
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psecret"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DOCKER_DB_PASSWORD}"]
       interval: 5s
       timeout: 5s
       retries: 10
