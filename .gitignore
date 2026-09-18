@@ -1,12 +1,14 @@
 # PHPStorm files
 .idea
 
+# VS Code
+.vscode
+
 # Cache for twig
 cache/
 
 # Composer stuff
 vendor/
-composer.lock
 .deptrac.cache
 
 # Node
@@ -14,6 +16,5 @@ node_modules/
 
 # User level
 .env
-.vscode
 *.sqlite
-hash.php
+.claude/
