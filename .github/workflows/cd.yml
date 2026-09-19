@@ -1,0 +1,51 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  checks:
+    uses: ./.github/workflows/checks.yml
+
+  deploy:
+    name: Deploy to Strato
+    runs-on: ubuntu-latest
+    needs: checks
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+      - name: Install production dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build CSS
+        run: npm ci && npm run build
+      - name: Install lftp
+        run: sudo apt-get install -y lftp
+      - name: Deploy via SFTP
+        env:
+          SFTP_HOST: ${{ secrets.FTP_SERVER }}
+          SFTP_USER: ${{ secrets.FTP_USERNAME }}
+          SFTP_PASS: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          lftp -u "$SFTP_USER,$SFTP_PASS" "sftp://$SFTP_HOST" << 'LFTP'
+          set sftp:auto-confirm yes
+          set net:timeout 60
+          mirror -R --delete \
+            --exclude-glob .git \
+            --exclude-glob .github \
+            --exclude-glob tests \
+            --exclude-glob node_modules \
+            --exclude-glob resources \
+            --exclude .env \
+            --exclude .env.example \
+            --exclude-glob "*.sqlite" \
+            --exclude hash.php \
+            . /
+          quit
+          LFTP

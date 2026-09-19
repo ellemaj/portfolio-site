@@ -1,0 +1,47 @@
+name: Checks
+
+on:
+  workflow_call:
+
+jobs:
+  phpstan:
+    name: PHPStan (level 8)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse --no-progress --memory-limit=256M
+
+  phpcs:
+    name: PHPCS (PSR-12)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
+      - name: Run PHPCS
+        run: vendor/bin/phpcs
+
+  deptrac:
+    name: Deptrac
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
+      - name: Run Deptrac
+        run: vendor/bin/deptrac analyse --no-progress
