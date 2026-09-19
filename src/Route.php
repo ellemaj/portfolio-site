@@ -32,6 +32,9 @@ class Route
 
     public function matches(string $method, string $path): bool
     {
+        // HEAD must return the same response as GET, minus the body (RFC 9110 §9.3.2)
+        $method = $method === 'HEAD' ? 'GET' : $method;
+
         if ($this->method !== $method) {
             return false;
         }

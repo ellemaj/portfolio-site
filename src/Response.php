@@ -17,12 +17,14 @@ class Response
         $this->header = $header;
     }
 
-    public function echo(): void
+    public function echo(bool $includeBody = true): void
     {
         if ($this->header !== null) {
             header($this->header);
         }
         http_response_code($this->responseCode);
-        echo $this->body;
+        if ($includeBody) {
+            echo $this->body;
+        }
     }
 }

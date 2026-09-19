@@ -69,5 +69,5 @@ $request = new Request($method, $urlPath, $queryParams, $postData);
 // Handle the request and get the response
 $response = $kernel->handle($request);
 
-// Send the response to the client
-$response->echo();
+// Send the response to the client (HEAD must omit the body, RFC 9110 §9.3.2)
+$response->echo($method !== 'HEAD');

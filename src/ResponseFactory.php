@@ -10,6 +10,7 @@ class ResponseFactory
 {
     private Environment $twig;
     private Session $session;
+    private string $appUrl;
 
     public function __construct(bool $debugMode, string $viewsPath, Session $session)
     {
@@ -22,8 +23,11 @@ class ResponseFactory
             $twig->addExtension(new \Twig\Extension\DebugExtension());
         }
 
+        $this->appUrl = rtrim((string)($_ENV['APP_URL'] ?? ''), '/');
+
         $twig->addGlobal('session', $_SESSION);
         $twig->addGlobal('csrf_token', $session->getCsrfToken());
+        $twig->addGlobal('app_url', $this->appUrl);
 
         $twig->addFilter(new TwigFilter('nldate', function (int $timestamp): string {
             $maanden = [
@@ -65,8 +69,9 @@ class ResponseFactory
         $response->header = "Content-Type: text/html; charset=utf-8";
         try {
             $response->responseCode = 200;
+            $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
             $response->body = $this->twig->render($view, array_merge(
-                ['toasts' => $toasts],
+                ['toasts' => $toasts, 'canonical_url' => $this->appUrl . $path],
                 $context
             ));
             return $response;
