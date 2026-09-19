@@ -82,6 +82,15 @@ class ResponseFactory
         return new Response($txt, 200);
     }
 
+    public function xml(string $content): Response
+    {
+        $response = new Response();
+        $response->responseCode = 200;
+        $response->body = $content;
+        $response->header = "Content-Type: application/xml; charset=utf-8";
+        return $response;
+    }
+
     public function notFound(): Response
     {
         $response = new Response();

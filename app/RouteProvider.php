@@ -9,6 +9,7 @@ use App\Controllers\DashboardController;
 use App\Controllers\ProfileController;
 use App\Controllers\ApiController;
 use App\Controllers\ProjectController;
+use App\Controllers\SitemapController;
 use App\Middleware\AdminMiddleware;
 use Framework\Router;
 use Framework\RouteProviderInterface;
@@ -86,5 +87,9 @@ class RouteProvider implements RouteProviderInterface
         $apiController = $container->get(ApiController::class);
         $router->addRoute('GET', '/api/posts', [$apiController, 'getPosts']);
         $router->addRoute('GET', '/api/posts/{slug}', [$apiController, 'getPost']);
+
+        $sitemapController = $container->get(SitemapController::class);
+        $router->addRoute('GET', '/sitemap.xml', [$sitemapController, 'index']);
+        $router->addRoute('GET', '/sitemap', [$sitemapController, 'html']);
     }
 }

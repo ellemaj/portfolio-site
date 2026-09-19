@@ -9,6 +9,7 @@ use App\Controllers\DashboardController;
 use App\Controllers\ProfileController;
 use App\Controllers\ApiController;
 use App\Controllers\ProjectController;
+use App\Controllers\SitemapController;
 use App\Middleware\AdminMiddleware;
 use App\Repositories\PostRepository;
 use App\Repositories\PostRepositoryInterface;
@@ -86,5 +87,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         $apiController = new ApiController($responseFactory, $postRepository);
         $container->set(ApiController::class, $apiController);
+
+        $sitemapController = new SitemapController($responseFactory, $postRepository);
+        $container->set(SitemapController::class, $sitemapController);
     }
 }
