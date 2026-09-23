@@ -1,13 +1,13 @@
 CREATE TABLE users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    firstName TEXT NOT NULL,
-    lastName TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-    role TEXT DEFAULT 'user',
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    firstName VARCHAR(255) NOT NULL,
+    lastName VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    last_login INTEGER,
-    deleted_at INTEGER
+    last_login BIGINT NULL,
+    deleted_at BIGINT NULL
 );
 
 INSERT INTO users (firstName, lastName, email, password, role, created_at, last_login, deleted_at)
@@ -17,7 +17,7 @@ VALUES (
     'elmarvloenhout@gmail.com',
     '$2y$12$YXS2yo0p.830i3eavIzGuunRsHD96XasjyfeTgR7/.rlE7VHZVCVK',
     'admin',
-    strftime('%s', 'now'),
-    strftime('%s', 'now'),
-    strftime('%s', 'now')
+    CURRENT_TIMESTAMP,
+    UNIX_TIMESTAMP(),
+    NULL
 );

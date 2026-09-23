@@ -44,7 +44,6 @@ jobs:
             --exclude-glob resources \
             --exclude .env \
             --exclude .env.example \
-            --exclude-glob "*.sqlite" \
             --exclude hash.php \
             . /
           quit

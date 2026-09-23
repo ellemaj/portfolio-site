@@ -1,11 +1,11 @@
 CREATE TABLE courses (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    blok TEXT NOT NULL,
-    name TEXT NOT NULL,
-    ec REAL NOT NULL,
-    exam_type TEXT NOT NULL,
-    grade REAL,
-    created_at INTEGER DEFAULT (strftime('%s', 'now'))
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    blok VARCHAR(50) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    ec DECIMAL(4,1) NOT NULL,
+    exam_type VARCHAR(100) NOT NULL,
+    grade DECIMAL(4,1) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO courses (blok, name, ec, exam_type, grade) VALUES

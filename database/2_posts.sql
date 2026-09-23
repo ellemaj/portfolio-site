@@ -1,28 +1,27 @@
 CREATE TABLE posts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    slug TEXT NOT NULL UNIQUE,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
     preview TEXT NOT NULL,
-    content TEXT NOT NULL,
-    status TEXT DEFAULT 'draft',
-    publication_date INTEGER,
-    created_at INTEGER DEFAULT CURRENT_TIMESTAMP,
-    deleted_at INTEGER
+    content LONGTEXT NOT NULL,
+    status VARCHAR(50) DEFAULT 'draft',
+    publication_date BIGINT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BIGINT NULL
 );
 
-INSERT INTO posts (title, slug, preview, content, status, publication_date, created_at)
+INSERT INTO posts (title, slug, preview, content, status, publication_date)
 VALUES
 (
     'Nieuwe update!',
     'update',
     'De website heeft een nieuwe update gehad!',
     '<p>De website heeft een nieuwe update gekregen! <br>
-    Door de feedback die ik heb verzameld tijdens de posterpresentaties, ziet de website (en de code) er nu nóg toffer uit! <br>
+    Door de feedback die ik heb verzameld tijdens de posterpresentaties, ziet de website (en de code) er nu nog toffer uit! <br>
     Vooral de styling van de website heeft een flinke upgrade gehad. De complete versiegeschiedenis kan je vinden via deze
     <a href="https://github.com/ellemaj/ellemaj.github.io" target="_blank">Github pagina</a>.</p>',
     'published',
-    '1759968000',
-    '1772197524'
+    '1759968000'
 ),
 (
     'Persoonlijke SWOT Analyse',
@@ -55,22 +54,20 @@ VALUES
         <li>Te laat aan iets beginnen, en daardoor op het einde in tijdsnood komen</li>
     </ul>',
     'published',
-    '1757548800',
-    '1772197524'
+    '1757548800'
 ),
 (
     'ICT-werkveld',
     'ict-werkveld',
     'Hoe ziet het ICT-werkveld er uit? Waar kom ik in terecht als ik dze opleiding afrond?',
-    "<p>Ik heb me voor deze blog verdiept in het ICT werkveld, en wat ik kan verwachten als ik klaar ben met de opleiding.<br>
+    '<p>Ik heb me voor deze blog verdiept in het ICT werkveld, en wat ik kan verwachten als ik klaar ben met de opleiding.<br>
     Het ICT werkveld is erg breed, en veranderd eigenlijk continu. Bedrijven hebben steeds vaker digitale oplossingen nodig, waardoor er erg veel verschillende functies binnen de ICT-wereld zijn.<br>
     Bijvoorbeeld softwareontwikkelaars die nieuwe apps bouwen, systeembeheerders die ervoor zorgen dat netwerken binnen bedrijven veilig online blijven, security specialisten die zorgen dat bedrijven goed weerbaarzijn tegen cyberaanvallen, enzovoort.<br>
     <br>
-    Wanneer ik over 4 jaar mijn HBO-ict studie heb afgerond, denk ik dat er nog steeds genoeg keuze is qua werk. De vraag naar ICT'ers is, en blijft denk ik erg groot.
-    Hoewel er in de komende 4 jaar nog veel kan veranderen, ook binnen ICT met de opkomst van bijvoorbeeld AI, denk ik toch dat met de juiste basis ik ver kan komen.</p>",
+    Wanneer ik over 4 jaar mijn HBO-ict studie heb afgerond, denk ik dat er nog steeds genoeg keuze is qua werk. De vraag naar ICT-ers is, en blijft denk ik erg groot.
+    Hoewel er in de komende 4 jaar nog veel kan veranderen, ook binnen ICT met de opkomst van bijvoorbeeld AI, denk ik toch dat met de juiste basis ik ver kan komen.</p>',
     'published',
-    '1757462400',
-    '1772197524'
+    '1757462400'
 ),
 (
     'Feedback',
@@ -81,8 +78,7 @@ VALUES
     Maar, ik heb eerlijk gezegd geen idee over welke opdracht dit gaat, en heb ook geen enkele feedback
     daarover gehoord :(</p>',
     'published',
-    '1757462400',
-    '1772197524'
+    '1757462400'
 ),
 (
     'Mijn programmeerervaring',
@@ -100,27 +96,25 @@ VALUES
     Toen ik in de eindexamenperiode zat heb ik zelfs een programma met python gemaakt wat uitrekende wat voor cijfer ik moest halen om te slagen.<br>
     Kortom: ik heb de afgelopen jaren al een beetje ervaring opgedaan met coderen en programmeren, en heb het tot nu toe altijd leuk gevonden. Ik ben dus benieuwd wat we hier op de opleiding allemaal gaan doen!</p>',
     'published',
-    '1757376000',
-    '1772197524'
+    '1757376000'
 ),
 (
     'Studiekeuze & motivatie',
     'studiekeuze',
     'De studie waarvoor ik heb gekozen, en waarom ik hiervoor heb gekozen.',
-    "<p>Ik heb gekozen voor de opleiding HBO-ICT aan de HZ (Hogeschool Zeeland).<br>
+    '<p>Ik heb gekozen voor de opleiding HBO-ICT aan de HZ (Hogeschool Zeeland).<br>
     De reden dat ik hiervoor heb gekozen, is dat ik altijd al erg geinteresseerd ben geweest in techniek, programmeren, en computers.<br>
-    Zoals eerder al genoemd op de <a href='/profile'>profile pagina</a> heeft mijn vader een eigen bedrijf in licht en geluid, en ook daar komt programmeren soms bij kijken.<br>
-    2 jaar geleden heb ik op de middelbare school het vak informatica gevolgd, en dat vond ik erg leuk om te doen. Hierover meer bij de post <a href='/blog/ervaring'>programmeerervaring</a>.</p>
+    Zoals eerder al genoemd op de profile pagina heeft mijn vader een eigen bedrijf in licht en geluid, en ook daar komt programmeren soms bij kijken.<br>
+    2 jaar geleden heb ik op de middelbare school het vak informatica gevolgd, en dat vond ik erg leuk om te doen. Hierover meer bij de post programmeerervaring.</p>
 
     <p>Maar, het feit dat ik informatica zo leuk vond, heeft er uiteindelijk ook tot geleid dat ik voor een ICT studie heb gekozen.
-    Eerst twijfelde ik erg wat ik voor opleiding wilde doen: de keuze's lagen tussen de koks/horecaopleiding, een ict opleiding, of een opleiding binnen de evenementensector (bijvoorbeeld audiotechnicus).</p>
+    Eerst twijfelde ik erg wat ik voor opleiding wilde doen: de keuzes lagen tussen de koks/horecaopleiding, een ict opleiding, of een opleiding binnen de evenementensector (bijvoorbeeld audiotechnicus).</p>
 
     <p>Ik heb meerdere scholen bezocht, maar al vrij snel kwam ik er op uit dat het wel een HBO moest zijn, en geen MBO. Als ik voor een MBO zou kiezen, zou het een beetje voelen alsof ik de laatste 2 jaar havo voor niks had gedaan, en dan zou ik alsnog examens moeten doen in de standaardvakken op die opleiding.</p>
 
     <p>Ook heb ik meerdere open- en meeloopdagen bezocht, zowel van de HZ als van Avans Breda. Ik twijfelde hierna erg voor welke school ik moest kiezen, maar vanwege de reistijd naar Breda/Middelburg heb ik toch gekozen voor de HZ.</p>
 
-    <p>Na deze 4 jaar hoop ik met een HBO-ICT diploma uit de school te lopen, om dan een baan te kunnen zoeken in het ICT werkveld.</p>",
+    <p>Na deze 4 jaar hoop ik met een HBO-ICT diploma uit de school te lopen, om dan een baan te kunnen zoeken in het ICT werkveld.</p>',
     'published',
-    '1732060800',
-    '1772197524'
+    '1732060800'
 );

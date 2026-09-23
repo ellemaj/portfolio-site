@@ -9,19 +9,14 @@ class Database
 {
     private PDO $connection;
 
-    public function __construct(string $path = '')
+    public function __construct()
     {
-        if (str_ends_with($path, '.sqlite')) {
-            $dsn = "sqlite:{$path}";
-            $this->connection = new PDO($dsn);
-        } else {
-            $host = $_ENV['DB_HOST'] ?? 'db';
-            $name = $_ENV['DB_NAME'] ?? 'maestro';
-            $user = $_ENV['DB_USER'] ?? 'root';
-            $pass = $_ENV['DB_PASS'] ?? '';
-            $dsn = "mysql:host={$host};dbname={$name};charset=utf8mb4";
-            $this->connection = new PDO($dsn, $user, $pass);
-        }
+        $host = $_ENV['DB_HOST'] ?? 'db';
+        $name = $_ENV['DB_NAME'] ?? 'maestro';
+        $user = $_ENV['DB_USER'] ?? 'root';
+        $pass = $_ENV['DB_PASS'] ?? '';
+        $dsn = "mysql:host={$host};dbname={$name};charset=utf8mb4";
+        $this->connection = new PDO($dsn, $user, $pass);
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
     }

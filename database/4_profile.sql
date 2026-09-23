@@ -1,17 +1,17 @@
 CREATE TABLE profile (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     intro TEXT NOT NULL,
     bio TEXT NOT NULL,
-    birthdate TEXT,
-    education TEXT,
-    experience TEXT,
-    skills TEXT,
+    birthdate DATE NULL,
+    education TEXT NULL,
+    experience TEXT NULL,
+    skills TEXT NULL,
     traits TEXT NOT NULL,
-    github TEXT,
-    linkedin TEXT,
-    spotify TEXT,
-    discord TEXT,
-    image TEXT
+    github VARCHAR(255) NULL,
+    linkedin VARCHAR(255) NULL,
+    spotify VARCHAR(255) NULL,
+    discord VARCHAR(255) NULL,
+    image VARCHAR(255) NULL
 );
 
 INSERT INTO profile (

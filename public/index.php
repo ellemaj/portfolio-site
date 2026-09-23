@@ -37,7 +37,6 @@ use Framework\Request;
 $config = [
     'APP_ENV'    => (string)($_ENV['APP_ENV'] ?? 'development'),
     'VIEWS_PATH' => (string)($_ENV['VIEWS_PATH'] ?? 'app/views'),
-    'APP_DB'     => (string)($_ENV['APP_DB'] ?? 'database.sqlite'),
 ];
 
 // Initialize the Kernel with configuration

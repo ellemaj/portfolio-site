@@ -16,5 +16,4 @@ node_modules/
 
 # User level
 .env
-*.sqlite
 .claude/
