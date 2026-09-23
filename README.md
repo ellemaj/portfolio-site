@@ -119,21 +119,3 @@ vendor/bin/phpstan analyse --no-progress
 vendor/bin/phpcs
 vendor/bin/deptrac analyse --no-progress
 ```
-
----
-
-## Tests
-
-This project uses PHPUnit for automated testing. The tests require the Docker container to be running.
-
-**Run all tests:**
-```bash
-docker compose exec app vendor/bin/phpunit
-```
-
-**Run with code coverage report:**
-```bash
-docker compose exec app vendor/bin/phpunit --coverage-text
-```
-
-A full test plan with all test cases can be found in [documentation/TEST_PLAN.md](documentation/TEST_PLAN.md).
