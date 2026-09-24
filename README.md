@@ -82,8 +82,7 @@ In the Strato control panel, open **phpMyAdmin** for your database. Select your 
 
 1. `database/1_users.sql`
 2. `database/2_posts.sql`
-3. `database/3_courses.sql`
-4. `database/4_profile.sql`
+3. `database/4_profile.sql`
 
 **5. Add FTP credentials to GitHub Actions secrets**
 
