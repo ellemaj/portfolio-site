@@ -73,3 +73,12 @@ mobileMenuBtn.addEventListener('click', () => {
     menuIconOpen.classList.toggle('hidden', !isOpen);
     menuIconClose.classList.toggle('hidden', isOpen);
 });
+
+// Close open dropdown menus when clicking outside of them
+document.addEventListener('click', (e) => {
+    document.querySelectorAll('details[data-dropdown][open]').forEach(details => {
+        if (!details.contains(e.target)) {
+            details.removeAttribute('open');
+        }
+    });
+});

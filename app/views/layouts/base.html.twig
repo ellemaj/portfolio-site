@@ -58,15 +58,19 @@
                     {% if session.user_id %}
                         <a href="/overview" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'overview' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Overview</a>
                         {% if session.role == 'admin' %}
-                            <a href="/blog/manage" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'manage' %}text-amber-400 bg-amber-400/10{% else %}text-slate-500 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">
-                                <span class="font-mono-custom text-xs">⚙</span> Blog
-                            </a>
-                            <a href="/projects/manage" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'manageProjects' %}text-amber-400 bg-amber-400/10{% else %}text-slate-500 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">
-                                <span class="font-mono-custom text-xs">⚙</span> Projects
-                            </a>
-                            <a href="/profile/edit" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'editProfile' %}text-amber-400 bg-amber-400/10{% else %}text-slate-500 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">
-                                <span class="font-mono-custom text-xs">⚙</span> Profile
-                            </a>
+                            <details class="group relative" data-dropdown>
+                                <summary class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium cursor-pointer list-none select-none transition-colors {% if active in ['manage', 'manageProjects', 'editProfile'] %}text-amber-400 bg-amber-400/10{% else %}text-slate-500 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">
+                                    <span class="font-mono-custom text-xs">⚙</span> Manage
+                                    <svg class="w-3.5 h-3.5 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </summary>
+                                <div class="absolute right-0 z-10 mt-1.5 w-40 bg-slate-900 border border-slate-800 rounded-lg shadow-xl overflow-hidden">
+                                    <a href="/blog/manage" class="block px-4 py-2 text-sm font-medium transition-colors {% if active == 'manage' %}text-amber-400 bg-amber-400/10{% else %}text-slate-400 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">Blog</a>
+                                    <a href="/projects/manage" class="block px-4 py-2 text-sm font-medium transition-colors {% if active == 'manageProjects' %}text-amber-400 bg-amber-400/10{% else %}text-slate-400 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">Projects</a>
+                                    <a href="/profile/edit" class="block px-4 py-2 text-sm font-medium transition-colors {% if active == 'editProfile' %}text-amber-400 bg-amber-400/10{% else %}text-slate-400 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">Profile</a>
+                                </div>
+                            </details>
                         {% endif %}
                         <a href="/logout" class="ml-1 px-3 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:text-red-400 hover:bg-red-400/10 transition-colors">Logout</a>
                     {% else %}
