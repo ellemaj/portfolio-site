@@ -78,12 +78,12 @@ Replace each `<...>` placeholder with the values from the Strato control panel. 
 
 **4. Run the database migrations**
 
-In the Strato control panel, open **phpMyAdmin** for your database. Select your database, click **SQL**, and run the contents of each file in the `database/mysql/` directory in order:
+In the Strato control panel, open **phpMyAdmin** for your database. Select your database, click **SQL**, and run the contents of each file in the `database/` directory in order:
 
-1. `database/mysql/1_users.sql`
-2. `database/mysql/2_posts.sql`
-3. `database/mysql/3_courses.sql`
-4. `database/mysql/4_profile.sql`
+1. `database/1_users.sql`
+2. `database/2_posts.sql`
+3. `database/3_courses.sql`
+4. `database/4_profile.sql`
 
 **5. Add FTP credentials to GitHub Actions secrets**
 
