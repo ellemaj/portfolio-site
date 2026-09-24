@@ -15,6 +15,7 @@ class SitemapController
         '/commandmaker' => 'Commandmaker',
         '/profile' => 'Profile',
         '/blog' => 'Blog',
+        '/contact' => 'Contact',
     ];
 
     public function __construct(
