@@ -19,13 +19,6 @@ class HomeController
         ]);
     }
 
-    public function faq(Request $request): Response
-    {
-        return $this->responseFactory->view('faq.html.twig', [
-            'active' => 'faq'
-        ]);
-    }
-
     public function commandmaker(Request $request): Response
     {
         return $this->responseFactory->view('commandmaker.html.twig', [

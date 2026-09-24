@@ -5,7 +5,6 @@ namespace App;
 use App\Controllers\HomeController;
 use App\Controllers\BlogController;
 use App\Controllers\UserController;
-use App\Controllers\DashboardController;
 use App\Controllers\ProfileController;
 use App\Controllers\ApiController;
 use App\Controllers\ProjectController;
@@ -29,7 +28,6 @@ class RouteProvider implements RouteProviderInterface
         $homeController = $container->get(HomeController::class);
         $router->addRoute('GET', '/', [$homeController, "index"]);
         $router->addRoute('GET', '/home', [$homeController, "index"]);
-        $router->addRoute('GET', '/faq', [$homeController, "faq"]);
         $router->addRoute('GET', '/commandmaker', [$homeController, "commandmaker"]);
 
         $blogController = $container->get(BlogController::class);
@@ -57,11 +55,6 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('POST', '/login', [$userController, "login"]);
         $router->addRoute('GET', '/logout', [$userController, "logout"]);
         $router->addRoute('GET', '/overview', [$userController, "overview"])->middleware([$adminMiddleware, 'handle']);
-
-        $dashboardController = $container->get(DashboardController::class);
-        $router->addRoute('GET', '/dashboard', [$dashboardController, 'index']);
-        $router->addRoute('POST', '/dashboard/grade/update', [$dashboardController, 'updateGrade'])
-            ->middleware([$adminMiddleware, 'handle']);
 
         $profileController = $container->get(ProfileController::class);
         $router->addRoute('GET', '/profile', [$profileController, 'index']);

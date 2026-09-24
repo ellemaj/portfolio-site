@@ -12,9 +12,7 @@ class SitemapController
     /** @var array<string, string> */
     private const STATIC_PATHS = [
         '/' => 'Home',
-        '/faq' => 'FAQ',
         '/commandmaker' => 'Commandmaker',
-        '/dashboard' => 'Dashboard',
         '/profile' => 'Profile',
         '/blog' => 'Blog',
     ];

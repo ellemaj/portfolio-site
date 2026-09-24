@@ -5,7 +5,6 @@ namespace App;
 use App\Controllers\HomeController;
 use App\Controllers\BlogController;
 use App\Controllers\UserController;
-use App\Controllers\DashboardController;
 use App\Controllers\ProfileController;
 use App\Controllers\ApiController;
 use App\Controllers\ProjectController;
@@ -15,8 +14,6 @@ use App\Repositories\PostRepository;
 use App\Repositories\PostRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\Repositories\UserRepositoryInterface;
-use App\Repositories\CourseRepository;
-use App\Repositories\CourseRepositoryInterface;
 use App\Repositories\ProfileRepository;
 use App\Repositories\ProfileRepositoryInterface;
 use App\Repositories\ProjectRepository;
@@ -50,9 +47,6 @@ class ServiceProvider implements ServiceProviderInterface
         $userRepository = new UserRepository($database);
         $container->set(UserRepositoryInterface::class, $userRepository);
 
-        $courseRepository = new CourseRepository($database);
-        $container->set(CourseRepositoryInterface::class, $courseRepository);
-
         $profileRepository = new ProfileRepository($database);
         $container->set(ProfileRepositoryInterface::class, $profileRepository);
 
@@ -71,13 +65,9 @@ class ServiceProvider implements ServiceProviderInterface
             $userRepository,
             $session,
             $postRepository,
-            $courseRepository,
             $projectRepository
         );
         $container->set(UserController::class, $userController);
-
-        $dashboardController = new DashboardController($responseFactory, $courseRepository);
-        $container->set(DashboardController::class, $dashboardController);
 
         $profileController = new ProfileController($responseFactory, $profileRepository, $projectRepository);
         $container->set(ProfileController::class, $profileController);

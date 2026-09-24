@@ -21,7 +21,7 @@
     </div>
 
     <!-- Stat cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
 
         <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-5 flex flex-col gap-1">
             <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Blog posts</p>
@@ -30,35 +30,11 @@
         </div>
 
         <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-5 flex flex-col gap-1">
-            <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Studiepunten</p>
-            <p class="text-3xl font-bold text-slate-100 font-mono-custom">
-                <span data-count-up="{{ earned|round(0) }}">0</span><span class="text-slate-600 text-xl"> / {{ total|round(0) }}</span>
-            </p>
-            <p class="text-xs text-slate-600">EC behaald</p>
-        </div>
-
-        <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-5 flex flex-col gap-1">
             <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Projects</p>
             <p class="text-3xl font-bold text-slate-100 font-mono-custom" data-count-up="{{ projects|length }}">0</p>
             <p class="text-xs text-slate-600">in portfolio</p>
         </div>
 
-    </div>
-
-    <!-- EC Progress -->
-    <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-5 mb-6">
-        <div class="flex items-center justify-between mb-3">
-            <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">EC Voortgang</p>
-            <span class="font-mono-custom text-sm font-semibold text-cyan-400">{{ ecPercent }}%</span>
-        </div>
-        <div style="width:100%;height:8px;background:rgba(51,65,85,0.6);border-radius:9999px;overflow:hidden;">
-            <div style="width:0%;height:100%;background:linear-gradient(to right,#06b6d4,#3b82f6);border-radius:9999px;"
-                 data-progress="{{ ecPercent }}"></div>
-        </div>
-        <div class="flex justify-between mt-2">
-            <span class="font-mono-custom text-xs text-slate-600">0 EC</span>
-            <span class="font-mono-custom text-xs text-slate-600">{{ total|round(0) }} EC</span>
-        </div>
     </div>
 
     <div class="grid md:grid-cols-2 gap-6">
@@ -146,13 +122,6 @@
     <div class="mt-10 flex items-center justify-between gap-3 flex-wrap">
 
         <div class="flex items-center gap-3 flex-wrap">
-            <a href="/dashboard"
-               class="inline-flex items-center gap-2 px-4 py-2 bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700 text-slate-300 hover:text-slate-100 rounded-lg text-sm font-medium transition-colors">
-                <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                </svg>
-                Dashboard
-            </a>
             <a href="/profile"
                class="inline-flex items-center gap-2 px-4 py-2 bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700 text-slate-300 hover:text-slate-100 rounded-lg text-sm font-medium transition-colors">
                 <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,17 +176,6 @@
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-count-up]').forEach(el => {
             countUp(el, parseInt(el.dataset.countUp, 10));
-        });
-    });
-
-    window.addEventListener('load', () => {
-        document.querySelectorAll('[data-progress]').forEach(el => {
-            const target = parseFloat(el.dataset.progress);
-            el.style.width = target + '%';
-            el.animate(
-                [{ width: '0%' }, { width: target + '%' }],
-                { duration: 1200, easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' }
-            );
         });
     });
 </script>
