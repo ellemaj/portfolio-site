@@ -12,6 +12,9 @@ De automatische deploy (GitHub Actions → FTP) upload alleen bestanden, geen da
 
 Dit is dezelfde stap die we lokaal in Docker al hebben gedaan, nu voor productie. Zonder deze stap breekt er niets (de code raakt `courses` nergens meer aan), maar de tabel blijft dan als nutteloze restdata staan.
 
+**Nieuwe tabel voor de EvL Tech-pagina:**
+- [ ] Draai in diezelfde phpMyAdmin de inhoud van `database/6_company.sql` (CREATE TABLE + seed-data), zonder deze stap geeft `/evl-tech` een foutmelding in plaats van de pagina.
+
 ## 2. Mail-configuratie voor het contactformulier
 
 Het contactformulier verstuurt mail via PHP's ingebouwde `mail()`. De `.env` op Strato wordt nooit door de deploy-pipeline aangeraakt (staat expliciet in de README), dus dit moet je zelf toevoegen.
