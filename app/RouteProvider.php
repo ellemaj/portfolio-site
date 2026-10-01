@@ -64,6 +64,10 @@ class RouteProvider implements RouteProviderInterface
 
         $companyController = $container->get(CompanyController::class);
         $router->addRoute('GET', '/evl-tech', [$companyController, 'index']);
+        $router->addRoute('GET', '/evl-tech/edit', [$companyController, 'edit'])
+            ->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('POST', '/evl-tech/update', [$companyController, 'update'])
+            ->middleware([$adminMiddleware, 'handle']);
 
         $profileController = $container->get(ProfileController::class);
         $router->addRoute('GET', '/profile', [$profileController, 'index']);

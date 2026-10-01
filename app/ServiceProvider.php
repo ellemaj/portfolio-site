@@ -20,6 +20,8 @@ use App\Repositories\ProfileRepository;
 use App\Repositories\ProfileRepositoryInterface;
 use App\Repositories\ProjectRepository;
 use App\Repositories\ProjectRepositoryInterface;
+use App\Repositories\CompanyRepository;
+use App\Repositories\CompanyRepositoryInterface;
 use Exception;
 use Framework\Database;
 use Framework\ResponseFactory;
@@ -55,6 +57,9 @@ class ServiceProvider implements ServiceProviderInterface
         $projectRepository = new ProjectRepository($database);
         $container->set(ProjectRepositoryInterface::class, $projectRepository);
 
+        $companyRepository = new CompanyRepository($database);
+        $container->set(CompanyRepositoryInterface::class, $companyRepository);
+
         // Controllers
         $homeController = new HomeController($responseFactory);
         $container->set(HomeController::class, $homeController);
@@ -74,7 +79,7 @@ class ServiceProvider implements ServiceProviderInterface
         $contactController = new ContactController($responseFactory, $profileRepository, $session);
         $container->set(ContactController::class, $contactController);
 
-        $companyController = new CompanyController($responseFactory);
+        $companyController = new CompanyController($responseFactory, $companyRepository);
         $container->set(CompanyController::class, $companyController);
 
         $profileController = new ProfileController($responseFactory, $profileRepository, $projectRepository);

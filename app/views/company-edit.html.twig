@@ -1,0 +1,168 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block title %}Edit EvL Tech{% endblock %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="font-mono-custom text-xs text-amber-500 tracking-widest uppercase flex items-center gap-2 mb-2">
+            <span class="inline-block w-6 h-px bg-amber-500/50"></span>
+            <span>Admin</span>
+        </div>
+        <h1 class="text-3xl font-bold text-slate-100">Edit EvL Tech</h1>
+    </div>
+
+    <!-- Form card -->
+    <div class="bg-slate-800/40 border border-slate-700/60 rounded-2xl overflow-hidden">
+
+        <div class="px-6 py-4 border-b border-slate-700/60 flex items-center gap-3">
+            <div class="flex gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500/60"></span>
+            </div>
+            <span class="font-mono-custom text-xs text-slate-500">company-update.php</span>
+        </div>
+
+        <form id="company-edit-form" action="/evl-tech/update" method="POST" class="p-6 space-y-5">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <!-- Name -->
+            <div>
+                <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Naam</label>
+                <input type="text" name="name" value="{{ company.name }}"
+                       class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Omschrijving</label>
+                <input type="hidden" name="description" id="description-input">
+                <div id="quill-editor"></div>
+            </div>
+
+            <!-- Services -->
+            <div>
+                <p class="text-xs font-mono-custom text-slate-500 uppercase tracking-wider mb-3">Diensten</p>
+                <div class="space-y-4">
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-mono-custom text-slate-500 mb-1.5">Dienst 1: titel</label>
+                            <input type="text" name="service1_title" value="{{ company.service1_title }}"
+                                   class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono-custom text-slate-500 mb-1.5">Dienst 1: omschrijving</label>
+                            <input type="text" name="service1_description" value="{{ company.service1_description }}"
+                                   class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-mono-custom text-slate-500 mb-1.5">Dienst 2: titel</label>
+                            <input type="text" name="service2_title" value="{{ company.service2_title }}"
+                                   class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono-custom text-slate-500 mb-1.5">Dienst 2: omschrijving</label>
+                            <input type="text" name="service2_description" value="{{ company.service2_description }}"
+                                   class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-mono-custom text-slate-500 mb-1.5">Dienst 3: titel</label>
+                            <input type="text" name="service3_title" value="{{ company.service3_title }}"
+                                   class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono-custom text-slate-500 mb-1.5">Dienst 3: omschrijving</label>
+                            <input type="text" name="service3_description" value="{{ company.service3_description }}"
+                                   class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Images -->
+            <div>
+                <p class="text-xs font-mono-custom text-slate-500 uppercase tracking-wider mb-3">Afbeeldingen</p>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-mono-custom text-slate-500 mb-1.5">Logo pad</label>
+                        <input type="text" name="logo" value="{{ company.logo }}"
+                               class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors"
+                               placeholder="/assets/images/evl-tech-ondark.svg">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono-custom text-slate-500 mb-1.5">Foto 1 pad</label>
+                        <input type="text" name="photo1" value="{{ company.photo1 }}"
+                               class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors"
+                               placeholder="/assets/images/foto1.jpg">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono-custom text-slate-500 mb-1.5">Foto 2 pad</label>
+                        <input type="text" name="photo2" value="{{ company.photo2 }}"
+                               class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors"
+                               placeholder="/assets/images/foto2.jpg">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="pt-2 flex items-center gap-3">
+                <button type="submit"
+                        class="px-6 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-lg text-sm transition-colors font-mono-custom">
+                    Save EvL Tech
+                </button>
+                <a href="/evl-tech" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<!-- Quill -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
+
+<script>
+    const quill = new Quill('#quill-editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                ['link'],
+                ['clean'],
+            ],
+        },
+    });
+
+    quill.clipboard.dangerouslyPasteHTML({{ company.description|json_encode|raw }});
+
+    const form = document.getElementById('company-edit-form');
+    const descriptionInput = document.getElementById('description-input');
+    const editorError = document.createElement('p');
+    editorError.id = 'quill-editor-error';
+    editorError.textContent = 'Omschrijving mag niet leeg zijn.';
+    document.getElementById('quill-editor').after(editorError);
+
+    form.addEventListener('submit', (e) => {
+        if (quill.getText().trim().length === 0) {
+            e.preventDefault();
+            editorError.style.display = 'block';
+            quill.focus();
+            return;
+        }
+        editorError.style.display = 'none';
+        descriptionInput.value = quill.getSemanticHTML().replace(/&nbsp;/g, ' ');
+    });
+</script>
+
+{% endblock %}
