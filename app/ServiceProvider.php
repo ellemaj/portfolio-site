@@ -6,6 +6,7 @@ use App\Controllers\HomeController;
 use App\Controllers\BlogController;
 use App\Controllers\UserController;
 use App\Controllers\ContactController;
+use App\Controllers\CompanyController;
 use App\Controllers\ProfileController;
 use App\Controllers\ApiController;
 use App\Controllers\ProjectController;
@@ -72,6 +73,9 @@ class ServiceProvider implements ServiceProviderInterface
 
         $contactController = new ContactController($responseFactory, $profileRepository, $session);
         $container->set(ContactController::class, $contactController);
+
+        $companyController = new CompanyController($responseFactory);
+        $container->set(CompanyController::class, $companyController);
 
         $profileController = new ProfileController($responseFactory, $profileRepository, $projectRepository);
         $container->set(ProfileController::class, $profileController);

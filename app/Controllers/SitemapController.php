@@ -15,6 +15,7 @@ class SitemapController
         '/commandmaker' => 'Commandmaker',
         '/profile' => 'Profile',
         '/blog' => 'Blog',
+        '/evl-tech' => 'EvL Tech',
         '/contact' => 'Contact',
     ];
 

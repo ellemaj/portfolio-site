@@ -6,6 +6,7 @@ use App\Controllers\HomeController;
 use App\Controllers\BlogController;
 use App\Controllers\UserController;
 use App\Controllers\ContactController;
+use App\Controllers\CompanyController;
 use App\Controllers\ProfileController;
 use App\Controllers\ApiController;
 use App\Controllers\ProjectController;
@@ -60,6 +61,9 @@ class RouteProvider implements RouteProviderInterface
         $contactController = $container->get(ContactController::class);
         $router->addRoute('GET', '/contact', [$contactController, 'index']);
         $router->addRoute('POST', '/contact', [$contactController, 'send']);
+
+        $companyController = $container->get(CompanyController::class);
+        $router->addRoute('GET', '/evl-tech', [$companyController, 'index']);
 
         $profileController = $container->get(ProfileController::class);
         $router->addRoute('GET', '/profile', [$profileController, 'index']);
