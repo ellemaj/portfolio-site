@@ -28,6 +28,7 @@ class ResponseFactory
         $twig->addGlobal('session', $_SESSION);
         $twig->addGlobal('csrf_token', $session->getCsrfToken());
         $twig->addGlobal('app_url', $this->appUrl);
+        $twig->addGlobal('is_admin', ($_SESSION['role'] ?? null) === 'admin');
 
         $twig->addFilter(new TwigFilter('nldate', function (int $timestamp): string {
             $maanden = [

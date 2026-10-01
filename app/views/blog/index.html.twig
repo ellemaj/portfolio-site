@@ -34,7 +34,7 @@
 <script>
     const postsContainer = document.getElementById('posts-container');
     const loading = document.getElementById('loading');
-    const isAdmin = {{ auth.isAdmin ? 'true' : 'false' }};
+    const isAdmin = {{ is_admin ? 'true' : 'false' }};
 
     fetch('/api/posts')
         .then(response => {
