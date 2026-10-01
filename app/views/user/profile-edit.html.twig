@@ -27,7 +27,7 @@
             <span class="font-mono-custom text-xs text-slate-500">profile-update.php</span>
         </div>
 
-        <form action="/profile/update" method="POST" class="p-6 space-y-5">
+        <form id="profile-edit-form" action="/profile/update" method="POST" class="p-6 space-y-5">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <!-- Intro -->
@@ -40,8 +40,8 @@
             <!-- Biography -->
             <div>
                 <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Biography</label>
-                <textarea name="bio" rows="4"
-                          class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 placeholder-slate-600 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors resize-y">{{ profile.bio }}</textarea>
+                <input type="hidden" name="bio" id="bio-input">
+                <div id="quill-editor"></div>
             </div>
 
             <!-- Birthdate -->
@@ -127,5 +127,44 @@
     </div>
 
 </div>
+
+<!-- Quill -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
+
+<script>
+    const quill = new Quill('#quill-editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                ['link'],
+                ['clean'],
+            ],
+        },
+    });
+
+    quill.clipboard.dangerouslyPasteHTML({{ profile.bio|json_encode|raw }});
+
+    const form = document.getElementById('profile-edit-form');
+    const bioInput = document.getElementById('bio-input');
+    const editorError = document.createElement('p');
+    editorError.id = 'quill-editor-error';
+    editorError.textContent = 'Biography mag niet leeg zijn.';
+    document.getElementById('quill-editor').after(editorError);
+
+    form.addEventListener('submit', (e) => {
+        if (quill.getText().trim().length === 0) {
+            e.preventDefault();
+            editorError.style.display = 'block';
+            quill.focus();
+            return;
+        }
+        editorError.style.display = 'none';
+        bioInput.value = quill.getSemanticHTML().replace(/&nbsp;/g, ' ');
+    });
+</script>
 
 {% endblock %}
