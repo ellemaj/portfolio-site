@@ -51,8 +51,7 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('GET', '/blog/{slug}', [$blogController, "show"]);
 
         $userController = $container->get(UserController::class);
-        $router->addRoute('GET', '/register', [$userController, "showRegister"]);
-        $router->addRoute('POST', '/register', [$userController, "register"]);
+        $router->addRoute('GET', '/beheer', [$userController, "admin"]);
         $router->addRoute('GET', '/login', [$userController, "showLogin"]);
         $router->addRoute('POST', '/login', [$userController, "login"]);
         $router->addRoute('GET', '/logout', [$userController, "logout"]);

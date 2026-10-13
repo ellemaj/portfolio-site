@@ -8,7 +8,6 @@ use Framework\ResponseFactory;
 use App\Repositories\UserRepositoryInterface;
 use App\Repositories\PostRepositoryInterface;
 use App\Repositories\ProjectRepositoryInterface;
-use App\Models\User;
 use Framework\Session;
 
 class UserController
@@ -22,11 +21,6 @@ class UserController
     ) {
     }
 
-    public function showRegister(Request $request): Response
-    {
-        return $this->responseFactory->view('user/register.html.twig');
-    }
-
     public function showLogin(Request $request): Response
     {
         return $this->responseFactory->view('user/login.html.twig', [
@@ -34,63 +28,10 @@ class UserController
         ]);
     }
 
-    public function register(Request $request): Response
+    public function admin(Request $request): Response
     {
-        $firstName       = htmlspecialchars(trim($request->get('firstName') ?? ''));
-        $lastName        = htmlspecialchars(trim($request->get('lastName') ?? ''));
-        $email           = (string) filter_var(trim($request->get('email') ?? ''), FILTER_SANITIZE_EMAIL);
-        $password        = $request->get('password') ?? '';
-        $passwordConfirm = $request->get('password_confirm') ?? '';
-
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return $this->responseFactory
-                ->createToast('error', 'Voer een geldig e-mailadres in.')
-                ->redirect('/register');
-        }
-
-        if (strlen($password) < 8) {
-            return $this->responseFactory
-                ->createToast('error', 'Wachtwoord moet minimaal 8 tekens zijn.')
-                ->redirect('/register');
-        }
-
-        if ($password !== $passwordConfirm) {
-            return $this->responseFactory
-                ->createToast('error', 'Wachtwoorden komen niet overeen.')
-                ->redirect('/register');
-        }
-
-        if (!$firstName || !$lastName) {
-            return $this->responseFactory
-                ->createToast('error', 'Vul alle velden in.')
-                ->redirect('/register');
-        }
-
-        if ($this->users->findByEmail($email)) {
-            return $this->responseFactory
-                ->createToast('error', 'Er bestaat al een gebruiker met dit emailadres.')
-                ->redirect('/register');
-        }
-
-        $user             = new User();
-        $user->firstName  = $firstName;
-        $user->lastName   = $lastName;
-        $user->email      = $email;
-        $user->password   = password_hash($password, PASSWORD_DEFAULT);
-        $user->role       = 'user';
-        $user->deleted_at = null;
-
-        $createdUser = $this->users->create($user);
-
-        if (!$createdUser) {
-            return $this->responseFactory
-            ->createToast('error', 'Er is iets misgegaan. Probeer het opnieuw.')
-            ->redirect('/register');
-        }
-
-        return $this->responseFactory
-        ->createToast('success', 'Account aangemaakt! Je kunt nu inloggen.')
-        ->redirect('/login');
+        $target = $this->session->get('role') === 'admin' ? '/overview' : '/login';
+        return $this->responseFactory->redirect($target);
     }
 
     public function login(Request $request): Response
