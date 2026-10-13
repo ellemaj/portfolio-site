@@ -106,6 +106,18 @@ body { font-family: 'Inter', system-ui, sans-serif; }
     100% { transform: translate(calc(-50% - 120px), calc(-50% + 80px)) scale(0.9); }
 }
 
+/* ── Screensaver clock ────────────────────────────────────────── */
+.clock-digit {
+    display: inline-block;
+}
+.clock-digit-change {
+    animation: clock-digit-in 0.6s ease-out;
+}
+@keyframes clock-digit-in {
+    from { opacity: 0; transform: translateY(-0.15em); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ── Quill editor dark theme ──────────────────────────────────── */
 .ql-toolbar.ql-snow {
     background: #1e293b;

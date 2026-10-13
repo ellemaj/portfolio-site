@@ -31,6 +31,7 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('GET', '/', [$homeController, "index"]);
         $router->addRoute('GET', '/home', [$homeController, "index"]);
         $router->addRoute('GET', '/commandmaker', [$homeController, "commandmaker"]);
+        $router->addRoute('GET', '/screensaver', [$homeController, "screensaver"]);
 
         $blogController = $container->get(BlogController::class);
         $router->addRoute('GET', '/blog', [$blogController, "index"]);
