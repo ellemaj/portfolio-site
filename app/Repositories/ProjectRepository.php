@@ -38,14 +38,13 @@ class ProjectRepository implements ProjectRepositoryInterface
     public function create(Project $project): ?Project
     {
         $this->db->run(
-            "INSERT INTO projects (name, description, url, sort_order, created_at)
-            VALUES (:name, :description, :url, :sort_order, :created_at)",
+            "INSERT INTO projects (name, description, url, sort_order)
+            VALUES (:name, :description, :url, :sort_order)",
             [
                 'name'        => $project->name,
                 'description' => $project->description,
                 'url'         => $project->url,
                 'sort_order'  => $project->sort_order,
-                'created_at'  => $project->created_at,
             ]
         );
 
@@ -88,7 +87,7 @@ class ProjectRepository implements ProjectRepositoryInterface
         $project->description = $data->description;
         $project->url         = $data->url ?? null;
         $project->sort_order  = (int) ($data->sort_order ?? 0);
-        $project->created_at  = (int) ($data->created_at ?? 0);
+        $project->created_at  = (int) strtotime($data->created_at);
         return $project;
     }
 }

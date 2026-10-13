@@ -42,15 +42,14 @@ class UserRepository implements UserRepositoryInterface
     public function create(User $user): ?User
     {
         $this->db->run("
-            INSERT INTO users (firstName, lastName, email, password, role, created_at, deleted_at)
-            VALUES (:firstName, :lastName, :email, :password, :role, :created_at, :deleted_at)
+            INSERT INTO users (firstName, lastName, email, password, role, deleted_at)
+            VALUES (:firstName, :lastName, :email, :password, :role, :deleted_at)
         ", [
             "firstName"  => $user->firstName,
             "lastName"   => $user->lastName,
             "email"      => $user->email,
             "password"   => $user->password,
             "role"       => $user->role,
-            "created_at" => $user->created_at,
             "deleted_at" => $user->deleted_at
         ]);
 
@@ -67,7 +66,7 @@ class UserRepository implements UserRepositoryInterface
         $user->email      = $data->email;
         $user->password   = $data->password;
         $user->role       = $data->role;
-        $user->created_at = (int) ($data->created_at ?? 0);
+        $user->created_at = (int) strtotime($data->created_at);
         $user->deleted_at = isset($data->deleted_at) ? (int) $data->deleted_at : null;
         return $user;
     }
