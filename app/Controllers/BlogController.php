@@ -83,7 +83,6 @@ class BlogController
         $post->content          = $content;
         $post->status           = $status;
         $post->publication_date = $publication_date ? (int)strtotime($publication_date) : time();
-        $post->created_at       = time();
         $post->deleted_at       = null;
 
         $createdPost = $this->postRepository->create($post);

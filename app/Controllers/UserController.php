@@ -78,7 +78,6 @@ class UserController
         $user->email      = $email;
         $user->password   = password_hash($password, PASSWORD_DEFAULT);
         $user->role       = 'user';
-        $user->created_at = time();
         $user->deleted_at = null;
 
         $createdUser = $this->users->create($user);

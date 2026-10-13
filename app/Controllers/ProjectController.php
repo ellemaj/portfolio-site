@@ -43,7 +43,6 @@ class ProjectController
         $project->description = $description;
         $project->url         = $request->get('url') ?: null;
         $project->sort_order  = (int) ($request->get('sort_order') ?? 0);
-        $project->created_at  = time();
 
         $this->projects->create($project);
 

@@ -59,9 +59,9 @@ class PostRepository implements PostRepositoryInterface
     {
         $this->db->run("
         INSERT INTO posts
-        (title, slug, preview, content, status, publication_date, created_at, deleted_at)
+        (title, slug, preview, content, status, publication_date, deleted_at)
         VALUES
-        (:title, :slug, :preview, :content, :status, :publication_date, :created_at, :deleted_at)
+        (:title, :slug, :preview, :content, :status, :publication_date, :deleted_at)
         ", [
             "title" => $post->title,
             "slug" => $post->slug,
@@ -69,7 +69,6 @@ class PostRepository implements PostRepositoryInterface
             "content" => $post->content,
             "status" => $post->status,
             "publication_date" => $post->publication_date,
-            "created_at" => $post->created_at,
             "deleted_at" => $post->deleted_at
         ]);
 
@@ -141,7 +140,7 @@ class PostRepository implements PostRepositoryInterface
         $post->content = $data->content;
         $post->status = $data->status;
         $post->publication_date = (int) ($data->publication_date ?? 0);
-        $post->created_at       = (int) ($data->created_at ?? 0);
+        $post->created_at       = (int) strtotime($data->created_at);
         $post->deleted_at       = isset($data->deleted_at) ? (int) $data->deleted_at : null;
         return $post;
     }
