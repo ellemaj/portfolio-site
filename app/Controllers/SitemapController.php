@@ -13,7 +13,7 @@ class SitemapController
     private const STATIC_PATHS = [
         '/' => 'Home',
         '/commandmaker' => 'Commandmaker',
-        '/profile' => 'Profile',
+        '/profile' => 'Profiel',
         '/blog' => 'Blog',
         '/evl-tech' => 'EvL Tech',
         '/contact' => 'Contact',

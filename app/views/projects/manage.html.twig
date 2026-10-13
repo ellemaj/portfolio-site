@@ -1,6 +1,6 @@
 {% extends "layouts/base.html.twig" %}
 
-{% block title %}Projects beheren{% endblock %}
+{% block title %}Projecten beheren{% endblock %}
 
 {% block content %}
 
@@ -13,7 +13,7 @@
                 <span class="inline-block w-6 h-px bg-amber-500/50"></span>
                 <span>Admin</span>
             </div>
-            <h1 class="text-3xl font-bold text-slate-100">Projects beheren</h1>
+            <h1 class="text-3xl font-bold text-slate-100">Projecten beheren</h1>
         </div>
         <a href="/projects/create"
            class="inline-flex items-center gap-2 px-4 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-lg text-sm transition-colors font-mono-custom">
@@ -33,7 +33,7 @@
                 <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/60"></span>
                 <span class="w-2.5 h-2.5 rounded-full bg-green-500/60"></span>
             </div>
-            <span class="font-mono-custom text-xs text-slate-500">projects.csv — {{ projects|length }} entries</span>
+            <span class="font-mono-custom text-xs text-slate-500">projects.csv — {{ projects|length }} regels</span>
         </div>
 
         {% if projects|length == 0 %}

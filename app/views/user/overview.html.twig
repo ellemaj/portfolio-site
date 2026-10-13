@@ -1,6 +1,6 @@
 {% extends "layouts/base.html.twig" %}
 
-{% block title %}Overview{% endblock %}
+{% block title %}Overzicht{% endblock %}
 
 {% block content %}
 
@@ -24,13 +24,13 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
 
         <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-5 flex flex-col gap-1">
-            <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Blog posts</p>
+            <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Blogposts</p>
             <p class="text-3xl font-bold text-slate-100 font-mono-custom" data-count-up="{{ postCount }}">0</p>
             <p class="text-xs text-slate-600">gepubliceerd</p>
         </div>
 
         <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-5 flex flex-col gap-1">
-            <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Projects</p>
+            <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Projecten</p>
             <p class="text-3xl font-bold text-slate-100 font-mono-custom" data-count-up="{{ projects|length }}">0</p>
             <p class="text-xs text-slate-600">in portfolio</p>
         </div>
@@ -42,7 +42,7 @@
         <!-- Projects -->
         <div class="bg-slate-800/40 border border-slate-700/60 rounded-xl overflow-hidden">
             <div class="px-5 py-4 border-b border-slate-700/60 flex items-center justify-between">
-                <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Projects</p>
+                <p class="font-mono-custom text-xs text-slate-500 uppercase tracking-widest">Projecten</p>
                 {% if session.role == 'admin' %}
                     <a href="/projects/manage" class="text-xs text-amber-500 hover:text-amber-400 transition-colors font-mono-custom">beheren →</a>
                 {% endif %}

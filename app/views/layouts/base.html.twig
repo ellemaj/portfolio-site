@@ -50,32 +50,32 @@
                 <!-- Desktop links -->
                 <div class="hidden md:flex items-center gap-0.5">
                     <a href="/" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'home' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Home</a>
-                    <a href="/profile" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'profile' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Profile</a>
+                    <a href="/profile" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'profile' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Profiel</a>
                     <a href="/blog" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'blog' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Blog</a>
                     <a href="/evl-tech" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'company' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">EvL Tech</a>
                     <a href="/contact" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'contact' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Contact</a>
 
                     {% if session.user_id %}
-                        <a href="/overview" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'overview' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Overview</a>
+                        <a href="/overview" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'overview' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Overzicht</a>
                         {% if session.role == 'admin' %}
                             <details class="group relative" data-dropdown>
                                 <summary class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium cursor-pointer list-none select-none transition-colors {% if active in ['manage', 'manageProjects', 'editProfile', 'manageCompany'] %}text-amber-400 bg-amber-400/10{% else %}text-slate-500 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">
-                                    <span class="font-mono-custom text-xs">⚙</span> Manage
+                                    <span class="font-mono-custom text-xs">⚙</span> Beheren
                                     <svg class="w-3.5 h-3.5 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                     </svg>
                                 </summary>
                                 <div class="absolute right-0 z-10 mt-1.5 w-40 bg-slate-900 border border-slate-800 rounded-lg shadow-xl overflow-hidden">
                                     <a href="/blog/manage" class="block px-4 py-2 text-sm font-medium transition-colors {% if active == 'manage' %}text-amber-400 bg-amber-400/10{% else %}text-slate-400 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">Blog</a>
-                                    <a href="/projects/manage" class="block px-4 py-2 text-sm font-medium transition-colors {% if active == 'manageProjects' %}text-amber-400 bg-amber-400/10{% else %}text-slate-400 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">Projects</a>
-                                    <a href="/profile/edit" class="block px-4 py-2 text-sm font-medium transition-colors {% if active == 'editProfile' %}text-amber-400 bg-amber-400/10{% else %}text-slate-400 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">Profile</a>
+                                    <a href="/projects/manage" class="block px-4 py-2 text-sm font-medium transition-colors {% if active == 'manageProjects' %}text-amber-400 bg-amber-400/10{% else %}text-slate-400 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">Projecten</a>
+                                    <a href="/profile/edit" class="block px-4 py-2 text-sm font-medium transition-colors {% if active == 'editProfile' %}text-amber-400 bg-amber-400/10{% else %}text-slate-400 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">Profiel</a>
                                     <a href="/evl-tech/edit" class="block px-4 py-2 text-sm font-medium transition-colors {% if active == 'manageCompany' %}text-amber-400 bg-amber-400/10{% else %}text-slate-400 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">EvL Tech</a>
                                 </div>
                             </details>
                         {% endif %}
-                        <a href="/logout" class="ml-1 px-3 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:text-red-400 hover:bg-red-400/10 transition-colors">Logout</a>
+                        <a href="/logout" class="ml-1 px-3 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:text-red-400 hover:bg-red-400/10 transition-colors">Uitloggen</a>
                     {% else %}
-                        <a href="/login" class="ml-2 px-4 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-md text-sm transition-colors font-mono-custom tracking-tight">Login</a>
+                        <a href="/login" class="ml-2 px-4 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-md text-sm transition-colors font-mono-custom tracking-tight">Inloggen</a>
                     {% endif %}
                 </div>
 
@@ -95,20 +95,20 @@
         <div id="mobile-menu" class="hidden md:hidden border-t border-slate-800 bg-slate-950/95">
             <div class="px-4 py-3 flex flex-col gap-1">
                 <a href="/" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'home' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Home</a>
-                <a href="/profile" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'profile' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Profile</a>
+                <a href="/profile" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'profile' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Profiel</a>
                 <a href="/blog" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'blog' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Blog</a>
                 <a href="/contact" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'contact' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Contact</a>
                 <a href="/evl-tech" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'company' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">EvL Tech</a>
                 {% if session.user_id %}
-                    <a href="/overview" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'overview' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Overview</a>
+                    <a href="/overview" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'overview' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Overzicht</a>
                     {% if session.role == 'admin' %}
-                        <a href="/blog/manage" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Manage Blog</a>
-                        <a href="/projects/manage" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Manage Projects</a>
-                        <a href="/profile/edit" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Edit Profile</a>
+                        <a href="/blog/manage" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Blog beheren</a>
+                        <a href="/projects/manage" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Projecten beheren</a>
+                        <a href="/profile/edit" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Profiel bewerken</a>
                     {% endif %}
-                    <a href="/logout" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-colors">Logout</a>
+                    <a href="/logout" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-colors">Uitloggen</a>
                 {% else %}
-                    <a href="/login" class="px-3 py-2.5 rounded-md text-sm font-medium text-cyan-400 hover:bg-cyan-400/10 transition-colors">Login</a>
+                    <a href="/login" class="px-3 py-2.5 rounded-md text-sm font-medium text-cyan-400 hover:bg-cyan-400/10 transition-colors">Inloggen</a>
                 {% endif %}
             </div>
         </div>

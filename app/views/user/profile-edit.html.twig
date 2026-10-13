@@ -1,6 +1,6 @@
 {% extends "layouts/base.html.twig" %}
 
-{% block title %}Edit Profile{% endblock %}
+{% block title %}Profiel bewerken{% endblock %}
 
 {% block content %}
 
@@ -12,7 +12,7 @@
             <span class="inline-block w-6 h-px bg-amber-500/50"></span>
             <span>Admin</span>
         </div>
-        <h1 class="text-3xl font-bold text-slate-100">Edit Profile</h1>
+        <h1 class="text-3xl font-bold text-slate-100">Profiel bewerken</h1>
     </div>
 
     <!-- Form card -->
@@ -39,14 +39,14 @@
 
             <!-- Biography -->
             <div>
-                <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Biography</label>
+                <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Biografie</label>
                 <input type="hidden" name="bio" id="bio-input">
                 <div id="quill-editor"></div>
             </div>
 
             <!-- Birthdate -->
             <div>
-                <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Birthdate</label>
+                <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Geboortedatum</label>
                 <input type="date" name="birthdate" value="{{ profile.birthdate }}"
                        class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
             </div>
@@ -54,12 +54,12 @@
             <!-- 2-col grid: Education + Experience -->
             <div class="grid sm:grid-cols-2 gap-5">
                 <div>
-                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Education</label>
+                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Opleiding</label>
                     <input type="text" name="education" value="{{ profile.education }}"
                            class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors">
                 </div>
                 <div>
-                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Experience</label>
+                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Ervaring</label>
                     <textarea name="experience" rows="3"
                               class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors resize-y">{{ profile.experience }}</textarea>
                 </div>
@@ -68,12 +68,12 @@
             <!-- Skills + Traits -->
             <div class="grid sm:grid-cols-2 gap-5">
                 <div>
-                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Skills <span class="text-slate-600 normal-case">(1 per regel)</span></label>
+                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Vaardigheden <span class="text-slate-600 normal-case">(1 per regel)</span></label>
                     <textarea name="skills" rows="6"
                               class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors resize-y">{{ skills|join('\n') }}</textarea>
                 </div>
                 <div>
-                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Traits <span class="text-slate-600 normal-case">(1 per regel)</span></label>
+                    <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Eigenschappen <span class="text-slate-600 normal-case">(1 per regel)</span></label>
                     <textarea name="traits" rows="6"
                               class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors resize-y">{{ traits|join('\n') }}</textarea>
                 </div>
@@ -81,7 +81,7 @@
 
             <!-- Social links -->
             <div>
-                <p class="text-xs font-mono-custom text-slate-500 uppercase tracking-wider mb-3">Social Links</p>
+                <p class="text-xs font-mono-custom text-slate-500 uppercase tracking-wider mb-3">Sociale links</p>
                 <div class="grid sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-mono-custom text-slate-500 mb-1.5">GitHub URL</label>
@@ -108,7 +108,7 @@
 
             <!-- Profile image -->
             <div>
-                <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Profile Image Path</label>
+                <label class="block text-xs font-mono-custom text-slate-400 uppercase tracking-wider mb-1.5">Profielfoto pad</label>
                 <input type="text" name="image" value="{{ profile.image }}"
                        class="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600/60 text-slate-200 rounded-lg text-sm font-mono-custom focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors"
                        placeholder="/assets/images/profile.jpg">
@@ -118,9 +118,9 @@
             <div class="pt-2 flex items-center gap-3">
                 <button type="submit"
                         class="px-6 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-lg text-sm transition-colors font-mono-custom">
-                    Save Profile
+                    Opslaan
                 </button>
-                <a href="/profile" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Cancel</a>
+                <a href="/profile" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Annuleren</a>
             </div>
 
         </form>
@@ -152,7 +152,7 @@
     const bioInput = document.getElementById('bio-input');
     const editorError = document.createElement('p');
     editorError.id = 'quill-editor-error';
-    editorError.textContent = 'Biography mag niet leeg zijn.';
+    editorError.textContent = 'Biografie mag niet leeg zijn.';
     document.getElementById('quill-editor').after(editorError);
 
     form.addEventListener('submit', (e) => {
