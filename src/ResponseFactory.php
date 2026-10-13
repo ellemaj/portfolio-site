@@ -10,6 +10,7 @@ class ResponseFactory
 {
     private Environment $twig;
     private Session $session;
+    private string $appUrl;
 
     public function __construct(bool $debugMode, string $viewsPath, Session $session)
     {
@@ -22,8 +23,12 @@ class ResponseFactory
             $twig->addExtension(new \Twig\Extension\DebugExtension());
         }
 
+        $this->appUrl = rtrim((string)($_ENV['APP_URL'] ?? ''), '/');
+
         $twig->addGlobal('session', $_SESSION);
         $twig->addGlobal('csrf_token', $session->getCsrfToken());
+        $twig->addGlobal('app_url', $this->appUrl);
+        $twig->addGlobal('is_admin', ($_SESSION['role'] ?? null) === 'admin');
 
         $twig->addFilter(new TwigFilter('nldate', function (int $timestamp): string {
             $maanden = [
@@ -65,8 +70,9 @@ class ResponseFactory
         $response->header = "Content-Type: text/html; charset=utf-8";
         try {
             $response->responseCode = 200;
+            $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
             $response->body = $this->twig->render($view, array_merge(
-                ['toasts' => $toasts],
+                ['toasts' => $toasts, 'canonical_url' => $this->appUrl . $path],
                 $context
             ));
             return $response;
@@ -80,6 +86,15 @@ class ResponseFactory
     public function body(string $txt): Response
     {
         return new Response($txt, 200);
+    }
+
+    public function xml(string $content): Response
+    {
+        $response = new Response();
+        $response->responseCode = 200;
+        $response->body = $content;
+        $response->header = "Content-Type: application/xml; charset=utf-8";
+        return $response;
     }
 
     public function notFound(): Response

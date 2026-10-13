@@ -5,21 +5,23 @@ namespace App;
 use App\Controllers\HomeController;
 use App\Controllers\BlogController;
 use App\Controllers\UserController;
-use App\Controllers\DashboardController;
+use App\Controllers\ContactController;
+use App\Controllers\CompanyController;
 use App\Controllers\ProfileController;
 use App\Controllers\ApiController;
 use App\Controllers\ProjectController;
+use App\Controllers\SitemapController;
 use App\Middleware\AdminMiddleware;
 use App\Repositories\PostRepository;
 use App\Repositories\PostRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\Repositories\UserRepositoryInterface;
-use App\Repositories\CourseRepository;
-use App\Repositories\CourseRepositoryInterface;
 use App\Repositories\ProfileRepository;
 use App\Repositories\ProfileRepositoryInterface;
 use App\Repositories\ProjectRepository;
 use App\Repositories\ProjectRepositoryInterface;
+use App\Repositories\CompanyRepository;
+use App\Repositories\CompanyRepositoryInterface;
 use Exception;
 use Framework\Database;
 use Framework\ResponseFactory;
@@ -49,14 +51,14 @@ class ServiceProvider implements ServiceProviderInterface
         $userRepository = new UserRepository($database);
         $container->set(UserRepositoryInterface::class, $userRepository);
 
-        $courseRepository = new CourseRepository($database);
-        $container->set(CourseRepositoryInterface::class, $courseRepository);
-
         $profileRepository = new ProfileRepository($database);
         $container->set(ProfileRepositoryInterface::class, $profileRepository);
 
         $projectRepository = new ProjectRepository($database);
         $container->set(ProjectRepositoryInterface::class, $projectRepository);
+
+        $companyRepository = new CompanyRepository($database);
+        $container->set(CompanyRepositoryInterface::class, $companyRepository);
 
         // Controllers
         $homeController = new HomeController($responseFactory);
@@ -70,13 +72,15 @@ class ServiceProvider implements ServiceProviderInterface
             $userRepository,
             $session,
             $postRepository,
-            $courseRepository,
             $projectRepository
         );
         $container->set(UserController::class, $userController);
 
-        $dashboardController = new DashboardController($responseFactory, $courseRepository);
-        $container->set(DashboardController::class, $dashboardController);
+        $contactController = new ContactController($responseFactory, $profileRepository, $session);
+        $container->set(ContactController::class, $contactController);
+
+        $companyController = new CompanyController($responseFactory, $companyRepository);
+        $container->set(CompanyController::class, $companyController);
 
         $profileController = new ProfileController($responseFactory, $profileRepository, $projectRepository);
         $container->set(ProfileController::class, $profileController);
@@ -86,5 +90,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         $apiController = new ApiController($responseFactory, $postRepository);
         $container->set(ApiController::class, $apiController);
+
+        $sitemapController = new SitemapController($responseFactory, $postRepository);
+        $container->set(SitemapController::class, $sitemapController);
     }
 }

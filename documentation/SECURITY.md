@@ -52,7 +52,6 @@ All admin-only routes are registered with the `AdminMiddleware`:
 | `/blog/{id}/delete` | POST | AdminMiddleware |
 | `/blog/{id}/restore` | POST | AdminMiddleware |
 | `/overview` | GET | AdminMiddleware |
-| `/dashboard/grade/update` | POST | AdminMiddleware |
 | `/profile/edit` | GET | AdminMiddleware |
 | `/profile/update` | POST | AdminMiddleware |
 
@@ -117,7 +116,6 @@ This pattern is applied consistently in:
 - `app/Repositories/UserRepository.php` — `findByEmail()`, `findById()`, `create()`
 - `app/Repositories/PostRepository.php` — all methods
 - `app/Repositories/ProfileRepository.php` — `update()`
-- `app/Repositories/CourseRepository.php` — `findById()`, `updateGrade()`
 
 **Why PDO named placeholders over string concatenation?**
 String concatenation (`"SELECT * FROM users WHERE email = '" . $email . "'"`) passes raw user input directly into the SQL string, making injection trivial. With PDO, the database engine receives the query structure and the parameter value separately — the value can never alter the query's logic.

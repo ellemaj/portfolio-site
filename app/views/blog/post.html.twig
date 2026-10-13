@@ -28,9 +28,14 @@
 
         <!-- Post header -->
         <header class="mb-8 pb-6 border-b border-slate-700/60">
-            <div class="flex items-center gap-2 mb-4">
-                <span class="font-mono-custom text-xs text-slate-600">//</span>
-                <time id="post-date" class="font-mono-custom text-xs text-slate-500"></time>
+            <div class="flex items-center justify-between gap-2 mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="font-mono-custom text-xs text-slate-600">//</span>
+                    <time id="post-date" class="font-mono-custom text-xs text-slate-500"></time>
+                </div>
+                {% if is_admin %}
+                    <a id="post-edit-link" href="#" class="hidden font-mono-custom text-xs text-amber-500 hover:text-amber-400 transition-colors">✎ Bewerken</a>
+                {% endif %}
             </div>
             <h1 id="post-title" class="text-3xl md:text-4xl font-bold text-slate-100 leading-tight"></h1>
         </header>
@@ -59,6 +64,7 @@
     const titleEl = document.getElementById('post-title');
     const dateEl = document.getElementById('post-date');
     const bodyEl = document.getElementById('post-body');
+    const editLinkEl = document.getElementById('post-edit-link');
 
     fetch(`/api/posts/${encodeURIComponent(slug)}`)
         .then(response => {
@@ -74,6 +80,10 @@
             });
             bodyEl.innerHTML = post.content;
             document.title = post.title + ' — ellemaj';
+            if (editLinkEl) {
+                editLinkEl.href = `/blog/${post.id}/edit`;
+                editLinkEl.classList.remove('hidden');
+            }
         })
         .catch(error => {
             loadingEl.style.display = 'none';

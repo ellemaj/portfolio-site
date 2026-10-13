@@ -37,7 +37,6 @@ use Framework\Request;
 $config = [
     'APP_ENV'    => (string)($_ENV['APP_ENV'] ?? 'development'),
     'VIEWS_PATH' => (string)($_ENV['VIEWS_PATH'] ?? 'app/views'),
-    'APP_DB'     => (string)($_ENV['APP_DB'] ?? 'database.sqlite'),
 ];
 
 // Initialize the Kernel with configuration
@@ -69,5 +68,5 @@ $request = new Request($method, $urlPath, $queryParams, $postData);
 // Handle the request and get the response
 $response = $kernel->handle($request);
 
-// Send the response to the client
-$response->echo();
+// Send the response to the client (HEAD must omit the body, RFC 9110 §9.3.2)
+$response->echo($method !== 'HEAD');

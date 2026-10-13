@@ -39,12 +39,10 @@ jobs:
           mirror -R --delete \
             --exclude-glob .git \
             --exclude-glob .github \
-            --exclude-glob tests \
             --exclude-glob node_modules \
             --exclude-glob resources \
             --exclude .env \
             --exclude .env.example \
-            --exclude-glob "*.sqlite" \
             --exclude hash.php \
             . /
           quit

@@ -1,6 +1,7 @@
 {% extends 'layouts/base.html.twig' %}
 
 {% block title %}Blog{% endblock %}
+{% block meta_description %}Blogposts van Elmar van Loenhout over zijn ICT-opleiding en projecten.{% endblock %}
 
 {% block content %}
 
@@ -10,7 +11,7 @@
     <div class="mb-10">
         <div class="font-mono-custom text-xs text-cyan-500 tracking-widest uppercase flex items-center gap-2 mb-2">
             <span class="inline-block w-6 h-px bg-cyan-500/50"></span>
-            <span>Writing</span>
+            <span>Artikelen</span>
         </div>
         <h1 class="text-3xl md:text-4xl font-bold text-slate-100">Blog</h1>
         <p class="mt-2 text-slate-400 text-sm">Artikelen over development, technologie, en meer.</p>
@@ -33,7 +34,7 @@
 <script>
     const postsContainer = document.getElementById('posts-container');
     const loading = document.getElementById('loading');
-    const isAdmin = {{ auth.isAdmin ? 'true' : 'false' }};
+    const isAdmin = {{ is_admin ? 'true' : 'false' }};
 
     fetch('/api/posts')
         .then(response => {

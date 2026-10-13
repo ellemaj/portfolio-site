@@ -5,10 +5,12 @@ namespace App;
 use App\Controllers\HomeController;
 use App\Controllers\BlogController;
 use App\Controllers\UserController;
-use App\Controllers\DashboardController;
+use App\Controllers\ContactController;
+use App\Controllers\CompanyController;
 use App\Controllers\ProfileController;
 use App\Controllers\ApiController;
 use App\Controllers\ProjectController;
+use App\Controllers\SitemapController;
 use App\Middleware\AdminMiddleware;
 use Framework\Router;
 use Framework\RouteProviderInterface;
@@ -28,7 +30,6 @@ class RouteProvider implements RouteProviderInterface
         $homeController = $container->get(HomeController::class);
         $router->addRoute('GET', '/', [$homeController, "index"]);
         $router->addRoute('GET', '/home', [$homeController, "index"]);
-        $router->addRoute('GET', '/faq', [$homeController, "faq"]);
         $router->addRoute('GET', '/commandmaker', [$homeController, "commandmaker"]);
 
         $blogController = $container->get(BlogController::class);
@@ -57,9 +58,15 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('GET', '/logout', [$userController, "logout"]);
         $router->addRoute('GET', '/overview', [$userController, "overview"])->middleware([$adminMiddleware, 'handle']);
 
-        $dashboardController = $container->get(DashboardController::class);
-        $router->addRoute('GET', '/dashboard', [$dashboardController, 'index']);
-        $router->addRoute('POST', '/dashboard/grade/update', [$dashboardController, 'updateGrade'])
+        $contactController = $container->get(ContactController::class);
+        $router->addRoute('GET', '/contact', [$contactController, 'index']);
+        $router->addRoute('POST', '/contact', [$contactController, 'send']);
+
+        $companyController = $container->get(CompanyController::class);
+        $router->addRoute('GET', '/evl-tech', [$companyController, 'index']);
+        $router->addRoute('GET', '/evl-tech/edit', [$companyController, 'edit'])
+            ->middleware([$adminMiddleware, 'handle']);
+        $router->addRoute('POST', '/evl-tech/update', [$companyController, 'update'])
             ->middleware([$adminMiddleware, 'handle']);
 
         $profileController = $container->get(ProfileController::class);
@@ -86,5 +93,9 @@ class RouteProvider implements RouteProviderInterface
         $apiController = $container->get(ApiController::class);
         $router->addRoute('GET', '/api/posts', [$apiController, 'getPosts']);
         $router->addRoute('GET', '/api/posts/{slug}', [$apiController, 'getPost']);
+
+        $sitemapController = $container->get(SitemapController::class);
+        $router->addRoute('GET', '/sitemap.xml', [$sitemapController, 'index']);
+        $router->addRoute('GET', '/sitemap', [$sitemapController, 'html']);
     }
 }

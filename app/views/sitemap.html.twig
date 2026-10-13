@@ -1,0 +1,54 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block title %}Sitemap{% endblock %}
+{% block meta_description %}Overzicht van alle pagina's en blogposts op de website van Elmar van Loenhout.{% endblock %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Header -->
+    <div class="mb-10">
+        <div class="font-mono-custom text-xs text-cyan-500 tracking-widest uppercase flex items-center gap-2 mb-2">
+            <span class="inline-block w-6 h-px bg-cyan-500/50"></span>
+            <span>Overzicht</span>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold text-slate-100">Sitemap</h1>
+        <p class="mt-2 text-slate-400 text-sm">Alle pagina's en blogposts op deze website.</p>
+    </div>
+
+    <!-- Pages -->
+    <div class="mb-10">
+        <h2 class="font-mono-custom text-xs text-slate-500 tracking-widest uppercase mb-3">Pagina's</h2>
+        <ul class="space-y-1">
+            {% for page in pages %}
+                <li>
+                    <a href="{{ page.path }}" class="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-slate-300 hover:text-cyan-400 hover:bg-slate-800/60 transition-colors">
+                        <span class="font-mono-custom text-slate-600">/</span>
+                        <span>{{ page.label }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Blog posts -->
+    {% if posts|length > 0 %}
+        <div>
+            <h2 class="font-mono-custom text-xs text-slate-500 tracking-widest uppercase mb-3">Blogposts</h2>
+            <ul class="space-y-1">
+                {% for post in posts %}
+                    <li>
+                        <a href="{{ post.path }}" class="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-slate-300 hover:text-cyan-400 hover:bg-slate-800/60 transition-colors">
+                            <span class="font-mono-custom text-slate-600">/</span>
+                            <span>{{ post.title }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

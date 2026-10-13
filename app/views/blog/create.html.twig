@@ -136,49 +136,6 @@
     .numInput { color: #e2e8f0 !important; }
 </style>
 
-<style>
-    /* Quill dark theme */
-    .ql-toolbar.ql-snow {
-        background: #1e293b;
-        border: 1px solid rgba(71,85,105,.6) !important;
-        border-bottom: 1px solid rgba(71,85,105,.3) !important;
-        border-radius: .5rem .5rem 0 0;
-    }
-    .ql-container.ql-snow {
-        background: rgba(51,65,85,.5);
-        border: 1px solid rgba(71,85,105,.6) !important;
-        border-top: none !important;
-        border-radius: 0 0 .5rem .5rem;
-        font-family: Inter, system-ui, sans-serif;
-        font-size: .875rem;
-    }
-    .ql-editor {
-        min-height: 280px;
-        color: #e2e8f0;
-        line-height: 1.625;
-    }
-    .ql-editor.ql-blank::before { color: #475569; font-style: normal; }
-    .ql-snow .ql-stroke { stroke: #94a3b8; }
-    .ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill { fill: #94a3b8; }
-    .ql-snow .ql-picker { color: #94a3b8; }
-    .ql-snow .ql-picker-options {
-        background: #1e293b;
-        border: 1px solid #334155 !important;
-        border-radius: .5rem;
-    }
-    .ql-snow .ql-picker-item { color: #94a3b8; }
-    .ql-snow .ql-picker-item:hover,
-    .ql-snow.ql-toolbar button:hover .ql-stroke,
-    .ql-snow.ql-toolbar button.ql-active .ql-stroke { stroke: #22d3ee; }
-    .ql-snow.ql-toolbar button:hover .ql-fill,
-    .ql-snow.ql-toolbar button.ql-active .ql-fill { fill: #22d3ee; }
-    .ql-snow.ql-toolbar .ql-picker-label:hover,
-    .ql-snow.ql-toolbar .ql-picker-label.ql-active,
-    .ql-snow .ql-picker-item:hover { color: #22d3ee; }
-    .ql-snow a { color: #22d3ee; }
-    #quill-editor-error { display: none; margin-top: .375rem; font-size: .75rem; color: #f87171; }
-</style>
-
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const quill = new Quill('#quill-editor', {
@@ -211,7 +168,7 @@
                 return;
             }
             editorError.style.display = 'none';
-            contentInput.value = quill.getSemanticHTML();
+            contentInput.value = quill.getSemanticHTML().replace(/&nbsp;/g, ' ');
         });
 
         flatpickr.localize(flatpickr.l10ns.nl);

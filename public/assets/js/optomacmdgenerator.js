@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const payload = formatPayload(bytes, proto);
             output.textContent = `|${proto}|${ipVal}|${portVal}|${payload}|`;
         } catch (e) {
-            output.textContent = 'Error: ' + e.message;
+            output.textContent = 'Fout: ' + e.message;
         }
     }
 

@@ -5,6 +5,10 @@
     <meta name="author" content="Elmar van Loenhout">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="{% block meta_description %}Portfolio van Elmar van Loenhout (ellemaj): projecten, blog en profiel als ICT-student en audiovisuele technicus.{% endblock %}">
+    {% if canonical_url is defined and canonical_url %}
+        <link rel="canonical" href="{{ canonical_url }}">
+    {% endif %}
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -15,7 +19,7 @@
     {% block styles %}{% endblock %}
     {% block scripts %}{% endblock %}
 
-    <title>{% block title %}{% endblock %} — ellemaj</title>
+    <title>{% block title %}{% endblock %} - ellemaj</title>
 
 
 </head>
@@ -46,27 +50,32 @@
                 <!-- Desktop links -->
                 <div class="hidden md:flex items-center gap-0.5">
                     <a href="/" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'home' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Home</a>
-                    <a href="/profile" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'profile' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Profile</a>
-                    <a href="/dashboard" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'dashboard' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Dashboard</a>
-                    <a href="/faq" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'faq' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">FAQ</a>
+                    <a href="/profile" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'profile' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Profiel</a>
                     <a href="/blog" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'blog' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Blog</a>
+                    <a href="/evl-tech" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'company' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">EvL Tech</a>
+                    <a href="/contact" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'contact' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Contact</a>
 
                     {% if session.user_id %}
-                        <a href="/overview" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'overview' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Overview</a>
+                        <a href="/overview" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'overview' %}text-cyan-400 bg-cyan-400/10 nav-active-glow{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Overzicht</a>
                         {% if session.role == 'admin' %}
-                            <a href="/blog/manage" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'manage' %}text-amber-400 bg-amber-400/10{% else %}text-slate-500 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">
-                                <span class="font-mono-custom text-xs">⚙</span> Blog
-                            </a>
-                            <a href="/projects/manage" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'manageProjects' %}text-amber-400 bg-amber-400/10{% else %}text-slate-500 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">
-                                <span class="font-mono-custom text-xs">⚙</span> Projects
-                            </a>
-                            <a href="/profile/edit" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {% if active == 'editProfile' %}text-amber-400 bg-amber-400/10{% else %}text-slate-500 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">
-                                <span class="font-mono-custom text-xs">⚙</span> Profile
-                            </a>
+                            <details class="group relative" data-dropdown>
+                                <summary class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium cursor-pointer list-none select-none transition-colors {% if active in ['manage', 'manageProjects', 'editProfile', 'manageCompany'] %}text-amber-400 bg-amber-400/10{% else %}text-slate-500 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">
+                                    <span class="font-mono-custom text-xs">⚙</span> Beheren
+                                    <svg class="w-3.5 h-3.5 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </summary>
+                                <div class="absolute right-0 z-10 mt-1.5 w-40 bg-slate-900 border border-slate-800 rounded-lg shadow-xl overflow-hidden">
+                                    <a href="/blog/manage" class="block px-4 py-2 text-sm font-medium transition-colors {% if active == 'manage' %}text-amber-400 bg-amber-400/10{% else %}text-slate-400 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">Blog</a>
+                                    <a href="/projects/manage" class="block px-4 py-2 text-sm font-medium transition-colors {% if active == 'manageProjects' %}text-amber-400 bg-amber-400/10{% else %}text-slate-400 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">Projecten</a>
+                                    <a href="/profile/edit" class="block px-4 py-2 text-sm font-medium transition-colors {% if active == 'editProfile' %}text-amber-400 bg-amber-400/10{% else %}text-slate-400 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">Profiel</a>
+                                    <a href="/evl-tech/edit" class="block px-4 py-2 text-sm font-medium transition-colors {% if active == 'manageCompany' %}text-amber-400 bg-amber-400/10{% else %}text-slate-400 hover:text-amber-400 hover:bg-slate-800/60{% endif %}">EvL Tech</a>
+                                </div>
+                            </details>
                         {% endif %}
-                        <a href="/logout" class="ml-1 px-3 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:text-red-400 hover:bg-red-400/10 transition-colors">Logout</a>
+                        <a href="/logout" class="ml-1 px-3 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:text-red-400 hover:bg-red-400/10 transition-colors">Uitloggen</a>
                     {% else %}
-                        <a href="/login" class="ml-2 px-4 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-md text-sm transition-colors font-mono-custom tracking-tight">Login</a>
+                        <a href="/login" class="ml-2 px-4 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-md text-sm transition-colors font-mono-custom tracking-tight">Inloggen</a>
                     {% endif %}
                 </div>
 
@@ -86,20 +95,20 @@
         <div id="mobile-menu" class="hidden md:hidden border-t border-slate-800 bg-slate-950/95">
             <div class="px-4 py-3 flex flex-col gap-1">
                 <a href="/" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'home' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Home</a>
-                <a href="/profile" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'profile' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Profile</a>
-                <a href="/dashboard" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'dashboard' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Dashboard</a>
-                <a href="/faq" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'faq' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">FAQ</a>
+                <a href="/profile" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'profile' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Profiel</a>
                 <a href="/blog" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'blog' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Blog</a>
+                <a href="/contact" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'contact' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Contact</a>
+                <a href="/evl-tech" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'company' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">EvL Tech</a>
                 {% if session.user_id %}
-                    <a href="/overview" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'overview' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Overview</a>
+                    <a href="/overview" class="px-3 py-2.5 rounded-md text-sm font-medium transition-colors {% if active == 'overview' %}text-cyan-400 bg-cyan-400/10{% else %}text-slate-400 hover:text-slate-100 hover:bg-slate-800/60{% endif %}">Overzicht</a>
                     {% if session.role == 'admin' %}
-                        <a href="/blog/manage" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Manage Blog</a>
-                        <a href="/projects/manage" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Manage Projects</a>
-                        <a href="/profile/edit" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Edit Profile</a>
+                        <a href="/blog/manage" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Blog beheren</a>
+                        <a href="/projects/manage" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Projecten beheren</a>
+                        <a href="/profile/edit" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">Profiel bewerken</a>
                     {% endif %}
-                    <a href="/logout" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-colors">Logout</a>
+                    <a href="/logout" class="px-3 py-2.5 rounded-md text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-colors">Uitloggen</a>
                 {% else %}
-                    <a href="/login" class="px-3 py-2.5 rounded-md text-sm font-medium text-cyan-400 hover:bg-cyan-400/10 transition-colors">Login</a>
+                    <a href="/login" class="px-3 py-2.5 rounded-md text-sm font-medium text-cyan-400 hover:bg-cyan-400/10 transition-colors">Inloggen</a>
                 {% endif %}
             </div>
         </div>
@@ -119,9 +128,11 @@
                 <span class="text-slate-700 ml-2">© {{ "now"|date("Y") }}</span>
             </span>
             <div class="flex items-center gap-4 text-sm">
-                <a href="mailto:elmarvloenhout@gmail.com" class="text-slate-500 hover:text-cyan-400 transition-colors">Contact</a>
+                <a href="/contact" class="text-slate-500 hover:text-cyan-400 transition-colors {% if active == 'contact' %}text-cyan-400{% endif %}">Contact</a>
                 <span class="text-slate-800">|</span>
                 <a href="/commandmaker" class="text-slate-500 hover:text-cyan-400 transition-colors {% if active == 'commandmaker' %}text-cyan-400{% endif %}">Commandmaker</a>
+                <span class="text-slate-800">|</span>
+                <a href="/sitemap" class="text-slate-500 hover:text-cyan-400 transition-colors {% if active == 'sitemap' %}text-cyan-400{% endif %}">Sitemap</a>
             </div>
         </div>
     </footer>
@@ -144,82 +155,6 @@
         </div>
     </dialog>
 
-    <script>
-        const loadingBar = document.getElementById('page-loading-bar');
-
-        function startLoading() {
-            loadingBar.classList.remove('is-loading');
-            void loadingBar.offsetWidth;
-            loadingBar.classList.add('is-loading');
-        }
-
-        function disableSubmitButton(form) {
-            const btn = form.querySelector('[type="submit"]');
-            if (btn && !btn.disabled) {
-                btn.disabled = true;
-                btn.dataset.original = btn.textContent;
-                btn.textContent = 'Bezig...';
-            }
-        }
-
-        document.addEventListener('click', (e) => {
-            const link = e.target.closest('a[href]');
-            if (link) {
-                const href = link.getAttribute('href') ?? '';
-                if (href && !href.startsWith('#') && !href.startsWith('javascript')) {
-                    startLoading();
-                }
-            }
-        });
-
-        document.querySelectorAll('form:not([data-confirm])').forEach(form => {
-            form.addEventListener('submit', () => {
-                startLoading();
-                disableSubmitButton(form);
-            });
-        });
-
-        const dialog = document.getElementById('confirm-dialog');
-        const confirmYes = document.getElementById('confirm-yes');
-        const confirmNo = document.getElementById('confirm-no');
-        let pendingForm = null;
-
-        document.querySelectorAll('[data-confirm]').forEach(form => {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                pendingForm = form;
-                document.getElementById('confirm-message').textContent =
-                    form.dataset.confirm || 'Weet je zeker dat je dit wilt verwijderen?';
-                dialog.showModal();
-            });
-        });
-
-        confirmYes.addEventListener('click', () => {
-            dialog.close();
-            if (pendingForm) {
-                startLoading();
-                disableSubmitButton(pendingForm);
-                pendingForm.submit();
-            }
-        });
-
-        confirmNo.addEventListener('click', () => {
-            dialog.close();
-            pendingForm = null;
-        });
-
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuIconOpen = document.getElementById('menu-icon-open');
-        const menuIconClose = document.getElementById('menu-icon-close');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            const isOpen = !mobileMenu.classList.contains('hidden');
-            mobileMenu.classList.toggle('hidden', isOpen);
-            menuIconOpen.classList.toggle('hidden', !isOpen);
-            menuIconClose.classList.toggle('hidden', isOpen);
-        });
-    </script>
+    <script src="/assets/js/layout.js"></script>
 </body>
 </html>
