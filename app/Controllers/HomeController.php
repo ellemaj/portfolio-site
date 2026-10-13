@@ -25,4 +25,9 @@ class HomeController
             'active' => 'commandmaker'
         ]);
     }
+
+    public function screensaver(Request $request): Response
+    {
+        return $this->responseFactory->view('screensaver.html.twig');
+    }
 }
